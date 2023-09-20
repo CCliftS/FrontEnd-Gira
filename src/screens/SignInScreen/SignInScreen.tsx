@@ -5,6 +5,8 @@ import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
 function SignInScreen () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [lastname, setLastname] = useState('');
 
   const handleRegister = () => {
     // Aquí puedes agregar la lógica para registrar al usuario, por ejemplo, utilizando Firebase.
@@ -28,7 +30,19 @@ function SignInScreen () {
         secureTextEntry
         style={styles.input}
       />
-      
+      <TextInput
+        placeholder="Nombre"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Apellido"
+        value={lastname}
+        onChangeText={setLastname}
+        style={styles.input}
+      />
+
       <Button title="Registrarse" onPress={handleRegister} />
       <Text style={styles.link}>
         ¿Ya tienes una cuenta? Inicia sesión aquí.
