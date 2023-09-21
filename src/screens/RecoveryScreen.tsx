@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Button, Text } from 'react-native';
 
 
-function SignInScreen () {
+function RecoveryScreen () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -16,7 +16,7 @@ function SignInScreen () {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Registro</Text>
+      <Text style={styles.title}>RECOVERY</Text>
       <TextInput
         placeholder="Correo Electrónico"
         value={email}
@@ -62,12 +62,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   input: {
-    width: '80%',
+    width: 240,
     marginBottom: 16,
     padding: 10,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 4,
+    borderRadius: 15,
   },
   link: {
     marginTop: 16,
@@ -75,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SignInScreen;
+export default RecoveryScreen;
