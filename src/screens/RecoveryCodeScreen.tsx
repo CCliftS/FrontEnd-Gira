@@ -3,9 +3,9 @@ import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'reac
 
 
 function RecoveryScreen () {
-  const [email, setEmail] = useState('');
+  const [code, setCode] = useState('');
 
-  const handleEmail = () => {
+  const handleCode = () => {
     // Aquí puedes agregar la lógica para registrar al usuario, por ejemplo, utilizando Firebase.
     // Después de registrar al usuario con éxito, puedes navegar a la pantalla de inicio de sesión.
     // navigation.navigate('Login');
@@ -14,16 +14,15 @@ function RecoveryScreen () {
   return (
     <View style={styles.container}>
       <Image 
-            source={require('./../public/gira.png')}
+            source={require('./../public/mail.png')}
             style={styles.logo}
       />
       <View style={styles.container2}>
-        <Text style={styles.title}>Olvide mi contraseña</Text>
-        <Text style={styles.subtitle}>Ingrese su correo electronico</Text>
+        <Text style={styles.title}>Ingrese su código</Text>
         <TextInput
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={setEmail}
+          placeholder="Código"
+          value={code}
+          onChangeText={setCode}
           style={styles.input}
         />
         <TouchableOpacity        
@@ -48,18 +47,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor:'white',
     paddingHorizontal: 15,
-    paddingBottom: 10,
+    paddingVertical: 10,
     borderRadius: 5,
   },
   title: {
     fontSize: 24,
-    padding: 16,
-    color:'#494848',
-  },
-  subtitle: {
-    fontSize: 16,
     marginBottom: 16,
     color:'#85828a',
+    fontWeight: 'bold',
+    textAlign:'center',
   },
   input: {
     width: 240,
@@ -69,11 +65,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     backgroundColor: '#F3f3f3',
     borderRadius: 2,
-  },
-  link: {
-    marginTop: 16,
-    color: 'blue',
-    marginBottom: 16,
   },
   button:{
     backgroundColor: '#0052cc',
