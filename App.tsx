@@ -4,6 +4,7 @@ import SignInScreen from './src/screens/SignInScreen';
 import RecoveryScreen from './src/screens/RecoveryScreen';
 import ChangePassScreen from './src/screens/ChangePassScreen';
 import RecoveryCodeScreen from './src/screens/RecoveryCodeScreen';
+import TeamsScreen from './src/screens/TeamsScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -29,6 +30,7 @@ export default function App() {
         <RootStack.Screen name='Recovery' component={RecoveryScreen}/>
         <RootStack.Screen name='RecoveryCode' component={RecoveryCodeScreen}/>
         <RootStack.Screen name='ChangePass' component={ChangePassScreen}/>
+        <RootStack.Screen name='Teams' component={TeamsScreen}/>
       </RootStack.Navigator>
     </NavigationContainer>
   );
@@ -42,3 +44,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+
+

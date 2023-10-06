@@ -1,16 +1,31 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View,TextInput, Button,Image, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View,TextInput,Image, TouchableOpacity } from 'react-native';
+import axios from 'axios';
 
-function LoginScreen () {
+const LoginScreen = ({navigation}: any) => {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const navigation = useNavigation();
+    const handleLogin = async (email:string,password:string) =>{
+      setError(false);
+      try{
+        const response = await axios.post('http://localhost:3000/Login',{
+          email,
+          password,
+        });
 
-    const handleLogin = async () =>{
-      
+        if(response.data){
+          navigation.navigate("Teams")
+        }
+      }
+      catch (e: any){
+        setError (true);
+        setErrorMessage("ERROR AL INICIAR SESIÓN");
+        console.log("ERROR");
+      }
     }
     
     return (
@@ -34,9 +49,7 @@ function LoginScreen () {
               secureTextEntry
               style={styles.input}
             />
-            <TouchableOpacity        
-              style={[styles.button]} 
-              >
+            <TouchableOpacity onPress={() => handleLogin(email,password)} style={[styles.button]} >
               <Text style={styles.buttonText}>Iniciar Sesión</Text>
             </TouchableOpacity>
             <Text onPress={()=> navigation.navigate("SignIn")} style={styles.link}>
