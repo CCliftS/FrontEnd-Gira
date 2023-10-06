@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-const  SignInScreen = ({navigation}: any) => {
+const SignInScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -20,7 +20,7 @@ const  SignInScreen = ({navigation}: any) => {
     setError(false);
 
     try {
-      const response = await axios.post(`http://10.0.2.2:3000/singIn`, {
+      const response = await axios.post(`http://10.0.2.2:3000/auth/singIn`, {
         email,
         password,
         name,
