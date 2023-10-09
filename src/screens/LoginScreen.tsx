@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 
 const LoginScreen = ({ navigation }: any) => {
@@ -22,9 +22,29 @@ const LoginScreen = ({ navigation }: any) => {
     catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
-      console.error({ error: e?.response?.data?.message });
+      twoOptionAlertHandler();
     }
   }
+
+  const twoOptionAlertHandler = () => {
+    //function to make two option alert
+    Alert.alert(
+      //title
+      'Alerta!',
+      //body
+      'No se ha podido ingresar',
+      [
+        { text: 'Reintentar', onPress: () => navigation.navigate('Login') },
+        {
+          text: 'Crear Cuenta',
+          onPress: () => navigation.navigate('SignIn'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+      //clicking out side of alert will not cancel
+    );
+  };
 
   return (
     <View style={styles.container}>

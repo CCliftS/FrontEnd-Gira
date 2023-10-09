@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
 
 const SignInScreen = ({ navigation }: any) => {
@@ -30,9 +30,30 @@ const SignInScreen = ({ navigation }: any) => {
     } catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
-      console.error({ error: e?.response?.data?.message });
+      twoOptionAlertHandler();
     }
   };
+
+  const twoOptionAlertHandler = () => {
+    //function to make two option alert
+    Alert.alert(
+      //title
+      'Alerta!',
+      //body
+      'Registro Incorrecto',
+      [
+        { text: 'Reintentar', onPress: () => navigation.navigate('SignIn') },
+        {
+          text: 'Iniciar Sesión',
+          onPress: () => navigation.navigate('Login'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+      //clicking out side of alert will not cancel
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Image
