@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
+import { LoginScreenProps } from '../../types/types';
+import { ENDPOINT_MS_USER } from 'react-native-dotenv';
 
-const LoginScreen = ({ navigation }: any) => {
+const LoginScreen: React.FC <LoginScreenProps> =({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -12,7 +14,7 @@ const LoginScreen = ({ navigation }: any) => {
   const handleLogin = async (email: string, password: string) => {
     setError(false);
     try {
-      const response = await axios.post('http://10.0.2.2:3000/auth/Login', {
+      const response = await axios.post(`${ENDPOINT_MS_USER}/auth/Login`, {
         email,
         password,
       });
