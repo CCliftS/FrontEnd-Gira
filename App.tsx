@@ -13,6 +13,7 @@ import navbar from './src/screens/navbar';
 import UserPage from './src/screens/UserPage'
 import UserEdit from './src/screens/UserEdit';
 import EditEmailPage from './src/screens/EditEmailPage';
+import EditPassPage from './src/screens/EditPassPage';
 
 
 
@@ -32,7 +33,7 @@ export default function App() {
           headerTransparent: true,
           headerTitle: '',
         }
-      } initialRouteName='Login'>
+      } initialRouteName='EditPassPage'>
         <RootStack.Screen name='Login' component={LoginScreen} />
         <RootStack.Screen name='SignIn' component={SignInScreen} />
         <RootStack.Screen name='Recovery' component={RecoveryScreen} />
@@ -43,6 +44,7 @@ export default function App() {
         <RootStack.Screen name='navbar' component={navbar} />
         <RootStack.Screen name='UserPage' component={UserPage} />
         <RootStack.Screen name='EditEmailPage' component={EditEmailPage} />
+        <RootStack.Screen name='EditPassPage' component={EditPassPage} />
         <RootStack.Screen name='UserEdit' component={UserEdit} />
       </RootStack.Navigator>
     </NavigationContainer>

@@ -39,6 +39,13 @@ const styleEditPage = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    textPrimaryPass: {
+        marginTop: 40,
+        fontSize: 55,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
     textSecundary: {
         fontSize: 20,
         color: 'white',
@@ -68,6 +75,48 @@ const styleEditPage = StyleSheet.create({
         alignItems: 'center',
 
     },
+    boxDataItemPass: {
+        width: '90%',
+        height: "20%",
+        backgroundColor: '#44749d',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignItems: 'center',
+    },
+    boxDataItem2Pass: {
+        fontSize: 20,
+        width: "90%",
+        height: "40%",
+        backgroundColor: '#ebe8e8',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
 
+    },
+    boxBottomPass: {
+        width: '90%',
+        height: "10%",
+        marginTop: -20,
+        backgroundColor: '#d9bf56',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        justifyContent: 'center',
+    },
+    boxBottomPass2: {
+        width: '90%',
+        height: "10%",
+        marginTop: 20,
+        marginBottom: 65,
+        backgroundColor: '#d9bf56',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        justifyContent: 'center',
+    },
 });
 export default styleEditPage;
