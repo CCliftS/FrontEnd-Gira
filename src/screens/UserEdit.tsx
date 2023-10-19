@@ -3,12 +3,25 @@ import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, P
 import styleUserPage from "../public/styles/StyleUserPage";
 import NavigationBar from "./navbar";
 import { useState } from "react";
+import axios from "axios";
 
 const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
     const [name, setName] = useState('');
-    const [lastname, setLastname] = useState('');
+    const [lastName, setLastname] = useState('');
 
+    const handleChangeDates = async (email: string, name: string, lastName: string) => {
+        try {
+            const response = await axios.post(`http://10.0.2.2:3000/user/changeData`, {
+                email,
+                name,
+                lastName
+            });
+            navigation.navigate("UserPage", { data: email });
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <View style={styleUserPage.container}>
             <View style={styleUserPage.boxHeader}>
@@ -29,7 +42,7 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                     <Text style={styleUserPage.textPrimary}>Apellido</Text>
                     <TextInput
                         style={[styleUserPage.boxDataItem2, styleUserPage.textSecundary]}
-                        value={lastname}
+                        value={lastName}
                         onChangeText={(text: string) => setLastname(text)}
                     />
                 </View>
@@ -39,7 +52,7 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                 <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("HomePage", { data: email })}>
                     <Text style={styleUserPage.textBottom}>Cambiar contraseña</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => navigation.navigate("UserPage", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => handleChangeDates(email, name, lastName)}>
                     <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
                 </TouchableOpacity>
             </View>

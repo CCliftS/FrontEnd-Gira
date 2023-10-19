@@ -12,8 +12,9 @@ const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
     const [lastName, setLastName] = useState('');
 
     useEffect(() => {
+        // Esta es una mala practica , debo poner [] despues de la , : console.log("hola mundo");
         dataUser()
-    }, []);
+    },);
 
     const dataUser = async () => {
         try {
@@ -23,7 +24,6 @@ const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
             const { name: fetchedName, lastName: fetchedLastName } = response.data;
             setName(fetchedName);
             setLastName(fetchedLastName);
-
         } catch (error) {
             console.log(error);
         }
@@ -66,6 +66,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
                     <Text style={styleUserPage.textBottom}>Eliminar Usuario</Text>
                 </TouchableOpacity>
             </View>
+
             {/*Contenedor de la Navbar*/}
             <View style={styleUserPage.footer}>
                 <NavigationBar navigation={navigation} route={route} data={email} />

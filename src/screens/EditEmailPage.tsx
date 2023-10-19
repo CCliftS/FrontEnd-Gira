@@ -7,14 +7,15 @@ import axios from "axios";
 const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
     const [newEmail, setNewEmail] = useState('');
-    const handlerChangeEmail = async () => {
+    const handlerChangeEmail = async (newEmail: string, email: string) => {
         try {
             const response = await axios.post(`http://10.0.2.2:3000/user/changeEmail`, {
-                email,
-                newEmail
+                newEmail,
+                email
             });
             const { email: fecthEmail } = response.data;
             setNewEmail(fecthEmail);
+            navigation.navigate("UserPage", { data: newEmail });
         } catch (error) {
             console.log(error);
         }
@@ -31,7 +32,7 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation, route }) => {
                         onChangeText={(text: string) => setNewEmail(text)}
                     />
                 </View>
-                <TouchableOpacity style={styleEditPage.boxBottom} onPress={() => navigation.navigate("UserPage", { data: newEmail })}>
+                <TouchableOpacity style={styleEditPage.boxBottom} onPress={() => handlerChangeEmail(newEmail, email)}>
                     <Text style={styleEditPage.textSecundary}>Actualizar correo</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styleEditPage.boxBottom} onPress={() => navigation.navigate("UserEdit", { data: email })}>
