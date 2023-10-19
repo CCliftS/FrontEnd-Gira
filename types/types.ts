@@ -13,6 +13,7 @@ export type RootStackParamList = {
   UserPage: { data: string };
   UserEdit: { data: string };
   EditEmailPage: { data: string }
+  EditPassPage: { data:string }
 
   // Otras rutas de tu aplicación
 };
@@ -28,5 +29,6 @@ export type navbarProps = NativeStackScreenProps<RootStackParamList, 'navbar'>;
 export type UserPageProps = NativeStackScreenProps<RootStackParamList, 'UserPage'>;
 export type UserEditProps = NativeStackScreenProps<RootStackParamList, 'UserEdit'>;
 export type EditEmailPageProps = NativeStackScreenProps<RootStackParamList, 'EditEmailPage'>;
+export type EditPassPageProps = NativeStackScreenProps<RootStackParamList, 'EditPassPage'>
 
 // Definir tipos para otras pantallas según sea necesario

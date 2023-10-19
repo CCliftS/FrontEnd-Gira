@@ -36,7 +36,7 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                 <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditEmailPage", { data: email })}>
                     <Text style={styleUserPage.textBottom}>Cambiar correo</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("HomePage", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditPassPage", { data: email })}>
                     <Text style={styleUserPage.textBottom}>Cambiar contraseña</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => navigation.navigate("UserPage", { data: email })}>
