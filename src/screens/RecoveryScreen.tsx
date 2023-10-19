@@ -1,14 +1,27 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
+import { RecoveryScreenProps } from '../../types/types';
 
 
-function RecoveryScreen () {
+const RecoveryScreen: React.FC<RecoveryScreenProps> = ({navigation}) => {
   const [email, setEmail] = useState('');
+  const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const handleEmail = () => {
-    // Aquí puedes agregar la lógica para registrar al usuario, por ejemplo, utilizando Firebase.
-    // Después de registrar al usuario con éxito, puedes navegar a la pantalla de inicio de sesión.
-    // navigation.navigate('Login');
+  const handleEmail = async (email:string) => {
+    setError(false);
+    try{
+      const response = await axios.post(`http://10.0.2.2:3000/user/resetPassword`, {
+        email,
+      });
+      navigation.navigate("Login")
+    }
+    catch (e:any){
+      setError(true);
+      setErrorMessage(e?.response?.data.message);
+      console.log(errorMessage);
+    }
   };
 
   return (
@@ -26,9 +39,7 @@ function RecoveryScreen () {
           onChangeText={setEmail}
           style={styles.input}
         />
-        <TouchableOpacity        
-            style={[styles.button]} 
-            >
+        <TouchableOpacity onPress ={()=> handleEmail(email)} style={[styles.button]} >
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
       </View>
