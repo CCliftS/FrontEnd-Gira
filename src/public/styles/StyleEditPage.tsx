@@ -13,7 +13,7 @@ const styleEditPage = StyleSheet.create({
         borderBottomRightRadius: 10,
         //marginTop: 10,
         width: '90%',
-        height: '80%',
+        height: '90%',
         backgroundColor: '#44749d',
         marginHorizontal: 20,
         flexDirection: 'column',
@@ -40,8 +40,8 @@ const styleEditPage = StyleSheet.create({
         textAlign: 'center',
     },
     textPrimaryPass: {
-        marginTop: 40,
-        fontSize: 55,
+        marginTop: 50,
+        fontSize: 50,
         color: 'white',
         fontWeight: 'bold',
         textAlign: 'center',
@@ -77,7 +77,7 @@ const styleEditPage = StyleSheet.create({
     },
     boxDataItemPass: {
         width: '90%',
-        height: "20%",
+        height: "18%",
         backgroundColor: '#44749d',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
@@ -87,6 +87,7 @@ const styleEditPage = StyleSheet.create({
     },
     boxDataItem2Pass: {
         fontSize: 20,
+        marginTop: 10,
         width: "90%",
         height: "40%",
         backgroundColor: '#ebe8e8',

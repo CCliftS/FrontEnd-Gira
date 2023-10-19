@@ -17,7 +17,7 @@ const NavigationBar: React.FC<navbarProps> = ({ navigation, route }) => {
 
             </View>
             <View style={styleNavbar.navItem}>
-                <TouchableOpacity onPress={() => navigation.navigate("HomePage", { data: email })}>
+                <TouchableOpacity onPress={() => navigation.navigate("AddPage", { data: email })}>
                     <Image
                         source={require('./../public/icons/agregar.png')}
                         style={styleNavbar.navItemIcon}

@@ -15,7 +15,7 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation, route }) => {
             });
             const { email: fecthEmail } = response.data;
             setNewEmail(fecthEmail);
-            navigation.navigate("UserPage", { data: newEmail });
+            navigation.navigate("Login");
         } catch (error) {
             console.log(error);
         }

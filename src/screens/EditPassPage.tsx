@@ -6,15 +6,19 @@ import axios from "axios";
 
 const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
+    const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
-    const handlerChangeEmail = async () => {
+    const [repeatPassword, setRepeatPassword] = useState('');
+    const handlerChangePassword = async (email: string, password: string, newPassword: string, repeatPassword: string) => {
         try {
-            const response = await axios.post(`http://10.0.2.2:3000/user/changeEmail`, {
+            const response = await axios.post(`http://10.0.2.2:3000/user/changePassword`, {
                 email,
-                newPassword
+                password,
+                newPassword,
+                repeatPassword,
             });
-            const { email: fecthEmail } = response.data;
-            setNewPassword(fecthEmail);
+
+            navigation.navigate("Login");
         } catch (error) {
             console.log(error);
         }
@@ -22,13 +26,13 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
     return (
         <View style={styleEditPage.container}>
             <View style={styleEditPage.boxData}>
-                <Text style={styleEditPage.textPrimaryPass}>Cambio de Contraseña</Text>
+                <Text style={styleEditPage.textPrimary}>Cambio de Contraseña</Text>
                 <View style={styleEditPage.boxDataItemPass}>
                     <Text style={styleEditPage.textSecundary}>Ingrese su contraseña antigua</Text>
                     <TextInput
                         style={[styleEditPage.boxDataItem2Pass, styleEditPage.textSecundary]}
-                        value={newPassword}
-                        onChangeText={(text: string) => setNewPassword(text)}
+                        value={password}
+                        onChangeText={(text: string) => setPassword(text)}
                     />
                 </View>
                 <View style={styleEditPage.boxDataItemPass}>
@@ -43,16 +47,16 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
                     <Text style={styleEditPage.textSecundary}>Reingrese la contraseña nueva</Text>
                     <TextInput
                         style={[styleEditPage.boxDataItem2Pass, styleEditPage.textSecundary]}
-                        value={newPassword}
-                        onChangeText={(text: string) => setNewPassword(text)}
+                        value={repeatPassword}
+                        onChangeText={(text: string) => setRepeatPassword(text)}
                     />
                 </View>
-                    <TouchableOpacity style={styleEditPage.boxBottomPass} onPress={() => navigation.navigate("UserPage", { data: newPassword })}>
-                        <Text style={styleEditPage.textSecundary}>Actualizar contraseña</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styleEditPage.boxBottomPass2} onPress={() => navigation.navigate("UserEdit", { data: email })}>
-                        <Text style={styleEditPage.textSecundary}>Volver</Text>
-                    </TouchableOpacity>
+                <TouchableOpacity style={styleEditPage.boxBottomPass} onPress={() => handlerChangePassword(email, password, newPassword, repeatPassword)}>
+                    <Text style={styleEditPage.textSecundary}>Actualizar contraseña</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styleEditPage.boxBottomPass2} onPress={() => navigation.navigate("UserEdit", { data: email })}>
+                    <Text style={styleEditPage.textSecundary}>Volver</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

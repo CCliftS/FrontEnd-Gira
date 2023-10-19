@@ -14,6 +14,7 @@ import UserPage from './src/screens/UserPage'
 import UserEdit from './src/screens/UserEdit';
 import EditEmailPage from './src/screens/EditEmailPage';
 import EditPassPage from './src/screens/EditPassPage';
+import AddPage from './src/screens/AddPage';
 
 
 
@@ -45,6 +46,7 @@ export default function App() {
         <RootStack.Screen name='UserPage' component={UserPage} />
         <RootStack.Screen name='EditEmailPage' component={EditEmailPage} />
         <RootStack.Screen name='EditPassPage' component={EditPassPage} />
+        <RootStack.Screen name='AddPage' component={AddPage} />
         <RootStack.Screen name='UserEdit' component={UserEdit} />
       </RootStack.Navigator>
     </NavigationContainer>
