@@ -4,7 +4,7 @@ import axios from 'axios';
 import { SignInScreenProps } from '../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
 
-const SignInScreen: React.FC <SignInScreenProps> = ({ navigation }) => {
+const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -22,7 +22,7 @@ const SignInScreen: React.FC <SignInScreenProps> = ({ navigation }) => {
     setError(false);
 
     try {
-      const response = await axios.post(`${ENDPOINT_MS_USER}//auth/singIn`, {
+      const response = await axios.post(`http://10.0.2.2:3000/auth/singIn`, {
         email,
         password,
         name,

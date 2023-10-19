@@ -4,7 +4,9 @@ import axios from 'axios';
 import { LoginScreenProps } from '../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
 
-const LoginScreen: React.FC <LoginScreenProps> =({ navigation }) => {
+
+
+const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,17 +16,19 @@ const LoginScreen: React.FC <LoginScreenProps> =({ navigation }) => {
   const handleLogin = async (email: string, password: string) => {
     setError(false);
     try {
-      const response = await axios.post(`${ENDPOINT_MS_USER}/auth/Login`, {
+      const response = await axios.post(`http://10.0.2.2:3000/auth/Login`, {
         email,
         password,
       });
-      navigation.navigate("Teams")
+      //localStorage.setItem("token", response?.data?.access_token);
+      navigation.navigate("HomePage", { data: email })
 
     }
     catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
-      twoOptionAlertHandler();
+      console.log(errorMessage);
+      //r twoOptionAlertHandler();
     }
   }
 
@@ -69,7 +73,7 @@ const LoginScreen: React.FC <LoginScreenProps> =({ navigation }) => {
           secureTextEntry
           style={styles.input}
         />
-        <TouchableOpacity onPress={() => handleLogin(email, password)} style={[styles.button]} >
+        <TouchableOpacity onPress={() => /*navigation.navigate("HomePage", { data: email })*/ handleLogin(email, password)} style={[styles.button]} >
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
         <Text onPress={() => navigation.navigate("SignIn")} style={styles.link}>
@@ -139,3 +143,4 @@ const styles = StyleSheet.create({
 
 
 export default LoginScreen;
+
