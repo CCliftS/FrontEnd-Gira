@@ -10,12 +10,13 @@ import axios from 'axios';
 const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
   const email = route.params?.data;
   const [nameTeam, setNameTeam] = useState('');
-  const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string) => {
+  const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {
     try {
       const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
         email,
         role,
-        idTeam
+        idTeam,
+        nameTeam
       })
       navigation.navigate("AddPage", { data: email });
     } catch (error) {
@@ -31,7 +32,7 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
       const idTeam = response.data?._id;
       const role: string = "administrador";
 
-      hanleCreateFirtsMember(email, role, idTeam);
+      hanleCreateFirtsMember(email, role, idTeam, nameTeam);
     } catch (error) {
       console.log(error), "No se creo el equipo";
     }
@@ -59,13 +60,6 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
           <Text style={styleTeamPage.textBox1}>Eliminar ??</Text>
         </TouchableOpacity>
       </View>
-
-
-
-
-
-
-
       <View style={styleGeneral.footer}>
         <NavigationBar navigation={navigation} route={route} data={email} />
       </View>

@@ -76,5 +76,9 @@ const styleGeneral = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
     },
+    icon: {
+        width: 40, // Ajusta el ancho de la imagen según tus necesidades
+        height: 40,
+    },
 });
 export default styleGeneral;

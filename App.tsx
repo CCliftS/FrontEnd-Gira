@@ -35,7 +35,7 @@ export default function App() {
           headerTransparent: true,
           headerTitle: '',
         }
-      } initialRouteName='HomePage'>
+      } initialRouteName='Login'>
         <RootStack.Screen name='Login' component={LoginScreen} />
         <RootStack.Screen name='SignIn' component={SignInScreen} />
         <RootStack.Screen name='Recovery' component={RecoveryScreen} />

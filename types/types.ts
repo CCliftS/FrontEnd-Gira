@@ -33,6 +33,6 @@ export type UserEditProps = NativeStackScreenProps<RootStackParamList, 'UserEdit
 export type EditEmailPageProps = NativeStackScreenProps<RootStackParamList, 'EditEmailPage'>;
 export type EditPassPageProps = NativeStackScreenProps<RootStackParamList, 'EditPassPage'>;
 export type AddPageProps = NativeStackScreenProps<RootStackParamList, 'AddPage'>;
-export type MyTeamsPageProps = NativeStackScreenProps<RootStackParamList, 'MyTeamPage'>;
+export type MyTeamsPageProps = NativeStackScreenProps<RootStackParamList, 'MyTeamsPage'>;
 
 // Definir tipos para otras pantallas según sea necesario
