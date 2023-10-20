@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } fro
 import axios from 'axios';
 import { LoginScreenProps } from '../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
+import styleGeneral from '../public/styles/StyleGeneral';
 
 
 
@@ -12,25 +13,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleLogin = async (email: string, password: string) => {
     setError(false);
+    setIsButtonDisabled(true); // Deshabilita el botón al inicio
+  
     try {
       const response = await axios.post(`http://10.0.2.2:3000/auth/Login`, {
         email,
         password,
       });
       //localStorage.setItem("token", response?.data?.access_token);
-      navigation.navigate("HomePage", { data: email })
-
-    }
-    catch (e: any) {
+      navigation.navigate("HomePage", { data: email });
+    } catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
-      console.log(errorMessage);
-      //r twoOptionAlertHandler();
+      twoOptionAlertHandler();
+    } finally {
+      setIsButtonDisabled(false); // Habilita el botón después de que la operación esté completa
     }
-  }
+  };
 
   const twoOptionAlertHandler = () => {
     //function to make two option alert
@@ -54,34 +57,40 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('./../public/gira_logo.png')}
-        style={styles.logo}
-      />
-      <View style={styles.container2}>
-        <Text style={styles.title}>Bienvenido a Gira</Text>
-        <TextInput
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={(text: string) => setEmail(text)}
-          style={styles.input}
+      <View style={styleGeneral.boxContainer}>
+        <Image
+          source={require('./../public/gira_logo.png')}
+          style={styles.logo}
         />
-        <TextInput
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={(text: string) => setPassword(text)}
-          secureTextEntry
-          style={styles.input}
-        />
-        <TouchableOpacity onPress={() => /*navigation.navigate("HomePage", { data: email })*/ handleLogin(email, password)} style={[styles.button]} >
-          <Text style={styles.buttonText}>Iniciar Sesión</Text>
-        </TouchableOpacity>
-        <Text onPress={() => navigation.navigate("SignIn")} style={styles.link}>
-          ¿No tienes una cuenta? Regístrate aquí.
-        </Text>
-        <Text onPress={() => navigation.navigate("Recovery")} style={styles.link}>
-          Olvide mi contraseña.
-        </Text>
+        <View style={styles.container2}>
+          <Text style={styles.title}>Bienvenido a Gira</Text>
+          <TextInput
+            placeholder="Correo Electrónico"
+            value={email}
+            onChangeText={(text: string) => setEmail(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Contraseña"
+            value={password}
+            onChangeText={(text: string) => setPassword(text)}
+            secureTextEntry
+            style={styles.input}
+          />
+          <TouchableOpacity 
+            disabled={isButtonDisabled}
+            onPress={() => handleLogin(email, password)} 
+            style={[styles.button]} 
+          >
+            <Text style={styles.buttonText}>Iniciar Sesión</Text>
+          </TouchableOpacity>
+          <Text onPress={() => navigation.navigate("SignIn")} style={styles.link}>
+            ¿No tienes una cuenta? Regístrate aquí.
+          </Text>
+          <Text onPress={() => navigation.navigate("Recovery")} style={styles.link}>
+            Olvide mi contraseña.
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -92,27 +101,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0747a6'
+    backgroundColor: '#44749d'
   },
   container2: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#ebe8e8',
     paddingHorizontal: 15,
     paddingBottom: 10,
     borderRadius: 5,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     padding: 16,
-    color: '#85828a',
+    color: 'gray',
+    fontWeight: 'bold',
   },
   input: {
     width: 240,
     marginBottom: 20,
     padding: 5,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'transparent',
     backgroundColor: '#F3f3f3',
     borderRadius: 2,
   },
@@ -127,7 +137,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: '#0052cc',
+    backgroundColor: '#d9bf56',
     borderRadius: 15,
     alignItems: 'center',
     height: 40,

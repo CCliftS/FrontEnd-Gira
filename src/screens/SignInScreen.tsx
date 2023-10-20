@@ -3,6 +3,7 @@ import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert } fro
 import axios from 'axios';
 import { SignInScreenProps } from '../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
+import styleGeneral from '../public/styles/StyleGeneral';
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [lastname, setLastname] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
 
   const handleRegister = async (
@@ -19,6 +21,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
     name: string,
     lastName: string
   ) => {
+    setIsButtonDisabled(true);
     setError(false);
 
     try {
@@ -33,6 +36,9 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
       twoOptionAlertHandler();
+    }
+    finally{
+      setIsButtonDisabled(false);
     }
   };
 
@@ -58,47 +64,50 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        source={require('./../public/gira.png')}
-        style={styles.logo}
-      />
-      <View style={styles.container2}>
-        <Text style={styles.title}>Registro</Text>
-        <TextInput
-          placeholder="Correo Electrónico"
-          value={email}
-          onChangeText={(text: string) => setEmail(text)}
-          style={styles.input}
+      <View style= {styleGeneral.boxContainer}>
+        <Image
+          source={require('./../public/gira_logo.png')}
+          style={styles.logo}
         />
-        <TextInput
-          placeholder="Contraseña"
-          value={password}
-          onChangeText={(text: string) => setPassword(text)}
-          secureTextEntry
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Nombre"
-          value={name}
-          onChangeText={(text: string) => setName(text)}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Apellido"
-          value={lastname}
-          onChangeText={(text: string) => setLastname(text)}
-          style={styles.input}
-        />
+        <View style={styles.container2}>
+          <Text style={styles.title}>Registro</Text>
+          <TextInput
+            placeholder="Correo Electrónico"
+            value={email}
+            onChangeText={(text: string) => setEmail(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Contraseña"
+            value={password}
+            onChangeText={(text: string) => setPassword(text)}
+            secureTextEntry
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Nombre"
+            value={name}
+            onChangeText={(text: string) => setName(text)}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Apellido"
+            value={lastname}
+            onChangeText={(text: string) => setLastname(text)}
+            style={styles.input}
+          />
 
-        <TouchableOpacity
-          style={[styles.button]}
-          onPress={() => handleRegister(email, password, name, lastname)}
-        >
-          <Text style={styles.buttonText}>Registrarse</Text>
-        </TouchableOpacity>
-        <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
-          Ya tienes una cuenta? Inicia Sesión.
-        </Text>
+          <TouchableOpacity
+            disabled={isButtonDisabled}
+            style={[styles.button]}
+            onPress={() => handleRegister(email, password, name, lastname)}
+          >
+            <Text style={styles.buttonText}>Registrarse</Text>
+          </TouchableOpacity>
+          <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
+            Ya tienes una cuenta? Inicia Sesión.
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -109,27 +118,28 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#0747a6',
+    backgroundColor: '#44749d',
   },
   container2: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: '#ebe8e8',
     paddingHorizontal: 15,
     paddingBottom: 10,
     borderRadius: 5,
   },
   title: {
-    fontSize: 24,
+    fontSize: 30,
     padding: 16,
-    color: '#85828a',
+    color: 'gray',
+    fontWeight: 'bold',
   },
   input: {
     width: 240,
     marginBottom: 20,
     padding: 5,
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'transparent',
     backgroundColor: '#F3f3f3',
     borderRadius: 2,
   },
@@ -139,7 +149,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   button: {
-    backgroundColor: '#0052cc',
+    backgroundColor: '#d9bf56',
     borderRadius: 15,
     alignItems: 'center',
     height: 40,

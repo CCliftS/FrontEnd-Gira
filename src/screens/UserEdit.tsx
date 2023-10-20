@@ -9,8 +9,10 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
     const [name, setName] = useState('');
     const [lastName, setLastname] = useState('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handleChangeDates = async (email: string, name: string, lastName: string) => {
+        setIsButtonDisabled(true);
         try {
             const response = await axios.post(`http://10.0.2.2:3000/user/changeData`, {
                 email,
@@ -20,6 +22,8 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
             navigation.navigate("UserPage", { data: email });
         } catch (error) {
             console.log(error);
+        }finally{
+            setIsButtonDisabled(false);
         }
     }
     return (
@@ -52,7 +56,11 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                 <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditPassPage", { data: email })}>
                     <Text style={styleUserPage.textBottom}>Cambiar contraseña</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => handleChangeDates(email, name, lastName)}>
+                <TouchableOpacity 
+                disabled={isButtonDisabled}
+                style={styleUserPage.boxDelete} 
+                onPress={() => handleChangeDates(email, name, lastName)}
+                >
                     <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
                 </TouchableOpacity>
             </View>

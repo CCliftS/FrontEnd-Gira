@@ -119,5 +119,12 @@ const styleEditPage = StyleSheet.create({
         borderBottomRightRadius: 10,
         justifyContent: 'center',
     },
+    textSecundaryPass: {
+        fontSize: 20,
+        color: 'black',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        justifyContent: 'center',
+    },
 });
 export default styleEditPage;
