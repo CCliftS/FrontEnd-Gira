@@ -12,10 +12,11 @@ export type RootStackParamList = {
   navbar: { data: string };
   UserPage: { data: string };
   UserEdit: { data: string };
-  EditEmailPage: { data: string }
-  EditPassPage: { data: string }
-  AddPage: { data: string }
-  MyTeamsPage: { data: string }
+  EditEmailPage: { data: string };
+  EditPassPage: { data: string };
+  AddPage: { data: string };
+  MyTeamsPage: { data: string };
+  DataTeamPage: { data: string, id: string };
 
   // Otras rutas de tu aplicación
 };
@@ -34,5 +35,6 @@ export type EditEmailPageProps = NativeStackScreenProps<RootStackParamList, 'Edi
 export type EditPassPageProps = NativeStackScreenProps<RootStackParamList, 'EditPassPage'>;
 export type AddPageProps = NativeStackScreenProps<RootStackParamList, 'AddPage'>;
 export type MyTeamsPageProps = NativeStackScreenProps<RootStackParamList, 'MyTeamsPage'>;
+export type DataTeamPageProps = NativeStackScreenProps<RootStackParamList, 'DataTeamPage'>;
 
 // Definir tipos para otras pantallas según sea necesario

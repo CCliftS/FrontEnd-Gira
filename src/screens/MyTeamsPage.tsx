@@ -34,7 +34,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
             </View>
             <View style={styleMyTeamsPage.boxContainer}>
                 <ScrollView>
-                    {nameTeams.map((item, index) => (
+                    {idTeams.map((item, index) => (
                         <View style={styleMyTeamsPage.boxItem}>
                             <Text style={styleMyTeamsPage.textData} key={index}>{item}</Text>
                             <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("Login")}>
@@ -45,6 +45,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                     ))}
+
                 </ScrollView>
             </View>
             <View style={styleGeneral.footer}>
