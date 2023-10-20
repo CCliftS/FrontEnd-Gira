@@ -10,10 +10,23 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
     const [nameTeams, setNameTeams] = useState([]);
     const [idTeams, setIdTeams] = useState([]);
+    const [teams, setTeam] = useState([]); // Estado para los nombres de los equipos
 
     useEffect(() => {
         loadTeams(email);
     }, []);
+
+    const getTeamData = async (id: string) => {
+        try {
+            const response = await axios.post(`http://10.0.2.2:3001/Member/findTeamById`, {
+                id
+            });
+            return response.data.nameTeam; // Devuelve el nombre del equipo
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const loadTeams = async (email: string) => {
         try {
             const response = await axios.post(`http://10.0.2.2:3001/Member/memberData`, {
@@ -22,11 +35,14 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
             setNameTeams(response.data.teamsName);
             setIdTeams(response.data.teamsId);
 
+            // Obtiene los nombres de los equipos y actualiza el estado
+            const teamArray = await Promise.all(idTeams.map(item => getTeamData(item)));
+            setTeam(teamArray);
         } catch (error) {
             console.log(error);
         }
     }
-    console.log(nameTeams, idTeams);
+
     return (
         <View style={styleGeneral.container}>
             <View style={styleGeneral.boxHeader}>
@@ -35,8 +51,8 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
             <View style={styleMyTeamsPage.boxContainer}>
                 <ScrollView>
                     {idTeams.map((item, index) => (
-                        <View style={styleMyTeamsPage.boxItem}>
-                            <Text style={styleMyTeamsPage.textData} key={index}>{item}</Text>
+                        <View style={styleMyTeamsPage.boxItem} key={index}>
+                            <Text style={styleMyTeamsPage.textData}>{teams[index]}</Text>
                             <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("Login")}>
                                 <Image
                                     source={require('./../public/icons/angulo-circulo-derecha.png')}
@@ -45,7 +61,6 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                             </TouchableOpacity>
                         </View>
                     ))}
-
                 </ScrollView>
             </View>
             <View style={styleGeneral.footer}>
@@ -54,4 +69,5 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
         </View>
     );
 }
+
 export default MyTeamsPage;
