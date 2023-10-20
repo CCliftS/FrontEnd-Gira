@@ -1,72 +1,75 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Button, Image, TouchableOpacity } from 'react-native';
+import { TeamsScreenProps } from '../../types/types';
+import styleTeamPage from '../public/styles/StyleTeamPage';
+import NavigationBar from './navbar';
+import styleGeneral from '../public/styles/StyleGeneral';
+import axios from 'axios';
 
 
-const TeamsScreen = ({ navigation }: any) => {
+const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
+  const email = route.params?.data;
+  const [nameTeam, setNameTeam] = useState('');
+  const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string) => {
+    try {
+      const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
+        email,
+        role,
+        idTeam
+      })
+      navigation.navigate("AddPage", { data: email });
+    } catch (error) {
+      console.log(error, "No se creo el miembro");
+    }
+  }
+  const handleCreateTeam = async (email: string, nameTeam: string) => {
+    try {
+      const response = await axios.post(`http://10.0.2.2:3001/Teams/createTeam`, {
+        nameTeam
+      })
+
+      const idTeam = response.data?._id;
+      const role: string = "administrador";
+
+      hanleCreateFirtsMember(email, role, idTeam);
+    } catch (error) {
+      console.log(error), "No se creo el equipo";
+    }
+  }
 
 
   return (
-    <View style={styles.container}>
-      <View style={styles.container2}>
-        <Text style={styles.title}>Bienvenido a Gira</Text>
+    <View style={styleGeneral.container}>
+      <View style={styleGeneral.boxHeader}>
+        <Text style={styleGeneral.titleHeader}>Creación de equipo</Text>
+      </View>
+      <View style={styleGeneral.boxContainer}>
+        <View style={styleTeamPage.boxDataItem}>
+          <Text style={styleTeamPage.textBox1}>Nombre de Equipo</Text>
+          <TextInput
+            style={[styleTeamPage.boxDataItem2, styleGeneral.textSecundary]}
+            value={nameTeam}
+            onChangeText={(text: string) => setNameTeam(text)}
+          />
+        </View>
+        <TouchableOpacity style={styleTeamPage.boxBottom1} onPress={() => handleCreateTeam(email, nameTeam)}>
+          <Text style={styleTeamPage.textBox1}>Crear equipo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styleTeamPage.boxBottom2} onPress={() => navigation.navigate("AddPage", { data: email })}>
+          <Text style={styleTeamPage.textBox1}>Eliminar ??</Text>
+        </TouchableOpacity>
+      </View>
+
+
+
+
+
+
+
+      <View style={styleGeneral.footer}>
+        <NavigationBar navigation={navigation} route={route} data={email} />
       </View>
     </View>
-  );
+  )
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#0747a6'
-  },
-  container2: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    paddingHorizontal: 15,
-    paddingBottom: 10,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 24,
-    padding: 16,
-    color: '#85828a',
-  },
-  input: {
-    width: 240,
-    marginBottom: 20,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: 'black',
-    backgroundColor: '#F3f3f3',
-    borderRadius: 2,
-  },
-  logo: {
-    width: 150, // Ajusta el tamaño de la imagen según tus necesidades
-    height: 150, // Ajusta el tamaño de la imagen según tus necesidades
-    marginBottom: 16,
-  },
-  link: {
-    marginTop: 16,
-    color: 'blue',
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: '#0052cc',
-    borderRadius: 15,
-    alignItems: 'center',
-    height: 40,
-    width: 150,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 5,
-    fontSize: 20,
-  }
-});
-
-
 export default TeamsScreen;

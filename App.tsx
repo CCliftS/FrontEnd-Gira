@@ -15,6 +15,7 @@ import UserEdit from './src/screens/UserEdit';
 import EditEmailPage from './src/screens/EditEmailPage';
 import EditPassPage from './src/screens/EditPassPage';
 import AddPage from './src/screens/AddPage';
+import MyTeamsPage from './src/screens/MyTeamsPage';
 
 
 
@@ -34,7 +35,7 @@ export default function App() {
           headerTransparent: true,
           headerTitle: '',
         }
-      } initialRouteName='EditPassPage'>
+      } initialRouteName='HomePage'>
         <RootStack.Screen name='Login' component={LoginScreen} />
         <RootStack.Screen name='SignIn' component={SignInScreen} />
         <RootStack.Screen name='Recovery' component={RecoveryScreen} />
@@ -48,6 +49,7 @@ export default function App() {
         <RootStack.Screen name='EditPassPage' component={EditPassPage} />
         <RootStack.Screen name='AddPage' component={AddPage} />
         <RootStack.Screen name='UserEdit' component={UserEdit} />
+        <RootStack.Screen name='MyTeamsPage' component={MyTeamsPage} />
       </RootStack.Navigator>
     </NavigationContainer>
   );

@@ -15,7 +15,7 @@ const AddPage: React.FC<AddPageProps> = ({ navigation, route }) => {
                 <View style={styleAddPage.boxAddTeam}>
                     <View style={styleAddPage.boxTextHeader}>
                         <Text style={styleAddPage.titleHeader}>Crear Equipo</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("HomePage", { data: email })}>
+                        <TouchableOpacity onPress={() => navigation.navigate("Teams", { data: email })}>
                             <Image
                                 source={require('./../public/icons/usuarios.png')}
                                 style={styleAddPage.boxIconHeader}

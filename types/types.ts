@@ -6,7 +6,7 @@ export type RootStackParamList = {
   ChangePass: undefined;
   Recovery: undefined;
   RecoveryCode: undefined;
-  Teams: undefined;
+  Teams: { data: string };
   SignIn: undefined;
   HomePage: { data: string };
   navbar: { data: string };
@@ -15,6 +15,7 @@ export type RootStackParamList = {
   EditEmailPage: { data: string }
   EditPassPage: { data: string }
   AddPage: { data: string }
+  MyTeamsPage: { data: string }
 
   // Otras rutas de tu aplicación
 };
@@ -30,7 +31,8 @@ export type navbarProps = NativeStackScreenProps<RootStackParamList, 'navbar'>;
 export type UserPageProps = NativeStackScreenProps<RootStackParamList, 'UserPage'>;
 export type UserEditProps = NativeStackScreenProps<RootStackParamList, 'UserEdit'>;
 export type EditEmailPageProps = NativeStackScreenProps<RootStackParamList, 'EditEmailPage'>;
-export type EditPassPageProps = NativeStackScreenProps<RootStackParamList, 'EditPassPage'>
-export type AddPageProps = NativeStackScreenProps<RootStackParamList, 'AddPage'>
+export type EditPassPageProps = NativeStackScreenProps<RootStackParamList, 'EditPassPage'>;
+export type AddPageProps = NativeStackScreenProps<RootStackParamList, 'AddPage'>;
+export type MyTeamsPageProps = NativeStackScreenProps<RootStackParamList, 'MyTeamPage'>;
 
 // Definir tipos para otras pantallas según sea necesario

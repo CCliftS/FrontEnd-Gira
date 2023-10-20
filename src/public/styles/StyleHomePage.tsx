@@ -1,21 +1,14 @@
 import { StyleSheet } from "react-native"
 const styleHomePage = StyleSheet.create({
-    container: {
-        flex: 1,
-        //justifyContent: 'center',
-        //alignItems: 'center',
-        backgroundColor: 'white',
-
-
-    },
     boxHeader: {
         marginTop: 25,
         marginHorizontal: 10,
         width: '100%',
         height: '15%',
-        backgroundColor: '#0747a6',
+        backgroundColor: '#44749d',
         alignItems: 'center',
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         borderBottomLeftRadius: 10,
@@ -24,21 +17,62 @@ const styleHomePage = StyleSheet.create({
 
     },
     titleHeader: {
-        fontSize: 30,
+        fontSize: 35,
         paddingLeft: 20,
         color: 'white',
         fontWeight: 'bold',
     },
     logo: {
-        width: 80, // Ajusta el tamaño de la imagen según tus necesidades
-        height: 80, // Ajusta el tamaño de la imagen según tus necesidades
-        marginLeft: 14,
-    },
-    footer: {
-        flexGrow: 1,
-        justifyContent: 'flex-end',
-    },
+        width: 80,
+        height: 80,
 
+    },
+    boxTeam: {
+        marginTop: 10,
+        marginVertical: 10,
+        width: '90%',
+        height: "20%",
+        backgroundColor: '#d9bf56',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
+    boxProyect: {
+        marginTop: 10,
+        marginVertical: 10,
+        width: '90%',
+        height: "20%",
+        backgroundColor: '#f9774b',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
+    boxTask: {
+        marginTop: 10,
+        marginVertical: 10,
+        width: '90%',
+        height: "20%",
+        backgroundColor: '#f22b56',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+    },
+    icon: {
+        width: 80,
+        height: 80,
+    },
 
 });
 export default styleHomePage;
