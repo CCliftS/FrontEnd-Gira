@@ -1,39 +1,39 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
-import { RecoveryScreenProps } from '../../types/types';
+import { RecoveryScreenProps } from '../../../types/types';
 
 
-const RecoveryScreen: React.FC<RecoveryScreenProps> = ({navigation}) => {
+const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  const handleEmail = async (email:string) => {
+  const handleEmail = async (email: string) => {
     setError(false);
     setIsButtonDisabled(true);
-    try{
+    try {
       const response = await axios.post(`http://10.0.2.2:3000/user/resetPassword`, {
         email,
       });
       navigation.navigate("Login")
     }
-    catch (e:any){
+    catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data.message);
       console.log(errorMessage);
     }
-    finally{
+    finally {
       setIsButtonDisabled(false);
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image 
-            source={require('./../public/pass.png')}
-            style={styles.logo}
+      <Image
+        source={require('../../public/icons/pass.png')}
+        style={styles.logo}
       />
       <View style={styles.container2}>
         <Text style={styles.title}>Olvide mi contraseña</Text>
@@ -44,10 +44,10 @@ const RecoveryScreen: React.FC<RecoveryScreenProps> = ({navigation}) => {
           onChangeText={setEmail}
           style={styles.input}
         />
-        <TouchableOpacity 
-        disabled={isButtonDisabled}
-        onPress ={()=> handleEmail(email)} 
-        style={[styles.button]} 
+        <TouchableOpacity
+          disabled={isButtonDisabled}
+          onPress={() => handleEmail(email)}
+          style={[styles.button]}
         >
           <Text style={styles.buttonText}>Siguiente</Text>
         </TouchableOpacity>
@@ -63,10 +63,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#44749d',
   },
-  container2:{
+  container2: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor:'#ebe8e8',
+    backgroundColor: '#ebe8e8',
     paddingHorizontal: 15,
     paddingBottom: 10,
     borderRadius: 5,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 16,
     marginBottom: 16,
-    color:'#85828a',
+    color: '#85828a',
     fontWeight: 'bold',
   },
   input: {
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     color: 'blue',
     marginBottom: 16,
   },
-  button:{
+  button: {
     backgroundColor: '#d9bf56',
     borderRadius: 15,
     alignItems: 'center',
@@ -105,9 +105,9 @@ const styles = StyleSheet.create({
     width: 150,
     marginBottom: 10,
   },
-  buttonText:{
-    color:'white',
-    textAlign:'center',
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
     marginTop: 5,
     fontSize: 20,
   },

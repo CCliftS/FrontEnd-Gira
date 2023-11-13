@@ -1,12 +1,14 @@
-import { UserPageProps } from "../../types/types";
+import { UserPageProps } from "../../../types/types";
 import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from "react-native";
-import styleUserPage from "../public/styles/StyleUserPage";
-import NavigationBar from "./navbar";
+import styleUserPage from "../../public/styles/StyleUserPage";
+import NavigationBar from "../common/navbar";
 import { useState } from "react";
 import axios from "axios";
+import { useLocalStorage } from "../../utils/localStorage";
 
-const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
-    const email = route.params?.data;
+
+const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
+    const email = useLocalStorage('email');
     const [name, setName] = useState('');
     const [lastName, setLastname] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -19,10 +21,10 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                 name,
                 lastName
             });
-            navigation.navigate("UserPage", { data: email });
+            navigation.navigate("UserPage");
         } catch (error) {
             console.log(error);
-        }finally{
+        } finally {
             setIsButtonDisabled(false);
         }
     }
@@ -50,22 +52,22 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation, route }) => {
                         onChangeText={(text: string) => setLastname(text)}
                     />
                 </View>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditEmailPage", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditEmailPage")}>
                     <Text style={styleUserPage.textBottom}>Cambiar correo</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditPassPage", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditPassPage")}>
                     <Text style={styleUserPage.textBottom}>Cambiar contraseña</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                disabled={isButtonDisabled}
-                style={styleUserPage.boxDelete} 
-                onPress={() => handleChangeDates(email, name, lastName)}
+                <TouchableOpacity
+                    disabled={isButtonDisabled}
+                    style={styleUserPage.boxDelete}
+                    onPress={() => handleChangeDates(email, name, lastName)}
                 >
                     <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
                 </TouchableOpacity>
             </View>
             <View style={styleUserPage.footer}>
-                <NavigationBar navigation={navigation} route={route} data={email} />
+                <NavigationBar navigation={navigation} />
             </View>
         </View>
     );

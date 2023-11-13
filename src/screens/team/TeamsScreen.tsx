@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Button, Image, TouchableOpacity } from 'react-native';
-import { TeamsScreenProps } from '../../types/types';
-import styleTeamPage from '../public/styles/StyleTeamPage';
-import NavigationBar from './navbar';
-import styleGeneral from '../public/styles/StyleGeneral';
+import { TeamsScreenProps } from '../../../types/types';
+import styleTeamPage from '../../public/styles/StyleTeamPage';
+import NavigationBar from '../common/navbar';
+import styleGeneral from '../../public/styles/StyleGeneral';
 import axios from 'axios';
 
 

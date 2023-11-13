@@ -6,17 +6,17 @@ export type RootStackParamList = {
   ChangePass: undefined;
   Recovery: undefined;
   RecoveryCode: undefined;
-  Teams: { data: string };
+  Teams: undefined;
   SignIn: undefined;
-  HomePage: { data: string };
-  navbar: { data: string };
-  UserPage: { data: string };
-  UserEdit: { data: string };
-  EditEmailPage: { data: string };
-  EditPassPage: { data: string };
-  AddPage: { data: string };
-  MyTeamsPage: { data: string };
-  DataTeamPage: { data: string, id: string };
+  HomePage: undefined;
+  navbar: undefined;
+  UserPage: undefined;
+  UserEdit: undefined;
+  EditEmailPage: undefined;
+  EditPassPage: undefined;
+  AddPage: undefined;
+  MyTeamsPage: undefined;
+  DataTeamPage: undefined;
 
   // Otras rutas de tu aplicación
 };
@@ -24,8 +24,6 @@ export type RootStackParamList = {
 export type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
 export type SignInScreenProps = NativeStackScreenProps<RootStackParamList, 'SignIn'>;
 export type RecoveryScreenProps = NativeStackScreenProps<RootStackParamList, 'Recovery'>;
-export type RecoveryCodeScreenProps = NativeStackScreenProps<RootStackParamList, 'RecoveryCode'>;
-export type ChangePassScreenProps = NativeStackScreenProps<RootStackParamList, 'ChangePass'>;
 export type TeamsScreenProps = NativeStackScreenProps<RootStackParamList, 'Teams'>;
 export type HomePageScreenProps = NativeStackScreenProps<RootStackParamList, 'HomePage'>;
 export type navbarProps = NativeStackScreenProps<RootStackParamList, 'navbar'>;

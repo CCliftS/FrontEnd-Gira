@@ -1,18 +1,19 @@
 import { View, Text, TouchableOpacity, TextInput } from "react-native";
-import { EditPassPageProps } from "../../types/types";
-import styleEditPage from "../public/styles/StyleEditPage";
+import { EditPassPageProps } from "../../../types/types";
+import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
+import { useLocalStorage } from "../../utils/localStorage";
 
-const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
-    const email = route.params?.data;
+const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
+    const email = useLocalStorage('email');
     const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     const handlerChangePassword = async (email: string, password: string, newPassword: string, repeatPassword: string) => {
-        setIsButtonDisabled(true); 
+        setIsButtonDisabled(true);
         try {
             const response = await axios.post(`http://10.0.2.2:3000/user/changePassword`, {
                 email,
@@ -24,7 +25,7 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
             navigation.navigate("Login");
         } catch (error) {
             console.log(error);
-        }finally{
+        } finally {
             setIsButtonDisabled(false);
         }
     }
@@ -59,14 +60,14 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, route }) => {
                         secureTextEntry
                     />
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     disabled={isButtonDisabled}
-                    style={styleEditPage.boxBottomPass} 
+                    style={styleEditPage.boxBottomPass}
                     onPress={() => handlerChangePassword(email, password, newPassword, repeatPassword)}
                 >
                     <Text style={styleEditPage.textSecundary}>Actualizar contraseña</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styleEditPage.boxBottomPass2} onPress={() => navigation.navigate("UserEdit", { data: email })}>
+                <TouchableOpacity style={styleEditPage.boxBottomPass2} onPress={() => navigation.navigate("UserEdit")}>
                     <Text style={styleEditPage.textSecundary}>Volver</Text>
                 </TouchableOpacity>
             </View>

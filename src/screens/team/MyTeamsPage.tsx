@@ -1,10 +1,10 @@
 import { View, Text, TouchableOpacity, Image, FlatList, ScrollView } from "react-native";
-import { MyTeamsPageProps } from "../../types/types";
-import styleGeneral from "../public/styles/StyleGeneral";
-import NavigationBar from "./navbar";
+import { MyTeamsPageProps } from "../../../types/types";
+import styleGeneral from "../../public/styles/StyleGeneral";
+import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import styleMyTeamsPage from "../public/styles/StyleMyTeamsPage";
+import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
 
 const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
     const email = route.params?.data;
@@ -14,13 +14,14 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
 
     useEffect(() => {
         loadTeams(email);
-    }, []);
+    }, [NavigationBar]);
 
     const getTeamData = async (id: string) => {
         try {
             const response = await axios.post(`http://10.0.2.2:3001/Member/findTeamById`, {
                 id
             });
+            console.log(response.data);
             return response.data.nameTeam; // Devuelve el nombre del equipo
         } catch (error) {
             console.log(error);
@@ -34,8 +35,6 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
             });
             setNameTeams(response.data.teamsName);
             setIdTeams(response.data.teamsId);
-
-            // Obtiene los nombres de los equipos y actualiza el estado
             const teamArray = await Promise.all(idTeams.map(item => getTeamData(item)));
             setTeam(teamArray);
         } catch (error) {
@@ -53,20 +52,20 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                     {idTeams.map((item, index) => (
                         <View style={styleMyTeamsPage.boxItem} key={index}>
                             <Text style={styleMyTeamsPage.textData}>{teams[index]}</Text>
-                            <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("Login")}>
+                            <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("DataTeamPage", { data: email, id: item })} >
                                 <Image
-                                    source={require('./../public/icons/angulo-circulo-derecha.png')}
+                                    source={require('../../public/icons/angulo-circulo-derecha.png')}
                                     style={styleMyTeamsPage.icon}
                                 />
                             </TouchableOpacity>
                         </View>
                     ))}
                 </ScrollView>
-            </View>
+            </View >
             <View style={styleGeneral.footer}>
                 <NavigationBar navigation={navigation} route={route} data={email} />
             </View>
-        </View>
+        </View >
     );
 }
 

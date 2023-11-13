@@ -1,15 +1,14 @@
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import styleNavbar from "../public/styles/StyleNavbar";
-import { navbarProps } from "../../types/types";
+import styleNavbar from "../../public/styles/StyleNavbar";
+import { navbarProps } from "../../../types/types";
 
-const NavigationBar: React.FC<navbarProps> = ({ navigation, route }) => {
-    const email = route.params?.data;
+const NavigationBar: React.FC<navbarProps> = ({ navigation }) => {
     return (
         <View style={styleNavbar.nav}>
             <View style={[styleNavbar.navItem, styleNavbar.firstNavItem]}>
-                <TouchableOpacity onPress={() => navigation.navigate("HomePage", { data: email })}>
+                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <Image
-                        source={require('./../public/icons/hogar.png')}
+                        source={require('../../public/icons/hogar.png')}
                         style={styleNavbar.navItemIcon}
                         resizeMode="contain"
                     />
@@ -17,9 +16,9 @@ const NavigationBar: React.FC<navbarProps> = ({ navigation, route }) => {
 
             </View>
             <View style={styleNavbar.navItem}>
-                <TouchableOpacity onPress={() => navigation.navigate("AddPage", { data: email })}>
+                <TouchableOpacity onPress={() => navigation.navigate("AddPage")}>
                     <Image
-                        source={require('./../public/icons/agregar.png')}
+                        source={require('../../public/icons/agregar.png')}
                         style={styleNavbar.navItemIcon}
                         resizeMode="contain"
                     />
@@ -27,9 +26,9 @@ const NavigationBar: React.FC<navbarProps> = ({ navigation, route }) => {
 
             </View>
             <View style={styleNavbar.navItem}>
-                <TouchableOpacity onPress={() => navigation.navigate("UserPage", { data: email })}>
+                <TouchableOpacity onPress={() => navigation.navigate("UserPage")}>
                     <Image
-                        source={require('./../public/icons/usuario.png')}
+                        source={require('../../public/icons/usuario.png')}
                         style={styleNavbar.navItemIcon}
                         resizeMode="contain"
                     />
@@ -38,7 +37,7 @@ const NavigationBar: React.FC<navbarProps> = ({ navigation, route }) => {
             <View style={styleNavbar.navItem}>
                 <TouchableOpacity onPress={() => navigation.navigate("Login")}>
                     <Image
-                        source={require('./../public/icons/salida.png')}
+                        source={require('../../public/icons/salida.png')}
                         style={styleNavbar.navItemIcon}
                         resizeMode="contain"
                     />

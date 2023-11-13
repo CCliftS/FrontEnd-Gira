@@ -1,20 +1,18 @@
-import { UserPageProps } from "../../types/types";
+import { UserPageProps } from "../../../types/types";
 import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent } from "react-native";
-import styleUserPage from "../public/styles/StyleUserPage";
-import NavigationBar from "./navbar";
+import styleUserPage from "../../public/styles/StyleUserPage";
+import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocalStorage } from "../../utils/localStorage";
 
-const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
-    const email = route.params?.data;
+const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
+    const email = useLocalStorage('email');
 
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
 
-    useEffect(() => {
-        // Esta es una mala practica , debo poner [] despues de la , : console.log("hola mundo");
-        dataUser()
-    },);
+    useEffect(() => { dataUser() }, []);
 
     const dataUser = async () => {
         try {
@@ -35,9 +33,9 @@ const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
                 <View style={styleUserPage.boxTextHeader}>
                     <Text style={styleUserPage.titleHeader}>Datos usuario</Text>
                 </View>
-                <TouchableOpacity style={styleUserPage.boxIconHeader} onPress={() => navigation.navigate("UserEdit", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxIconHeader} onPress={() => navigation.navigate("UserEdit")}>
                     <Image
-                        source={require('./../public/icons/editar.png')}
+                        source={require('../../public/icons/editar.png')}
                         style={styleUserPage.icon}
                         resizeMode="contain"
                     />
@@ -62,14 +60,14 @@ const UserPage: React.FC<UserPageProps> = ({ navigation, route }) => {
                         <Text style={styleUserPage.textSecundary}>{lastName}</Text>
                     </View>
                 </View>
-                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => navigation.navigate("HomePage", { data: email })}>
+                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => navigation.navigate("HomePage")}>
                     <Text style={styleUserPage.textBottom}>Eliminar Usuario</Text>
                 </TouchableOpacity>
             </View>
 
             {/*Contenedor de la Navbar*/}
             <View style={styleUserPage.footer}>
-                <NavigationBar navigation={navigation} route={route} data={email} />
+                <NavigationBar navigation={navigation} />
             </View>
         </View>
 

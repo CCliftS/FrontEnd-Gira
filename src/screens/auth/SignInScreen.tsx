@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
-import { SignInScreenProps } from '../../types/types';
+import { SignInScreenProps } from '../../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
-import styleGeneral from '../public/styles/StyleGeneral';
+import styleGeneral from '../../public/styles/StyleGeneral';
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -37,7 +37,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
       setErrorMessage(e?.response?.data?.message);
       twoOptionAlertHandler();
     }
-    finally{
+    finally {
       setIsButtonDisabled(false);
     }
   };
@@ -64,9 +64,9 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style= {styleGeneral.boxContainer}>
+      <View style={styleGeneral.boxContainer}>
         <Image
-          source={require('./../public/gira_logo.png')}
+          source={require('../../public/icons/gira_logo.png')}
           style={styles.logo}
         />
         <View style={styles.container2}>

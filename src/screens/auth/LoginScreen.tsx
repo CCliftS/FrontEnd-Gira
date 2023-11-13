@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import axios from 'axios';
-import { LoginScreenProps } from '../../types/types';
-import { ENDPOINT_MS_USER } from 'react-native-dotenv';
-import styleGeneral from '../public/styles/StyleGeneral';
-
+import { LoginScreenProps } from '../../../types/types';
+import styleGeneral from '../../public/styles/StyleGeneral';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
@@ -18,48 +17,29 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const handleLogin = async (email: string, password: string) => {
     setError(false);
     setIsButtonDisabled(true); // Deshabilita el botón al inicio
-  
+
     try {
       const response = await axios.post(`http://10.0.2.2:3000/auth/Login`, {
         email,
         password,
       });
-      //localStorage.setItem("token", response?.data?.access_token);
-      navigation.navigate("HomePage", { data: email });
+      await AsyncStorage.setItem('email', email);
+      navigation.navigate("HomePage");
     } catch (e: any) {
       setError(true);
       setErrorMessage(e?.response?.data?.message);
-      twoOptionAlertHandler();
     } finally {
       setIsButtonDisabled(false); // Habilita el botón después de que la operación esté completa
     }
   };
 
-  const twoOptionAlertHandler = () => {
-    //function to make two option alert
-    Alert.alert(
-      //title
-      'Alerta!',
-      //body
-      'No se ha podido ingresar',
-      [
-        { text: 'Reintentar', onPress: () => navigation.navigate('Login') },
-        {
-          text: 'Crear Cuenta',
-          onPress: () => navigation.navigate('SignIn'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false }
-      //clicking out side of alert will not cancel
-    );
-  };
+
 
   return (
     <View style={styles.container}>
       <View style={styleGeneral.boxContainer}>
         <Image
-          source={require('./../public/gira_logo.png')}
+          source={require('../../public/icons/gira_logo.png')}
           style={styles.logo}
         />
         <View style={styles.container2}>
@@ -77,10 +57,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
             secureTextEntry
             style={styles.input}
           />
-          <TouchableOpacity 
+          <TouchableOpacity
             disabled={isButtonDisabled}
-            onPress={() => handleLogin(email, password)} 
-            style={[styles.button]} 
+            onPress={() => handleLogin(email, password)}
+            style={[styles.button]}
           >
             <Text style={styles.buttonText}>Iniciar Sesión</Text>
           </TouchableOpacity>

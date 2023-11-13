@@ -1,12 +1,13 @@
 import { View, Text } from "react-native";
-import { DataTeamPageProps } from "../../types/types";
-import styleGeneral from "../public/styles/StyleGeneral";
-import NavigationBar from "./navbar";
-import styleDataTeamPage from "../public/styles/StyleDataTeam";
+import { DataTeamPageProps } from "../../../types/types";
+import styleGeneral from "../../public/styles/StyleGeneral";
+import NavigationBar from "../common/navbar";
+import styleDataTeamPage from "../../public/styles/StyleDataTeam";
+import { useState } from "react";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation, route }) => {
     const role: string = "administrador";
-    const email: string = "t@t.cl";
+    const [membersTeam, setMembersTeam] = useState([]);
 
 
     return (
@@ -45,7 +46,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation, route }) => {
             )}
 
             <View style={styleGeneral.footer}>
-                <NavigationBar navigation={navigation} route={route} data={email} />
+                <NavigationBar navigation={navigation} />
             </View>
         </View>
     )
