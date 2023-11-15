@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styleTeamPage = StyleSheet.create({
     boxDataItem: {
-        //marginTop: 15,
+        marginTop: 15,
         width: '90%',
         height: "30%",
         backgroundColor: '#44749d',

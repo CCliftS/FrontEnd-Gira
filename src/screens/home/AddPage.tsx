@@ -26,7 +26,7 @@ const AddPage: React.FC<AddPageProps> = ({ navigation }) => {
                 <View style={styleAddPage.boxAddProyect}>
                     <View style={styleAddPage.boxTextHeader}>
                         <Text style={styleAddPage.titleHeader}>Crear Proyecto</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("AddProject")}>
                             <Image
                                 source={require('../../public/icons/api.png')}
                                 style={styleAddPage.boxIconHeader}
@@ -47,9 +47,6 @@ const AddPage: React.FC<AddPageProps> = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                 </View>
-            </View>
-            <View style={styleAddPage.footer}>
-                <NavigationBar navigation={navigation} />
             </View>
         </View>
     );

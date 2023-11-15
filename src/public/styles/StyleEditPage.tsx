@@ -33,7 +33,7 @@ const styleEditPage = StyleSheet.create({
         justifyContent: 'center',
     },
     textPrimary: {
-        marginTop: 30,
+        marginTop: 15,
         fontSize: 55,
         color: 'white',
         fontWeight: 'bold',
@@ -50,8 +50,9 @@ const styleEditPage = StyleSheet.create({
         fontSize: 20,
         color: 'white',
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'justify',
         justifyContent: 'center',
+        padding: 15,
     },
     boxDataItem: {
         marginTop: 15,
@@ -126,5 +127,13 @@ const styleEditPage = StyleSheet.create({
         textAlign: 'center',
         justifyContent: 'center',
     },
+    textTertiary: {
+        fontSize: 30,
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        padding: 30,
+    },
+
 });
 export default styleEditPage;

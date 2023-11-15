@@ -5,16 +5,15 @@ import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
+import { useLocalStorage } from "../../utils/localStorage";
+import { useFocusEffect } from "@react-navigation/native";
 
-const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
-    const email = route.params?.data;
+const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
+    const email = useLocalStorage('email');
     const [nameTeams, setNameTeams] = useState([]);
     const [idTeams, setIdTeams] = useState([]);
-    const [teams, setTeam] = useState([]); // Estado para los nombres de los equipos
+    const [teams, setTeams] = useState([]); // Estado para los nombres de los equipos
 
-    useEffect(() => {
-        loadTeams(email);
-    }, [NavigationBar]);
 
     const getTeamData = async (id: string) => {
         try {
@@ -22,7 +21,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                 id
             });
             console.log(response.data);
-            return response.data.nameTeam; // Devuelve el nombre del equipo
+            setTeams(response.data.name); // Devuelve el nombre del equipo
         } catch (error) {
             console.log(error);
         }
@@ -35,12 +34,16 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
             });
             setNameTeams(response.data.teamsName);
             setIdTeams(response.data.teamsId);
-            const teamArray = await Promise.all(idTeams.map(item => getTeamData(item)));
-            setTeam(teamArray);
+            await Promise.all(idTeams.map(item => getTeamData(item)));
         } catch (error) {
             console.log(error);
         }
     }
+
+    useEffect(() => {
+        loadTeams(email);
+        console.log(teams);
+    }, []);
 
     return (
         <View style={styleGeneral.container}>
@@ -52,7 +55,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                     {idTeams.map((item, index) => (
                         <View style={styleMyTeamsPage.boxItem} key={index}>
                             <Text style={styleMyTeamsPage.textData}>{teams[index]}</Text>
-                            <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("DataTeamPage", { data: email, id: item })} >
+                            <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("DataTeamPage")} >
                                 <Image
                                     source={require('../../public/icons/angulo-circulo-derecha.png')}
                                     style={styleMyTeamsPage.icon}
@@ -63,7 +66,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation, route }) => {
                 </ScrollView>
             </View >
             <View style={styleGeneral.footer}>
-                <NavigationBar navigation={navigation} route={route} data={email} />
+                <NavigationBar navigation={navigation} />
             </View>
         </View >
     );

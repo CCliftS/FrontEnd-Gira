@@ -5,10 +5,12 @@ import styleTeamPage from '../../public/styles/StyleTeamPage';
 import NavigationBar from '../common/navbar';
 import styleGeneral from '../../public/styles/StyleGeneral';
 import axios from 'axios';
+import { useLocalStorage } from '../../utils/localStorage';
 
 
-const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
-  const email = route.params?.data;
+const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation }) => {
+  const email = useLocalStorage('email');
+
   const [nameTeam, setNameTeam] = useState('');
   const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {
     try {
@@ -18,7 +20,7 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
         idTeam,
         nameTeam
       })
-      navigation.navigate("AddPage", { data: email });
+      navigation.navigate("AddPage");
     } catch (error) {
       console.log(error, "No se creo el miembro");
     }
@@ -26,15 +28,16 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
   const handleCreateTeam = async (email: string, nameTeam: string) => {
     try {
       const response = await axios.post(`http://10.0.2.2:3001/Teams/createTeam`, {
-        nameTeam
+        nameTeam,
       })
 
       const idTeam = response.data?._id;
       const role: string = "administrador";
+      console.log(nameTeam, idTeam, role);
 
       hanleCreateFirtsMember(email, role, idTeam, nameTeam);
     } catch (error) {
-      console.log(error), "No se creo el equipo";
+      console.log(error, "No se creo el equipo");
     }
   }
 
@@ -56,12 +59,12 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation, route }) => {
         <TouchableOpacity style={styleTeamPage.boxBottom1} onPress={() => handleCreateTeam(email, nameTeam)}>
           <Text style={styleTeamPage.textBox1}>Crear equipo</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styleTeamPage.boxBottom2} onPress={() => navigation.navigate("AddPage", { data: email })}>
+        <TouchableOpacity style={styleTeamPage.boxBottom2} onPress={() => navigation.navigate("AddPage")}>
           <Text style={styleTeamPage.textBox1}>Eliminar ??</Text>
         </TouchableOpacity>
       </View>
       <View style={styleGeneral.footer}>
-        <NavigationBar navigation={navigation} route={route} data={email} />
+        <NavigationBar navigation={navigation} />
       </View>
     </View>
   )
