@@ -16,10 +16,12 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
     const hanleCreateProyect = async (nameProject: string, teamCode: string) => {
         try {
             const idOwner = await AsyncStorage.getItem('email');
+            setTeams([teamCode]);
+            console.log(nameProject, idOwner, teams, teamCode);
             const response = await axios.post(`http://10.0.2.2:3001/Project/createProject`, {
                 nameProject,
                 idOwner,
-                teams: [...teams, teamCode]
+                teams
             });
             navigation.navigate("AddPage");
         } catch (error) {
