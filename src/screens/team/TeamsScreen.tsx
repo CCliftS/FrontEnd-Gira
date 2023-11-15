@@ -5,11 +5,11 @@ import styleTeamPage from '../../public/styles/StyleTeamPage';
 import NavigationBar from '../common/navbar';
 import styleGeneral from '../../public/styles/StyleGeneral';
 import axios from 'axios';
-import { useLocalStorage } from '../../utils/localStorage';
+import { useAsyncStorage } from '../../utils/localStorage';
 
 
 const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation }) => {
-  const email = useLocalStorage('email');
+  const email = useAsyncStorage('email');
 
   const [nameTeam, setNameTeam] = useState('');
   const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {

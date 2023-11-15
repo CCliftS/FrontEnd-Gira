@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export function useLocalStorage(key: string) {
+export function useAsyncStorage(key: string) {
     const [data, setData] = useState('');
 
     useEffect(() => {

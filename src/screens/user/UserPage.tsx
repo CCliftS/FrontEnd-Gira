@@ -4,11 +4,11 @@ import styleUserPage from "../../public/styles/StyleUserPage";
 import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocalStorage } from "../../utils/localStorage";
+import { useAsyncStorage } from "../../utils/localStorage";
 import { useFocusEffect } from "@react-navigation/native";
 
 const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
-    const email = useLocalStorage('email');
+    const email = useAsyncStorage('email');
 
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');

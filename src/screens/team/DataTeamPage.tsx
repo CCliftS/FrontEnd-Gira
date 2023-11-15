@@ -1,24 +1,51 @@
-import { View, Text } from "react-native";
+import { View, Text, ScrollView } from "react-native";
 import { DataTeamPageProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import NavigationBar from "../common/navbar";
 import styleDataTeamPage from "../../public/styles/StyleDataTeam";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
-const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation, route }) => {
+const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const role: string = "administrador";
     const [membersTeam, setMembersTeam] = useState([]);
+    const [nameTeam, setNameTeam] = useState('');
 
+
+    const loadMembersTeam = async () => {
+        try {
+            const idTeam = await AsyncStorage.getItem('idTeam');
+            const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
+            console.log(response.data);
+            setMembersTeam(response.data.TeamsEmails);
+            setNameTeam(response.data.nameTeam);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        loadMembersTeam();
+    }, []);
 
     return (
         <View style={styleGeneral.container}>
             <View style={styleGeneral.boxHeader}>
-                <Text style={styleGeneral.titleHeader}>Equipo -nameTeam-</Text>
+                <Text style={styleGeneral.titleHeader}>Equipo {nameTeam}</Text>
             </View>
             <View style={styleDataTeamPage.boxMembers}>
                 <Text style={styleGeneral.titleHeader}>Miebros del equipo</Text>
                 <View style={styleDataTeamPage.boxDataMembers}>
-                    {/* Aqui se deben mostrtar los miembros del equipo*/}
+                    {/* Aqui se deben mostrtar los miembros del equip*/}
+                    <ScrollView>
+                        {membersTeam.map((item, index) => (
+                            <View key={index}>
+                                <Text style={styleGeneral.textSecundary}>{item}</Text>
+                            </View>
+                        ))}
+                    </ScrollView>
                 </View>
             </View>
 
@@ -49,7 +76,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation, route }) => {
                 <NavigationBar navigation={navigation} />
             </View>
         </View>
-    )
+    );
 
-};
-export default DataTeamPage;
+}
+export default DataTeamPage;  
