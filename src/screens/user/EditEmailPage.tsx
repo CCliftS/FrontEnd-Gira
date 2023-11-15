@@ -3,10 +3,10 @@ import { EditEmailPageProps } from "../../../types/types";
 import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
-import { useLocalStorage } from "../../utils/localStorage";
+import { useAsyncStorage } from "../../utils/localStorage";
 
 const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
-    const email = useLocalStorage('email');
+    const email = useAsyncStorage('email');
     const [newEmail, setNewEmail] = useState('');
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 

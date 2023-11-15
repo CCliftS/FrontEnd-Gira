@@ -3,10 +3,10 @@ import { EditPassPageProps } from "../../../types/types";
 import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
-import { useLocalStorage } from "../../utils/localStorage";
+import { useAsyncStorage } from "../../utils/localStorage";
 
 const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
-    const email = useLocalStorage('email');
+    const email = useAsyncStorage('email');
     const [password, setPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [repeatPassword, setRepeatPassword] = useState('');

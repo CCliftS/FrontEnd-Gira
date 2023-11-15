@@ -5,10 +5,28 @@ import styleTeamPage from "../../public/styles/StyleTeamPage";
 import { useState } from "react";
 import styleAddPage from "../../public/styles/StyleAddPage";
 import NavigationBar from "../common/navbar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
     const [nameProject, setNameProject] = useState('');
-    const [idTeam, setIdTeam] = useState('');
+    const [teams, setTeams] = useState<string[]>([]);
+    const [teamCode, setTeamCode] = useState('');
+
+    const hanleCreateProyect = async (nameProject: string, teamCode: string) => {
+        try {
+            const idOwner = await AsyncStorage.getItem('email');
+            const response = await axios.post(`http://10.0.2.2:3001/Project/createProject`, {
+                nameProject,
+                idOwner,
+                teams: [...teams, teamCode]
+            });
+            navigation.navigate("AddPage");
+        } catch (error) {
+            console.log(error, "No se creó el equipo");
+        }
+    }
+
     return (
         <View style={styleGeneral.container}>
             <View style={styleGeneral.boxHeader}>
@@ -24,14 +42,14 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
                     />
                 </View>
                 <View style={styleTeamPage.boxDataItem}>
-                    <Text style={styleTeamPage.textBox1}>ID del equipo</Text>
+                    <Text style={styleTeamPage.textBox1}>Código del equipo</Text>
                     <TextInput
                         style={[styleTeamPage.boxDataItem2, styleGeneral.textSecundary]}
-                        value={idTeam}
-                        onChangeText={(text: string) => setIdTeam(text)}
+                        value={teamCode}
+                        onChangeText={(text: string) => setTeamCode(text)}
                     />
                 </View>
-                <TouchableOpacity style={styleGeneral.boxBottom1}>
+                <TouchableOpacity style={styleGeneral.boxBottom1} onPress={() => hanleCreateProyect(nameProject, teamCode)}>
                     <Text style={styleGeneral.texBottom}>Crear proyecto</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styleGeneral.boxBottom2} onPress={() => navigation.navigate("Teams")}>
@@ -41,7 +59,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
             <View style={styleAddPage.footer}>
                 <NavigationBar navigation={navigation} />
             </View>
-        </View >
+        </View>
     );
 }
 export default CreateProject;

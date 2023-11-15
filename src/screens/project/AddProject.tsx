@@ -2,7 +2,6 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { AddProjectProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import styleEditPage from "../../public/styles/StyleEditPage";
-import NavigationBar from "../common/navbar";
 
 const AddProject: React.FC<AddProjectProps> = ({ navigation }) => {
     return (
