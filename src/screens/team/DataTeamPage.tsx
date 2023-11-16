@@ -1,4 +1,4 @@
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { DataTeamPageProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import NavigationBar from "../common/navbar";
@@ -6,6 +6,7 @@ import styleDataTeamPage from "../../public/styles/StyleDataTeam";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [role, setRole] = useState('');
@@ -27,8 +28,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     };
     const loadDataUser = async () => {
         try {
+            const idTeam = await AsyncStorage.getItem('idTeam');
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Member/findMemberByEmail/${email}`);
+            const response = await axios.get(`http://10.0.2.2:3001/Member/findMemberByEmail/${email}/${idTeam}`);
             setRole(response.data.role);
 
         } catch (error) {
@@ -53,7 +55,25 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                     <ScrollView>
                         {membersTeam.map((item, index) => (
                             <View key={index}>
-                                <Text style={styleGeneral.textSecundary}>{item}</Text>
+
+                                {role === "administrador" ? (
+                                    <View style={styleGeneral.boxItemList}  >
+                                        <Text style={styleGeneral.textSecundary}>{item}</Text>
+                                        <TouchableOpacity
+                                            style={styleGeneral.icon}
+                                        >
+                                            <Image
+                                                source={require('../../public/icons/circulo-cruzado.png')}
+                                                style={styleMyTeamsPage.icon}
+
+                                            />
+                                        </TouchableOpacity>
+                                    </View>
+                                ) : (
+                                    <View>
+                                        <Text style={styleGeneral.textSecundary}>{item}</Text>
+                                    </View>
+                                )}
                             </View>
                         ))}
                     </ScrollView>
@@ -69,6 +89,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                     <View style={styleDataTeamPage.boxBottom}>
                         <Text style={styleGeneral.textSecundary} onPress={() => navigation.navigate("EditTeam")}>Editar equipo</Text>
                     </View>
+                    <View style={styleDataTeamPage.boxBottom}>
+                        <Text style={styleGeneral.textSecundary}>Ver Tareas</Text>
+                    </View>
                 </View>
             ) : (
                 <View style={styleDataTeamPage.containerBottom}>
@@ -79,8 +102,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                         <Text style={styleGeneral.textSecundary}>Salir del equipo</Text>
                     </View>
                     <View style={styleDataTeamPage.boxBottom}>
-                        <Text style={styleGeneral.textSecundary}>Volver</Text>
+                        <Text style={styleGeneral.textSecundary}>Ver Tareas</Text>
                     </View>
+
                 </View>
             )}
 

@@ -33,7 +33,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
             <View style={styleGeneral.boxHeader}>
                 <Text style={styleGeneral.titleHeader}>Creación de proyecto</Text>
             </View>
-            <View style={styleGeneral.boxContainer}>
+            <View style={styleGeneral.boxData}>
                 <View style={styleTeamPage.boxDataItem}>
                     <Text style={styleTeamPage.textBox1}>Nombre del proyecto</Text>
                     <TextInput

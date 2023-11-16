@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const styleDataTeamPage = StyleSheet.create({
     boxMembers: {
-        marginTop: 25,
+        marginTop: 10,
         marginHorizontal: 20,
         width: '90%',
         height: '50%',
@@ -17,7 +17,7 @@ const styleDataTeamPage = StyleSheet.create({
         padding: 10,
     },
     boxDataMembers: {
-        marginTop: 10,
+        marginTop: 5,
         //marginHorizontal: 20,
         width: '90%',
         height: '80%',
@@ -42,7 +42,7 @@ const styleDataTeamPage = StyleSheet.create({
         margin: 5,
     },
     containerBottom: {
-        //marginTop: 5,
+        marginTop: 15,
         width: '100%',
         height: '20%',
         //backgroundColor: '#44749d',
