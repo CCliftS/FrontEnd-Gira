@@ -16,14 +16,13 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
     const hanleCreateProyect = async (nameProject: string, teamCode: string) => {
         try {
             const idOwner = await AsyncStorage.getItem('email');
-            setTeams([teamCode]);
-            console.log(nameProject, idOwner, teams, teamCode);
+            setTeams([...teams, teamCode]);
             const response = await axios.post(`http://10.0.2.2:3001/Project/createProject`, {
                 nameProject,
                 idOwner,
-                teams
+                teams: [...teams, teamCode]
             });
-            navigation.navigate("AddPage");
+            navigation.navigate("HomePage");
         } catch (error) {
             console.log(error, "No se creó el equipo");
         }
@@ -51,7 +50,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
                         onChangeText={(text: string) => setTeamCode(text)}
                     />
                 </View>
-                <TouchableOpacity style={styleGeneral.boxBottom1} onPress={() => hanleCreateProyect(nameProject, teamCode)}>
+                <TouchableOpacity style={styleGeneral.boxBottom1} onPress={() => { setTeams([teamCode]), hanleCreateProyect(nameProject, teamCode) }}>
                     <Text style={styleGeneral.texBottom}>Crear proyecto</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styleGeneral.boxBottom2} onPress={() => navigation.navigate("Teams")}>

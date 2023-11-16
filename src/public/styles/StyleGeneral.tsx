@@ -123,5 +123,11 @@ const styleGeneral = StyleSheet.create({
         borderBottomRightRadius: 10,
         justifyContent: 'center',
     },
+    textBody: {
+        fontSize: 40,
+        color: '#44749d',
+        fontWeight: 'bold',
+        padding: 10,
+    },
 });
 export default styleGeneral;

@@ -41,7 +41,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                             <Text style={styleMyTeamsPage.textData}>{nameTeams[index]}</Text>
                             <TouchableOpacity
                                 style={styleGeneral.icon}
-                                onPress={() => { navigation.navigate("DataTeamPage"), AsyncStorage.setItem('idTeam', item) }}
+                                onPress={() => { navigation.navigate("DataTeamPage"), AsyncStorage.setItem('idTeam', item), AsyncStorage.setItem('nameTeam', nameTeams[index]) }}
                             >
                                 <Image
                                     source={require('../../public/icons/angulo-circulo-derecha.png')}

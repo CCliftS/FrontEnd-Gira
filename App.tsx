@@ -18,6 +18,8 @@ import MyTeamsPage from './src/screens/team/MyTeamsPage';
 import DataTeamPage from './src/screens/team/DataTeamPage';
 import AddProject from './src/screens/project/AddProject';
 import CreateProject from './src/screens/project/CreateProject';
+import AddMemberTeam from './src/screens/team/AddMemeberTeam';
+import EditTeam from './src/screens/team/EditTaeam';
 
 
 
@@ -53,6 +55,9 @@ export default function App() {
         <RootStack.Screen name='UserEdit' component={UserEdit} />
         <RootStack.Screen name='AddProject' component={AddProject} />
         <RootStack.Screen name='CreateProject' component={CreateProject} />
+        <RootStack.Screen name='AddMemberTeam' component={AddMemberTeam} />
+        <RootStack.Screen name='EditTeam' component={EditTeam} />
+
       </RootStack.Navigator>
     </NavigationContainer>
   );

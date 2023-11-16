@@ -19,6 +19,8 @@ export type RootStackParamList = {
   DataTeamPage: undefined;
   AddProject: undefined;
   CreateProject: undefined;
+  AddMemberTeam: undefined;
+  EditTeam: undefined;
 
   // Otras rutas de tu aplicación
 };
@@ -38,5 +40,7 @@ export type MyTeamsPageProps = NativeStackScreenProps<RootStackParamList, 'MyTea
 export type DataTeamPageProps = NativeStackScreenProps<RootStackParamList, 'DataTeamPage'>;
 export type AddProjectProps = NativeStackScreenProps<RootStackParamList, 'AddProject'>;
 export type CreateProjectProps = NativeStackScreenProps<RootStackParamList, 'CreateProject'>;
+export type AddMemberTeamProps = NativeStackScreenProps<RootStackParamList, 'AddMemberTeam'>;
+export type EditTeamProps = NativeStackScreenProps<RootStackParamList, 'EditTeam'>;
 
 // Definir tipos para otras pantallas según sea necesario

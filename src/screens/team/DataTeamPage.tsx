@@ -8,7 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
-    const role: string = "administrador";
+    const [role, setRole] = useState('');
     const [membersTeam, setMembersTeam] = useState([]);
     const [nameTeam, setNameTeam] = useState('');
 
@@ -17,17 +17,28 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
             const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
-            console.log(response.data);
             setMembersTeam(response.data.TeamsEmails);
-            setNameTeam(response.data.nameTeam);
+            setNameTeam(response.data.nameTeam.slice(0, 1));
+
 
         } catch (error) {
             console.log(error);
         }
     };
+    const loadDataUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.get(`http://10.0.2.2:3001/Member/findMemberByEmail/${email}`);
+            setRole(response.data.role);
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     useEffect(() => {
         loadMembersTeam();
+        loadDataUser();
     }, []);
 
     return (
@@ -52,17 +63,18 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             {role === "administrador" ? (
                 <View style={styleDataTeamPage.containerBottom}>
                     <View style={styleDataTeamPage.boxBottom}>
-                        <Text style={styleGeneral.textSecundary}>Agregar Miembro</Text>
+                        <Text style={styleGeneral.textSecundary} onPress={() => navigation.navigate("AddMemberTeam")}>Agregar Miembro</Text>
                     </View>
+
                     <View style={styleDataTeamPage.boxBottom}>
-                        <Text style={styleGeneral.textSecundary}>Editar Roles</Text>
-                    </View>
-                    <View style={styleDataTeamPage.boxBottom}>
-                        <Text style={styleGeneral.textSecundary}>Editar equipo</Text>
+                        <Text style={styleGeneral.textSecundary} onPress={() => navigation.navigate("EditTeam")}>Editar equipo</Text>
                     </View>
                 </View>
             ) : (
                 <View style={styleDataTeamPage.containerBottom}>
+                    <Text style={styleGeneral.textBody}>
+                        Rol : {role}
+                    </Text>
                     <View style={styleDataTeamPage.boxBottom}>
                         <Text style={styleGeneral.textSecundary}>Salir del equipo</Text>
                     </View>
