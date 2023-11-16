@@ -19,7 +19,9 @@ import DataTeamPage from './src/screens/team/DataTeamPage';
 import AddProject from './src/screens/project/AddProject';
 import CreateProject from './src/screens/project/CreateProject';
 import AddMemberTeam from './src/screens/team/AddMemeberTeam';
-import EditTeam from './src/screens/team/EditTaeam';
+import EditTeam from './src/screens/team/EditTeam';
+import ProjectUser from './src/screens/project/ProjectUser';
+import DataProject from './src/screens/project/DataProject';
 
 
 
@@ -57,6 +59,8 @@ export default function App() {
         <RootStack.Screen name='CreateProject' component={CreateProject} />
         <RootStack.Screen name='AddMemberTeam' component={AddMemberTeam} />
         <RootStack.Screen name='EditTeam' component={EditTeam} />
+        <RootStack.Screen name='ProjectUser' component={ProjectUser} />
+        <RootStack.Screen name='DataProject' component={DataProject} />
 
       </RootStack.Navigator>
     </NavigationContainer>

@@ -24,7 +24,7 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => (
             </View>
             <Text style={styleGeneral.textSecundary}>MIS PROYECTOS</Text>
             <View style={styleHomePage.boxProyect}>
-                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProjectUser")}>
                     <Image
                         source={require('../../public/icons/proyecto-de-diagrama.png')}
                         resizeMode="contain"

@@ -102,7 +102,7 @@ const styleGeneral = StyleSheet.create({
         alignItems: 'center'
     },
     boxBottom1: {
-        marginVertical: 15,
+        padding: 10,
         width: '90%',
         height: "10%",
         backgroundColor: '#f22b56',

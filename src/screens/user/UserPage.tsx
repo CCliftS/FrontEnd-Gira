@@ -37,7 +37,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                 </View>
                 <TouchableOpacity style={styleUserPage.boxIconHeader} onPress={() => navigation.navigate("UserEdit")}>
                     <Image
-                        source={require('../../public/icons/editar.png')}
+                        source={require('../../public/icons/cuadrado-de-la-pluma.png')}
                         style={styleUserPage.icon}
                         resizeMode="contain"
                     />
