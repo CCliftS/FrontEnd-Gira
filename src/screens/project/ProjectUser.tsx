@@ -62,7 +62,7 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                                         <Text style={styleGeneral.textSecundary}>{nameProjects[index]}</Text>
                                         <TouchableOpacity
                                             style={styleGeneral.icon}
-                                            onPress={() => { navigation.navigate("DataProject"), AsyncStorage.setItem('idProject', item), AsyncStorage.setItem('nameProject', nameProjects[index]) }}
+                                            onPress={() => { navigation.navigate("DataProject"), AsyncStorage.setItem('idProject', idProjects[index]), console.log(idProjects[index]) }}
                                         >
                                             <Image
                                                 source={require('../../public/icons/angulo-circulo-derecha.png')}

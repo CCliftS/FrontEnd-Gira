@@ -23,13 +23,12 @@ const styleProjectUser = StyleSheet.create({
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
         width: '90%',
-        height: '73%',
+        height: '60%',
         backgroundColor: '#44749d',
         marginHorizontal: 20,
         flexDirection: 'column',
-        justifyContent: 'center',
         paddingVertical: 4,
-        alignItems: 'center'
+
     },
     textTitle: {
         marginTop: 10,
@@ -41,13 +40,13 @@ const styleProjectUser = StyleSheet.create({
         marginHorizontal: 10,
     },
     textTitle2: {
-        marginTop: 10,
+        //marginTop: 10,
         fontSize: 30,
-        color: '#44749d',
+        color: '#ebe8e8',
         fontWeight: 'bold',
         textAlign: 'center',
         justifyContent: 'center',
-        marginHorizontal: 10,
+        //marginHorizontal: 10,
     },
     boxList: {
         marginTop: 20,
