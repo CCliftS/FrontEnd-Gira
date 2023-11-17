@@ -3,24 +3,34 @@ import { DataTeamPageProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import NavigationBar from "../common/navbar";
 import styleDataTeamPage from "../../public/styles/StyleDataTeam";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
+import { useFocusEffect } from "@react-navigation/native";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [role, setRole] = useState('');
     const [membersTeam, setMembersTeam] = useState([]);
     const [nameTeam, setNameTeam] = useState('');
+    const [membersTeamId, setMembersTeamId] = useState([]);
 
-
+    const handleDeleteMember = async (id: string) => {
+        try {
+            const idTeam = await AsyncStorage.getItem('idTeam');
+            const response = await axios.delete(`http://10.0.2.2:3001/Member/removeMember/${id}/${idTeam}`);
+            navigation.navigate("DataTeamPage");
+        } catch (error) {
+            console.log(error);
+        }
+    }
     const loadMembersTeam = async () => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
             const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
             setMembersTeam(response.data.TeamsEmails);
+            setMembersTeamId(response.data.nameId);
             setNameTeam(response.data.nameTeam.slice(0, 1));
-
 
         } catch (error) {
             console.log(error);
@@ -37,11 +47,12 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             console.log(error);
         }
     }
-
-    useEffect(() => {
-        loadMembersTeam();
-        loadDataUser();
-    }, []);
+    useFocusEffect(
+        useCallback(() => {
+            loadMembersTeam();
+            loadDataUser();
+        }, [])
+    );
 
     return (
         <View style={styleGeneral.container}>
@@ -65,6 +76,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                                             <Image
                                                 source={require('../../public/icons/circulo-cruzado.png')}
                                                 style={styleMyTeamsPage.icon}
+                                                onProgress={() => handleDeleteMember(membersTeamId[index])}
 
                                             />
                                         </TouchableOpacity>

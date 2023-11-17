@@ -23,6 +23,7 @@ import EditTeam from './src/screens/team/EditTeam';
 import ProjectUser from './src/screens/project/ProjectUser';
 import DataProject from './src/screens/project/DataProject';
 import EditProject from './src/screens/project/EditProject';
+import AddTeamProject from './src/screens/project/AddTeamProject';
 
 
 
@@ -62,6 +63,7 @@ export default function App() {
         <RootStack.Screen name='ProjectUser' component={ProjectUser} />
         <RootStack.Screen name='DataProject' component={DataProject} />
         <RootStack.Screen name='EditProject' component={EditProject} />
+        <RootStack.Screen name='AddTeamProject' component={AddTeamProject} />
 
       </RootStack.Navigator>
     </NavigationContainer>
