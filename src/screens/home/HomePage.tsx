@@ -1,10 +1,56 @@
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { HomePageScreenProps } from "../../../types/types";
 import styleHomePage from "../../public/styles/StyleHomePage";
 import NavigationBar from "../common/navbar";
 import styleGeneral from "../../public/styles/StyleGeneral";
+import styleBox from "../../public/styles/styleBox";
+import styleText from "../../public/styles/styleText";
+import { Ionicons } from '@expo/vector-icons';
 
-const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => (
+const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
+    return (
+        <View style={styleBox.container}>
+            <ScrollView>
+                <View style={styleBox.header} >
+                    <View>
+                        <Text style={styleText.header}>Bienvenido</Text>
+                        <Text style={styleText.secundaryHeader}>Camilo Clift</Text>
+                    </View>
+                    <View style={styleBox.iconHeader}>
+                        <Ionicons name="notifications" size={30} color="#0c04b6" />
+                    </View>
+                </View>
+                <View style={styleBox.dataContainer}>
+                    <Text>
+                        Mis Equipos
+                    </Text>
+                </View>
+                <View style={styleBox.dataContainer}>
+                    <Text>
+                        Mis Equipos
+                    </Text>
+                </View>
+                <View style={styleBox.dataContainer}>
+                    <Text>
+                        Mis Equipos
+                    </Text>
+                </View>
+
+            </ScrollView>
+            <View style={styleGeneral.footer}>
+                <NavigationBar navigation={navigation} />
+            </View>
+        </View>
+
+    );
+}
+
+
+export default HomePage;
+
+/*
     <View style={styleGeneral.container}>
         <View style={styleHomePage.boxHeader}>
             <Text style={styleHomePage.titleHeader}>Bienvenido 👋</Text>
@@ -46,6 +92,4 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => (
             <NavigationBar navigation={navigation} />
         </View>
     </View>
-);
-
-export default HomePage;
+    */
