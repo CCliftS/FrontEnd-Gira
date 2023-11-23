@@ -23,7 +23,7 @@ const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
                 idTeam,
                 nameTeam
             });
-            navigation.navigate("MyTeamsPage");
+            navigation.navigate("DataTeamPage");
         } catch (error) {
             console.log(error, "No se agrego al equipo  ");
         }

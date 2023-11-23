@@ -14,6 +14,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [membersTeam, setMembersTeam] = useState([]);
     const [nameTeam, setNameTeam] = useState('');
     const [membersTeamId, setMembersTeamId] = useState([]);
+    const [idTeam, setIdTeam] = useState('');
 
     const handleDeleteMember = async (id: string) => {
         try {
@@ -31,6 +32,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             setMembersTeam(response.data.TeamsEmails);
             setMembersTeamId(response.data.nameId);
             setNameTeam(response.data.nameTeam.slice(0, 1));
+            setIdTeam(idTeam ?? '');
 
         } catch (error) {
             console.log(error);
@@ -47,17 +49,21 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             console.log(error);
         }
     }
-    useFocusEffect(
-        useCallback(() => {
-            loadMembersTeam();
-            loadDataUser();
-        }, [])
-    );
+    //este carga el primer componente
+    useEffect(() => {
+        loadMembersTeam();
+        loadDataUser();
+    }, []);
+    //este se actualiza al cambiar el estado de membersTeam
+    useEffect(() => {
+        loadMembersTeam();
+    }, [membersTeam]);
 
     return (
         <View style={styleGeneral.container}>
             <View style={styleGeneral.boxHeader}>
                 <Text style={styleGeneral.titleHeader}>Equipo {nameTeam}</Text>
+                <Text style={styleGeneral.titleSecundary}>ID equipo: {idTeam}</Text>
             </View>
             <View style={styleDataTeamPage.boxMembers}>
                 <Text style={styleGeneral.titleHeader}>Miebros del equipo</Text>
@@ -72,12 +78,11 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                                         <Text style={styleGeneral.textSecundary}>{item}</Text>
                                         <TouchableOpacity
                                             style={styleGeneral.icon}
+                                            onPress={() => handleDeleteMember(membersTeamId[index])}
                                         >
                                             <Image
                                                 source={require('../../public/icons/circulo-cruzado.png')}
                                                 style={styleMyTeamsPage.icon}
-                                                onProgress={() => handleDeleteMember(membersTeamId[index])}
-
                                             />
                                         </TouchableOpacity>
                                     </View>

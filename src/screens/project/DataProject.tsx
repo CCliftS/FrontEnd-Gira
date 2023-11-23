@@ -38,11 +38,20 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
         }
 
     }
+    useEffect(() => {
+        loadDataProject();
+    }, []);
+    useEffect(() => {
+        loadDataProject();
+    }, [teamProjects]);
+
+    /*
     useFocusEffect(
         useCallback(() => {
             loadDataProject();
         }, [teamProjects])
     );
+    */
 
     return (
         <View style={styleGeneral.container}>

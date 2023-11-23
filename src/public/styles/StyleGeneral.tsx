@@ -16,7 +16,7 @@ const styleGeneral = StyleSheet.create({
         height: '10%',
         backgroundColor: '#44749d',
         alignItems: 'center',
-        flexDirection: 'row',
+        //flexDirection: 'row',
         justifyContent: 'center',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
@@ -25,6 +25,11 @@ const styleGeneral = StyleSheet.create({
     },
     titleHeader: {
         fontSize: 30,
+        color: 'white',
+        fontWeight: 'bold',
+    },
+    titleSecundary: {
+        fontSize: 12,
         color: 'white',
         fontWeight: 'bold',
     },

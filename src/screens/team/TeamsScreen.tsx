@@ -20,7 +20,7 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation }) => {
         idTeam,
         nameTeam
       })
-      navigation.navigate("AddPage");
+      navigation.navigate("MyTeamsPage");
     } catch (error) {
       console.log(error, "No se creo el miembro");
     }
@@ -59,8 +59,8 @@ const TeamsScreen: React.FC<TeamsScreenProps> = ({ navigation }) => {
         <TouchableOpacity style={styleTeamPage.boxBottom1} onPress={() => handleCreateTeam(email, nameTeam)}>
           <Text style={styleTeamPage.textBox1}>Crear equipo</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styleTeamPage.boxBottom2} onPress={() => navigation.navigate("AddPage")}>
-          <Text style={styleTeamPage.textBox1}>Eliminar ??</Text>
+        <TouchableOpacity style={styleTeamPage.boxBottom2} onPress={() => navigation.navigate("HomePage")}>
+          <Text style={styleTeamPage.textBox1}>Volver</Text>
         </TouchableOpacity>
       </View>
       <View style={styleGeneral.footer}>
