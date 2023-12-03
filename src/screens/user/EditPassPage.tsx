@@ -4,6 +4,9 @@ import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
+import { Ionicons } from "@expo/vector-icons";
+import styleBox from "../../public/styles/styleBox";
+import styleText from "../../public/styles/styleText";
 
 const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
     const email = useAsyncStorage('email');
@@ -29,6 +32,50 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
             setIsButtonDisabled(false);
         }
     }
+    
+    return(
+        <View style={styleBox.container}>
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("UserPage")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />
+                </TouchableOpacity>
+            </View>
+            <View style={styleBox.headerEdit}>
+                <Text style={styleText.headerBlack}>Actualiza tu correo</Text>
+                <Text style={styleText.infoEdit}>No te preocupes, tus datos personales no son expuestos a otras personas. Ademas puedes cambiarlo cuando desees</Text>
+            </View>
+            <View style={styleBox.contentPage}>
+                <Text style={styleText.titleOne}>Contraseña Antigua</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={password}
+                    onChangeText={(text: string) => setPassword(text)}
+                    secureTextEntry
+                />
+                <View style={{ marginTop: 20 }}></View>
+                <Text style={styleText.titleOne}>Ingrese su nueva contraseña</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={newPassword}
+                    onChangeText={(text: string) => setNewPassword(text)}
+                    secureTextEntry
+                />
+                <Text style={styleText.titleOne}>Confirme su nueva contraseña</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={repeatPassword}
+                    onChangeText={(text: string) => setRepeatPassword(text)}
+                    secureTextEntry
+                />
+                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => handlerChangePassword(email, password, newPassword, repeatPassword)}>
+                    <Text style={styleText.confirmEdit}>Actualizar datos</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+export default EditEmailPage;
+    /*
     return (
         <View style={styleEditPage.container}>
             <View style={styleEditPage.boxData}>
@@ -72,6 +119,4 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
                 </TouchableOpacity>
             </View>
         </View>
-    )
-}
-export default EditEmailPage;
+    )*/

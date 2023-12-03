@@ -7,10 +7,14 @@ import { useState } from "react";
 import styleEditPage from "../../public/styles/StyleEditPage";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+import styleBox from "../../public/styles/styleBox";
+import styleText from "../../public/styles/styleText";
 
 const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
     const [newName, setNewName] = useState('');
-    const hanleChangeProject = async (newName: string) => {
+    
+    const hanleChangeTeamName = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idTeam');
             const response = await axios.post(`http://10.0.2.2:3001/Teams/updateName`, {
@@ -23,6 +27,38 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
         };
     }
 
+    return(
+        <View style={styleBox.container}>
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("DataTeamPage")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />
+                </TouchableOpacity>
+            </View>
+            <View style={styleBox.headerEdit}>
+                <Text style={styleText.headerBlack}>Editar equipo</Text>
+                <Text style={styleText.infoEdit}>Aca puedes cambiar el nombre de tu equipo. Ademas de crear roles y eliminar el equipo</Text>
+            </View>
+            <View style={styleBox.contentPage}>
+                <Text style={styleText.titleOne}>Nombre del equipo</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={newName}
+                    onChangeText={(text: string) => setNewName(text)}
+                />
+                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => hanleChangeTeamName(newName)}>
+                    <Text style={styleText.confirmEdit}>Confirmar cambios</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styleBox.botonDelete}>
+                    <Text style={styleText.confirmEdit}>Eliminar equipo</Text>
+                </TouchableOpacity>
+
+            </View>
+        </View>
+    );
+}
+export default EditTeam;
+    /*
     return (
         <View style={styleEditPage.container}>
             <View style={styleEditPage.boxData}>
@@ -52,6 +88,5 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
             </View>
 
         </View >
-    );
-}
-export default EditTeam;
+    );*/
+
