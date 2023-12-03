@@ -1,11 +1,14 @@
 import { UserPageProps } from "../../../types/types";
-import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent } from "react-native";
+import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent, ScrollView, TouchableOpacityBase, TouchableHighlight } from "react-native";
 import styleUserPage from "../../public/styles/StyleUserPage";
 import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
 import { useFocusEffect } from "@react-navigation/native";
+import styleBox from "../../public/styles/styleBox";
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import styleText from "../../public/styles/styleText";
 
 const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
     const email = useAsyncStorage('email');
@@ -28,9 +31,62 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
     useFocusEffect(() => {
         dataUser();
     });
-    return (
 
-        <View style={styleUserPage.container}>
+    return (
+        <View style={styleBox.containerPage}>
+
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />
+                </TouchableOpacity>
+                <Text style={styleText.header}>Perfil Usuario</Text>
+            </View>
+            <View style={styleBox.contentPage}>
+                <View style={styleBox.dataTitle}>
+                    <Text style={styleText.titleOne}>Nombre y Apellido</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("UserEdit")}>
+                        <MaterialIcons name="edit" size={30} color="black" />
+                    </TouchableOpacity>
+
+                </View>
+                <View style={styleBox.dataInfo}>
+                    <Text style={styleText.info}>{name}</Text>
+                </View>
+                <View style={styleBox.dataInfo}>
+                    <Text style={styleText.info}>{lastName}</Text>
+                </View>
+                <View style={{ marginTop: 20 }}></View>
+                <View style={styleBox.dataTitle}>
+                    <Text style={styleText.titleOne}>Correo Electronico</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate("EditEmailPage")}>
+                        <MaterialIcons name="edit" size={30} color="black" />
+                    </TouchableOpacity>
+
+                </View>
+                <View style={styleBox.dataInfo}>
+                    <Text style={styleText.info}>{email}</Text>
+                </View>
+                <TouchableOpacity onPress={() => navigation.navigate("EditPassPage")}>
+                    <View style={styleBox.botonEdit}>
+                        <Text style={styleText.titleOne}>Editar Contraseña</Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
+                    <View style={styleBox.botonDelete}>
+                        <Text style={styleText.titleOne}>Eliminar Cuenta</Text>
+                    </View>
+                </TouchableOpacity>
+
+
+            </View>
+
+        </View>
+    );
+}
+export default UserPage;
+
+{/*
+    <View style={styleUserPage.container}>
             <View style={styleUserPage.boxHeader}>
                 <View style={styleUserPage.boxTextHeader}>
                     <Text style={styleUserPage.titleHeader}>Datos usuario</Text>
@@ -67,12 +123,5 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
 
-            {/*Contenedor de la Navbar*/}
-            <View style={styleUserPage.footer}>
-                <NavigationBar navigation={navigation} />
-            </View>
         </View>
-
-    );
-}
-export default UserPage;
+*/}

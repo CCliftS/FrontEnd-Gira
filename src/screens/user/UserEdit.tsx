@@ -1,10 +1,11 @@
 import { UserPageProps } from "../../../types/types";
 import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from "react-native";
-import styleUserPage from "../../public/styles/StyleUserPage";
-import NavigationBar from "../common/navbar";
 import { useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
+import styleBox from "../../public/styles/styleBox";
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import styleText from "../../public/styles/styleText";
 
 
 const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
@@ -29,7 +30,42 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
         }
     }
     return (
-        <View style={styleUserPage.container}>
+        <View style={styleBox.container}>
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("UserPage")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />
+                </TouchableOpacity>
+            </View>
+            <View style={styleBox.headerEdit}>
+                <Text style={styleText.headerBlack}>Actualiza tu perfil</Text>
+                <Text style={styleText.infoEdit}>No te preocupes, tus datos personales no son expuestos a otras personas. Ademas puedes cambiarlo cuando desees</Text>
+            </View>
+            <View style={styleBox.contentPage}>
+                <Text style={styleText.titleOne}>Nombre</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={name}
+                    onChangeText={(text: string) => setName(text)}
+                />
+                <View style={{ marginTop: 20 }}></View>
+                <Text style={styleText.titleOne}>Apellido</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={lastName}
+                    onChangeText={(text: string) => setLastname(text)}
+                />
+                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => handleChangeDates(email, name, lastName)}>
+                    <Text style={styleText.confirmEdit}>Actualizar datos</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+    );
+}
+export default UserEdit;
+
+{/**
+
+<View style={styleUserPage.container}>
             <View style={styleUserPage.boxHeader}>
                 <View style={styleUserPage.boxTextHeader}>
                     <Text style={styleUserPage.titleHeader}>Edición de datos</Text>
@@ -66,10 +102,6 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
                     <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
                 </TouchableOpacity>
             </View>
-            <View style={styleUserPage.footer}>
-                <NavigationBar navigation={navigation} />
-            </View>
         </View>
-    );
-}
-export default UserEdit;
+
+*/}

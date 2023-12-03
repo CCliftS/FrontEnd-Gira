@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { HomePageScreenProps } from "../../../types/types";
 import styleHomePage from "../../public/styles/StyleHomePage";
@@ -7,42 +7,154 @@ import NavigationBar from "../common/navbar";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, AntDesign } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
+    {/* Datos del usuario */ }
+    const [userName, setUserName] = useState('');
+    const [userLastName, setUserLastName] = useState('');
+
+    const fetchDataUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.get(`http://10.0.2.2:3000/user/getUser/${email}`);
+
+            setUserName(response.data.name);
+            setUserLastName(response.data.lastName);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    {/* Proyectos del usuario Owner */ }
+    const [nameProject, setNameProject] = useState([]);
+    const [idProject, setIdProject] = useState([]);
+
+    const fetchOwnerProjectsUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.get(`http://10.0.2.2:3001/Project/findProjectOwner/${email}`);
+
+            setNameProject(response.data.nameProjects);
+            setIdProject(response.data.idProjects);
+
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    {/* Equipos del usuario */ }
+    const [nameTeam, setNameTeam] = useState([]);
+    const [idTeam, setIdTeam] = useState([]);
+
+    const fechtTeamUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.post(`http://10.0.2.2:3001/Member/memberData`, {
+                email
+            });
+            setNameTeam(response.data.teamsName);
+            setIdTeam(response.data.teamsId);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchDataUser();
+        fetchOwnerProjectsUser();
+        fechtTeamUser();
+    }, []);
+
     return (
         <View style={styleBox.container}>
             <ScrollView>
-                <View style={styleBox.header} >
+                <View style={{ marginTop: 25 }}>
+                    <View style={styleBox.header} >
+                        <View>
+                            <Text style={styleText.header}>Bienvenido</Text>
+                            <Text style={styleText.secundaryHeader}>{userName} {userLastName}</Text>
+                        </View>
+                        <View style={styleBox.iconHeader}>
+                            <Ionicons name="notifications" size={30} color="#0c04b6" />
+                        </View>
+                    </View>
+                </View>
+                {/* Contenedor de Mis Proyectos */}
+
+                <View style={styleBox.dataContainer}>
+                    {/* Titulo del contenedor */}
+                    <View style={styleBox.dataTitle}>
+                        <Text style={styleText.titleOne}>Mis Proyectos</Text>
+                        <Text style={styleText.titleTwo}>Ver Todos</Text>
+                    </View>
+                    {/* Componentes del contenedor */}
+                    <ScrollView horizontal>
+                        {idProject.slice(0, 3).map((item, index) => (
+                            <View key={index}>
+                                <View style={styleBox.dataBox}>
+                                    {/* Titulo e icono*/}
+                                    <Text style={{ fontSize: 25, fontWeight: '800', textAlign: 'center' }}>{nameProject[index]}</Text>
+                                    <View style={styleBox.line}></View>
+                                    <Text>Aqui va una pequeña descrición del proyecto, la funciona que cumple y el objetivo que tiene en la empresa, cuales son sus aspraciones, no mas de 150 caracteres.</Text>
+                                    <View style={styleBox.codeBoton}>
+                                        <Text>codigo : {idProject[index]}</Text>
+                                    </View>
+                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                        <View style={styleBox.goBoton}>
+                                            <AntDesign name="caretright" size={24} color="white" />
+                                        </View>
+                                    </View>
+
+                                </View>
+                            </View>
+                        ))}
+                    </ScrollView>
+
+                </View>
+                {/* Contenedor de Mis Equipos */}
+                <View style={styleBox.dataContainer}>
+                    {/* Titulo del contenedor */}
+                    <View style={styleBox.dataTitle}>
+                        <Text style={styleText.titleOne}>Mis Equipos</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("MyTeamsPage")}>
+                            <Text style={styleText.titleTwo}>Ver Todos</Text>
+                        </TouchableOpacity>
+
+                    </View>
+
                     <View>
-                        <Text style={styleText.header}>Bienvenido</Text>
-                        <Text style={styleText.secundaryHeader}>Camilo Clift</Text>
+                        {/* Componentes del contenedor : Mis Equipos */}
+                        <ScrollView horizontal>
+                            {idTeam.slice(0, 3).map((item, index) => (
+                                <View key={index}>
+                                    <View style={styleBox.dataBox}>
+                                        {/* Titulo e icono*/}
+                                        <Text style={{ fontSize: 25, fontWeight: '800', textAlign: 'center' }}>{nameTeam[index]}</Text>
+                                        <View style={styleBox.line}></View>
+                                        <Text>Aqui va una pequeña descrición del proyecto, la funciona que cumple y el objetivo que tiene en la empresa, cuales son sus aspraciones, no mas de 150 caracteres.</Text>
+                                        <View style={styleBox.codeBoton}>
+                                            <Text>codigo : {idTeam[index]}</Text>
+                                        </View>
+                                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                            <View style={styleBox.goBoton}>
+                                                <AntDesign name="caretright" size={24} color="white" />
+                                            </View>
+                                        </View>
+
+                                    </View>
+                                </View>
+                            ))}
+                        </ScrollView>
                     </View>
-                    <View style={styleBox.iconHeader}>
-                        <Ionicons name="notifications" size={30} color="#0c04b6" />
-                    </View>
-                </View>
-                <View style={styleBox.dataContainer}>
-                    <Text>
-                        Mis Equipos
-                    </Text>
-                </View>
-                <View style={styleBox.dataContainer}>
-                    <Text>
-                        Mis Equipos
-                    </Text>
-                </View>
-                <View style={styleBox.dataContainer}>
-                    <Text>
-                        Mis Equipos
-                    </Text>
                 </View>
 
-            </ScrollView>
+            </ScrollView >
             <View style={styleGeneral.footer}>
                 <NavigationBar navigation={navigation} />
             </View>
-        </View>
+        </View >
 
     );
 }

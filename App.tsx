@@ -14,7 +14,7 @@ import UserEdit from './src/screens/user/UserEdit';
 import EditEmailPage from './src/screens/user/EditEmailPage';
 import EditPassPage from './src/screens/user/EditPassPage';
 import AddPage from './src/screens/home/AddPage';
-import MyTeamsPage from './src/screens/team/MyTeamsPage';
+import MyTeamsPage from "./src/screens/team/MyTeamsPage";
 import DataTeamPage from './src/screens/team/DataTeamPage';
 import AddProject from './src/screens/project/AddProject';
 import CreateProject from './src/screens/project/CreateProject';
@@ -42,7 +42,7 @@ export default function App() {
           headerTransparent: true,
           headerTitle: '',
         }
-      } initialRouteName='HomePage'>
+      } initialRouteName='Login'>
         <RootStack.Screen name='Login' component={LoginScreen} />
         <RootStack.Screen name='SignIn' component={SignInScreen} />
         <RootStack.Screen name='Recovery' component={RecoveryScreen} />
