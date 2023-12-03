@@ -53,7 +53,8 @@ const styleBox = StyleSheet.create({
         justifyContent: 'space-between',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 20,
+
+        //paddingHorizontal: 20,
         //backgroundColor: 'black',
     },
     dataBox: {
@@ -75,6 +76,12 @@ const styleBox = StyleSheet.create({
         height: 2,
         backgroundColor: '#cfcfcf',
         margin: 4,
+    },
+    line2: {
+        width: '100%',
+        height: 2,
+        backgroundColor: '#cfcfcf',
+        marginVertical: 10,
     },
     codeBoton: {
         marginTop: 10,

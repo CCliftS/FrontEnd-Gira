@@ -1,13 +1,8 @@
 import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
 import { DataTeamPageProps } from "../../../types/types";
-import styleGeneral from "../../public/styles/StyleGeneral";
-import NavigationBar from "../common/navbar";
-import styleDataTeamPage from "../../public/styles/StyleDataTeam";
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
-import { Link, useFocusEffect } from "@react-navigation/native";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
@@ -89,15 +84,13 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
                                         <View key={index} >
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 20 }}>
-                                                <FontAwesome5 name="user-alt" size={35} color="black" style={{ marginRight: 10 }} />
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View>
                                                     <Text style={styleText.titleOne}>{item}</Text>
                                                     <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
                                                 </View>
-
                                             </View>
-
+                                            <View style={styleBox.line2}></View>
                                         </View>
                                     ))}
                                 </ScrollView>
@@ -115,7 +108,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                 <Text style={styleText.titleOne}>Nombre del equipo</Text>
                                 <TouchableOpacity onPress={() => navigation.navigate("EditTeam")}>
-                                    <MaterialIcons name="edit" size={25} color="black" />
+                                    <MaterialIcons name="edit" size={30} color="black" />
                                 </TouchableOpacity>
                             </View>
                             <View style={styleBox.infoBoton}>
@@ -127,30 +120,32 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.infoBoton}>
                                 <Text style={{ fontSize: 20 }}>{idTeam}</Text>
                             </View>
-                            <View style={{ marginTop: 10 }}>
+                            <View style={[styleBox.dataTitle, { marginTop: 15 }]}>
                                 <Text style={styleText.titleOne}>Miembros del equipo</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate("AddMemberTeam")}>
+                                    <Ionicons name="md-add-circle-sharp" size={30} color="black" />
+                                </TouchableOpacity>
                             </View>
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
                                         <View key={index} >
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
-                                                <FontAwesome5 name="user-alt" size={35} color="black" style={{ marginRight: 10 }} />
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                                 <View>
                                                     <Text style={styleText.titleOne}>{item}</Text>
                                                     <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
                                                 </View>
                                                 <View>
-                                                    <TouchableOpacity onPress={() => handleDeleteMember(membersTeamId[index])}>
+                                                    <TouchableOpacity onPress={() => handleDeleteMember(item)}>
                                                         <MaterialIcons name="delete" size={28} color="black" />
                                                     </TouchableOpacity>
                                                     <TouchableOpacity onPress={() => navigation.navigate("EditTeam")}>
                                                         <MaterialIcons name="edit" size={28} color="black" />
                                                     </TouchableOpacity>
                                                 </View>
-
-
                                             </View>
+                                            <View style={styleBox.line2}></View>
+
 
                                         </View>
                                     ))}
