@@ -87,7 +87,9 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                     {/* Titulo del contenedor */}
                     <View style={styleBox.dataTitle}>
                         <Text style={styleText.titleOne}>Mis Proyectos</Text>
-                        <Text style={styleText.titleTwo}>Ver Todos</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("ProjectUser")}>
+                            <Text style={styleText.titleTwo}>Ver Todos</Text>
+                        </TouchableOpacity>
                     </View>
                     {/* Componentes del contenedor */}
                     <ScrollView horizontal>

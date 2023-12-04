@@ -1,15 +1,16 @@
 import { FlatList, ScrollView, View, Text, Image, TouchableOpacity } from "react-native";
 import { DataProjectProps } from "../../../types/types";
-import styleGeneral from "../../public/styles/StyleGeneral";
-import NavigationBar from "../common/navbar";
-import styleProjectUser from "../../public/styles/StyleProject";
 import AsyncStorage, { useAsyncStorage } from "@react-native-async-storage/async-storage";
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { useFocusEffect } from "@react-navigation/native";
+import styleBox from "../../public/styles/styleBox";
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import styleText from "../../public/styles/styleText";
+
 
 const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
-
+    const [option, setOption] = useState("");
+    const [idProject, setIdProject] = useState("");
 
     const [nameProject, setNameProject] = useState("");
     const [teamProjects, setTeamProjects] = useState([]);
@@ -37,24 +38,116 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
             console.log(error);
         }
 
-    }
+    };
+    const loadData = async () => {
+        setOption(await AsyncStorage.getItem('option') ?? '');
+        setIdProject(await AsyncStorage.getItem('idProject') ?? '');
+    };
+
     useEffect(() => {
         loadDataProject();
+        loadData();
     }, []);
     useEffect(() => {
         loadDataProject();
     }, [teamProjects]);
 
-    /*
-    useFocusEffect(
-        useCallback(() => {
-            loadDataProject();
-        }, [teamProjects])
-    );
-    */
-
     return (
-        <View style={styleGeneral.container}>
+        <View style={styleBox.containerPage}>
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("ProjectUser")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />
+                </TouchableOpacity>
+                <Text style={styleText.header}>Datos Proyecto</Text>
+            </View>
+            <View style={styleBox.contentPage}>
+                <View style={{ marginTop: 20 }} >
+                    {/* True para participantes, false para Owner */}
+                    {option === 'true' ? (
+                        <View>
+                            <View>
+                                <Text style={styleText.titleOne}>Nombre del Proyecto</Text>
+                            </View>
+                            <View style={styleBox.infoBoton}>
+                                <Text style={{ fontSize: 20 }}>{nameProject}</Text>
+                            </View>
+                            <View style={{ marginTop: 10 }}>
+                                <Text style={styleText.titleOne}>Euuipos del Proyecto</Text>
+                            </View>
+                            <View style={styleBox.listMember}>
+                                <ScrollView style={{ paddingTop: 10 }}>
+                                    {teamProjects.map((item: any, index: any) => (
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20 }]} key={index} >
+                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                                <View>
+                                                    <Text style={styleText.titleOne}>{item}</Text>
+                                                    <Text style={{ fontSize: 15 }}> Codigo: {idTeams[index]} </Text>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            </View>
+                            <View style={styleBox.botonEdit}>
+                                <Text style={styleText.titleOne}>Tareas del Proyecto</Text>
+                            </View>
+                        </View>
+                    ) : (
+                        <View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                                <Text style={styleText.titleOne}>Nombre del Proyecto</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                                    <MaterialIcons name="edit" size={30} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styleBox.infoBoton}>
+                                <Text style={{ fontSize: 20 }}>{nameProject}</Text>
+                            </View>
+                            <View style={[styleBox.dataTitle, { marginTop: 15 }]}>
+                                <Text style={styleText.titleOne}>Equipos del Proyecto</Text>
+                                <TouchableOpacity onPress={() => navigation.navigate("AddTeamProject")}>
+                                    <Ionicons name="md-add-circle-sharp" size={30} color="black" />
+                                </TouchableOpacity>
+                            </View>
+                            <View style={styleBox.listMember}>
+                                <ScrollView style={{ paddingTop: 10 }}>
+                                    {teamProjects.map((item: any, index: any) => (
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20 }]} key={index} >
+                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                <View>
+                                                    <Text style={styleText.titleOne}>{item}</Text>
+                                                    <Text style={{ fontSize: 15 }}> Codigo: {idTeams[index]} </Text>
+                                                </View>
+                                                <View style={{ marginLeft: 20 }}>
+                                                    <TouchableOpacity onPress={() => handleDeleteTeam(idTeams[index])}>
+                                                        <MaterialIcons name="delete" size={28} color="black" />
+                                                    </TouchableOpacity>
+                                                </View>
+                                            </View>
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            </View>
+                            <View style={styleBox.botonEdit}>
+                                <Text style={styleText.titleOne}>Gestionar Tareas</Text>
+                            </View>
+                            <View style={styleBox.botonDelete}>
+                                <Text style={styleText.titleOne}>Eliminar Proyecto</Text>
+                            </View>
+                        </View>
+                    )}
+                </View>
+            </View>
+        </View>
+
+    );
+
+
+}
+export default DataProject;
+
+{/**
+    <View style={styleGeneral.container}>
             <View style={styleProjectUser.boxHeader}>
                 <Text style={styleGeneral.titleHeader}>Proyecto " {nameProject} "</Text>
                 <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("EditProject")}>
@@ -108,15 +201,5 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                 <View style={styleProjectUser.boxBottom}></View>
 
             </ScrollView>
-
-
-
-
-            <View style={styleGeneral.footer}>
-                <NavigationBar navigation={navigation} />
-            </View>
         </View>
-    );
-
-}
-export default DataProject;
+*/}

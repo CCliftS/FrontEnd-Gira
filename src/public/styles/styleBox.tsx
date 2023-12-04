@@ -103,6 +103,17 @@ const styleBox = StyleSheet.create({
         flexDirection: 'row',
         elevation: 5, // Only for Android
     },
+    listBoton: {
+        marginTop: 10,
+        width: '100%',
+        height: 110,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        alignItems: 'center',
+        flexDirection: 'row',
+        elevation: 5, // Only for Android
+        marginBottom: 10,
+    },
     goBoton: {
         marginTop: 10,
         width: '30%',
@@ -193,23 +204,20 @@ const styleBox = StyleSheet.create({
     dataList: {
         width: '100%',
         height: 500,
-        backgroundColor: 'white',
+        //backgroundColor: 'white',
         borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
         marginTop: 10,
-        elevation: 5, // Only for Android
+
+        //elevation: 5, // Only for Android
     },
     listMember: {
-        marginTop: 10,
-        paddingHorizontal: 20,
+        marginTop: 5,
         width: '100%',
         height: 200,
-        backgroundColor: 'white',
-        borderRadius: 5,
         alignItems: 'center',
         flexDirection: 'row',
-        elevation: 5, // Only for Android
     },
 
 });

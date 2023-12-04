@@ -1,16 +1,15 @@
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import { AddTeamProjectProps } from "../../../types/types"
-import styleGeneral from "../../public/styles/StyleGeneral";
-import styleTeamPage from "../../public/styles/StyleTeamPage";
 import { useState } from "react";
-import NavigationBar from "../common/navbar";
-
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import styleBox from "../../public/styles/styleBox";
+import styleText from "../../public/styles/styleText";
 
 const AddTeamProject: React.FC<AddTeamProjectProps> = ({ navigation }) => {
     const [idTeam, setIdTeam] = useState('');
-    const hanleAddTeam = async (idTeam: string) => {
+    const handleAddTeam = async (idTeam: string) => {
         try {
 
             const id = await AsyncStorage.getItem('idProject');
@@ -24,29 +23,23 @@ const AddTeamProject: React.FC<AddTeamProjectProps> = ({ navigation }) => {
         }
     }
     return (
-        <View style={styleGeneral.container}>
-            <View style={styleGeneral.boxHeader}>
-                <Text style={styleGeneral.titleHeader}>Creación de proyecto</Text>
-            </View>
-            <View style={styleGeneral.boxContainer}>
-                <View style={styleTeamPage.boxDataItem}>
-                    <Text style={styleTeamPage.textBox1}>Id del equipo</Text>
-                    <TextInput
-                        style={[styleTeamPage.boxDataItem2, styleGeneral.textSecundary]}
-                        value={idTeam}
-                        onChangeText={(text: string) => setIdTeam(text)}
-                    />
-                </View>
-
-                <TouchableOpacity style={styleGeneral.boxBottom1} onPress={() => hanleAddTeam(idTeam)}>
-                    <Text style={styleGeneral.texBottom}>Agregar miembro al equipo</Text>
+        <View style={styleBox.containerPage}>
+            <View style={styleBox.headerPage}>
+                <TouchableOpacity onPress={() => navigation.navigate("DataProject")}>
+                    <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />
                 </TouchableOpacity>
-                <TouchableOpacity style={styleGeneral.boxBottom2} onPress={() => navigation.navigate("DataProject")}>
-                    <Text style={styleGeneral.texBottom}>Volver</Text>
-                </TouchableOpacity>
+                <Text style={styleText.header}>Nuevo Equipo</Text>
             </View>
-            <View style={styleGeneral.footer}>
-                <NavigationBar navigation={navigation} />
+            <View style={styleBox.contentPage}>
+                <Text style={styleText.titleOne}>Codigo del Equipo</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={idTeam}
+                    onChangeText={(text: string) => setIdTeam(text)}
+                />
+                <TouchableOpacity style={styleBox.botonEdit} onPress={() => handleAddTeam(idTeam)}>
+                    <Text style={styleText.titleOne}>Agregar Equipo</Text>
+                </TouchableOpacity>
             </View>
         </View>
     );

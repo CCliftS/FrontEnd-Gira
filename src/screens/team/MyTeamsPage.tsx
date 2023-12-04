@@ -82,10 +82,10 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                             <View style={styleBox.dataList}>
                                 <ScrollView>
                                     {nameTeams.map((item, index) => (
-                                        <View key={index}>
+                                        <View style={styleBox.listBoton} key={index}>
                                             <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
                                                 <View style={{ width: 260 }}>
-                                                    <Text style={{ fontSize: 30 }}>{item}</Text>
+                                                    <Text style={{ fontSize: 25 }}>{item}</Text>
                                                     <View style={styleBox.codeBoton}>
                                                         <Text>Codigo: {idTeams[index]}</Text>
                                                     </View>
@@ -121,10 +121,10 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                             <View style={styleBox.dataList}>
                                 <ScrollView>
                                     {nameTeamMember.map((item, index) => (
-                                        <View key={index}>
+                                        <View style={styleBox.listBoton} key={index}>
                                             <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
                                                 <View style={{ width: 260 }}>
-                                                    <Text style={{ fontSize: 30 }}>{item}</Text>
+                                                    <Text style={{ fontSize: 25 }}>{item}</Text>
                                                     <View style={styleBox.codeBoton}>
                                                         <Text>Codigo: {idTeamMember[index]}</Text>
                                                     </View>
@@ -141,9 +141,6 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
 
                                                 </View>
 
-                                            </View>
-                                            <View style={{ paddingHorizontal: 20 }}>
-                                                <View style={styleBox.line}></View>
                                             </View>
                                         </View>
                                     ))}

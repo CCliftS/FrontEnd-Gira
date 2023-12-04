@@ -83,14 +83,13 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
-                                        <View key={index} >
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20 }]} key={index} >
                                             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                                                 <View>
                                                     <Text style={styleText.titleOne}>{item}</Text>
                                                     <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
                                                 </View>
                                             </View>
-                                            <View style={styleBox.line2}></View>
                                         </View>
                                     ))}
                                 </ScrollView>
@@ -129,13 +128,13 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
-                                        <View key={index} >
-                                            <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20, justifyContent: 'space-between' }]} key={index} >
+                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                                                 <View>
                                                     <Text style={styleText.titleOne}>{item}</Text>
                                                     <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
                                                 </View>
-                                                <View>
+                                                <View style={{ marginLeft: 70 }}>
                                                     <TouchableOpacity onPress={() => handleDeleteMember(item)}>
                                                         <MaterialIcons name="delete" size={28} color="black" />
                                                     </TouchableOpacity>
@@ -144,9 +143,6 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                                                     </TouchableOpacity>
                                                 </View>
                                             </View>
-                                            <View style={styleBox.line2}></View>
-
-
                                         </View>
                                     ))}
                                 </ScrollView>

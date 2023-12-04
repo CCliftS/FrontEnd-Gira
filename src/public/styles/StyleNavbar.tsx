@@ -6,7 +6,7 @@ const styleNavbar = StyleSheet.create({
         left: 0,
         right: 0,
         height: 80, // Ajusta la altura de la barra de navegación según tus necesidades
-        backgroundColor: '#44749d',
+        backgroundColor: '#0c04b6',
         flexDirection: 'row', // Alinea los elementos horizontalmente
         justifyContent: 'space-between', // Distribuye los elementos de manera uniforme
         paddingHorizontal: 16, // Espacio horizontal interno para los elementos de navegación
@@ -20,7 +20,7 @@ const styleNavbar = StyleSheet.create({
     firstNavItem: {
         fontSize: 20,
         height: 55,
-        backgroundColor: '#ebe7e0',
+        backgroundColor: '#f5f5f5',
         borderRadius: 12,
         paddingVertical: 12,
         paddingHorizontal: 18,
