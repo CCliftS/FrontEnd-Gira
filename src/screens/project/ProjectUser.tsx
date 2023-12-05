@@ -16,8 +16,8 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
     const [idProjects, setIdProjects] = useState([]);
 
 
-    const [participesProjects, setParticipesProjects] = useState([]);
-    const [idParticipesProjects, setIdParticipesProjects] = useState([]);
+    const [participedProjects, setParticipedProjects] = useState([]);
+    const [idParticipedProjects, setIdParticipedProjects] = useState([]);
 
     /* Aqui pido los projects del Owner*/
 
@@ -39,8 +39,8 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
             const email = await AsyncStorage.getItem('email');
             const response = await axios.get(`http://10.0.2.2:3001/Project/findAllParticipatedProjects/${email}`);
 
-            setParticipesProjects(response.data.participesProjects);
-            setIdParticipesProjects(response.data.idParticipesProjects)
+            setParticipedProjects(response.data.participedProjects);
+            setIdParticipedProjects(response.data.idParticipedProjects);
 
         } catch (error) {
             console.log(error);
@@ -125,19 +125,19 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                             </View>
                             <View style={styleBox.dataList}>
                                 <ScrollView>
-                                    {participesProjects.map((item, index) => (
+                                    {participedProjects.map((item, index) => (
                                         <View style={styleBox.listBoton} key={index}>
                                             <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
                                                 <View style={{ width: 260 }}>
                                                     <Text style={{ fontSize: 30 }}>{item}</Text>
                                                     <View style={styleBox.codeBoton}>
-                                                        <Text>Codigo: {idParticipesProjects[index]}</Text>
+                                                        <Text>Codigo: {idParticipedProjects[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
                                                     <TouchableOpacity onPress={() => {
                                                         navigation.navigate("DataProject");
-                                                        AsyncStorage.setItem('idProject', idParticipesProjects[index]);
+                                                        AsyncStorage.setItem('idProject', idParticipedProjects[index]);
                                                         AsyncStorage.setItem('option', 'true');
                                                     }}>
                                                         <AntDesign name="caretright" size={35} color="black" style={{ paddingBottom: 5 }} />
