@@ -128,9 +128,9 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                                     ))}
                                 </ScrollView>
                             </View>
-                            <View style={styleBox.botonEdit}>
+                            <TouchableOpacity style={styleBox.botonEdit} onPress={() => navigation.navigate("CreateTask")}>
                                 <Text style={styleText.titleOne}>Gestionar Tareas</Text>
-                            </View>
+                            </TouchableOpacity>
                             <View style={styleBox.botonDelete}>
                                 <Text style={styleText.titleOne}>Eliminar Proyecto</Text>
                             </View>

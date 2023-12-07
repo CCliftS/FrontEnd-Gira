@@ -24,6 +24,7 @@ export type RootStackParamList = {
   DataProject: undefined;
   EditProject: undefined;
   AddTeamProject: undefined;
+  CreateTask: undefined;
 
   // Otras rutas de tu aplicación
 };
@@ -48,5 +49,5 @@ export type ProjectUserProps = NativeStackScreenProps<RootStackParamList, 'Proje
 export type DataProjectProps = NativeStackScreenProps<RootStackParamList, 'DataProject'>;
 export type EditProjectProps = NativeStackScreenProps<RootStackParamList, 'EditProject'>;
 export type AddTeamProjectProps = NativeStackScreenProps<RootStackParamList, 'AddTeamProject'>;
-
+export type CreateTaskProps = NativeStackScreenProps<RootStackParamList, 'CreateTask'>;
 // Definir tipos para otras pantallas según sea necesario

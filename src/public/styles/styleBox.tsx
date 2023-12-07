@@ -137,7 +137,8 @@ const styleBox = StyleSheet.create({
     contentPage: {
         height: 710,
         backgroundColor: '#f5f5f5',
-        borderRadius: 25,
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
         padding: 20,
         //justifyContent: 'center',
         //alignItems: 'center',
@@ -218,6 +219,16 @@ const styleBox = StyleSheet.create({
         height: 200,
         alignItems: 'center',
         flexDirection: 'row',
+    },
+    infoDropdown: {
+        marginTop: 10,
+        width: '100%',
+        height: 60,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        paddingHorizontal: 20,
+        justifyContent: 'center',
+        elevation: 5, // Only for Android
     },
 
 });
