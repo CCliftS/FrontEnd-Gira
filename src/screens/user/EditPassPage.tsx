@@ -18,7 +18,7 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
     const handlerChangePassword = async (email: string, password: string, newPassword: string, repeatPassword: string) => {
         setIsButtonDisabled(true);
         try {
-            const response = await axios.post(`http://10.0.2.2:3000/user/changePassword`, {
+            const response = await axios.put(`http://10.0.2.2:3000/user/changePassword`, {
                 email,
                 password,
                 newPassword,

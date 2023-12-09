@@ -17,7 +17,7 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
     const handleChangeDates = async (email: string, name: string, lastName: string) => {
         setIsButtonDisabled(true);
         try {
-            const response = await axios.post(`http://10.0.2.2:3000/user/changeData`, {
+            const response = await axios.put(`http://10.0.2.2:3000/user/changeData`, {
                 email,
                 name,
                 lastName

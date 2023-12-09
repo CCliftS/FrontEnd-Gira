@@ -22,7 +22,7 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
             return;
         }
         try {
-            const response = await axios.post(`http://10.0.2.2:3000/user/changeEmail`, {
+            const response = await axios.put(`http://10.0.2.2:3000/user/changeEmail`, {
                 newEmail,
                 email
             });

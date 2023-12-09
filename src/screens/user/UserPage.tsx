@@ -18,9 +18,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
 
     const dataUser = async () => {
         try {
-            const response = await axios.post(`http://10.0.2.2:3000/user/data`, {
-                email
-            });
+            const response = await axios.get(`http://10.0.2.2:3000/user/data/${email}`);
             const { name: fetchedName, lastName: fetchedLastName } = response.data;
             setName(fetchedName);
             setLastName(fetchedLastName);
