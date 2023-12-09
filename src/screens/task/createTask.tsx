@@ -7,53 +7,103 @@ import { useEffect, useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { format } from 'date-fns';
 
-interface DropdownItem {
+interface TeamData {
+    nameProject: string;
+    teamProjects: string[];
+    teamsNames: string[];
+}
+interface DropdownTeam {
+    label: string;
+    value: string;
+    value_name: string;
+    value_id: string; // Nuevo campo value_id
+
+}
+interface DropdownMember {
     label: string;
     value: string;
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
-    const [selectTeam, setSelectTeam] = useState("");
+    const [nameTask, setNameTask] = useState('');
+    const [descriptionTask, setDescriptionTask] = useState('');
+    const [startDate, setStarttDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [selectIdTeam, setSelectIdTeam] = useState("");
     const [selectStatus, setSelectStatus] = useState("");
+    const [selectMember, setSelectMember] = useState("");
 
-    const transformDatabaseValues = (values: string[]): DropdownItem[] => {
-        return values.map((value, index) => ({
+    const fetchCreateTask = async (name: string, status: string, description: string, id_team: string, email_user: string, start_date: Date, finish_date: Date) => {
+        try {
+            const id_project = await AsyncStorage.getItem('idProject');
+            const response = await axios.post(`http://10.0.2.2:3002/Task/createTask`, {
+                name,
+                status,
+                description,
+                id_team,
+                id_project,
+                email_user,
+                start_date,
+                finish_date
+            });
+            navigation.navigate("DataProject");
+        } catch (error) {
+            console.log(error, "No se creó la tarea");
+        }
+    };
+
+    const transformTeam = (data: TeamData): DropdownTeam[] => {
+        return data.teamsNames.map((name: string, index: number) => ({
+            label: name,
             value: `${index + 1}`,
-            label: value
+            value_id: data.teamProjects[index],
+            value_name: data.teamProjects[index],
+
         }));
     };
 
-    const [teamProjects, setTeamProjects] = useState<string[]>([]);
-    const [idTeams, setIdTeams] = useState<string[]>([]);
+    const [teamData, setTeamData] = useState<TeamData | null>(null);
+
     const loadDataProject = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
             const response = await axios.get(`http://10.0.2.2:3001/Project/findOneProject/${idProject}`);
-            setTeamProjects(response.data.teamsNames);
-            setIdTeams(response.data.teamProjects);
+            setTeamData(response.data);
 
         } catch (error) {
             console.log(error);
         }
     }
+    const [membersTeam, setMembersTeam] = useState([]);
+
+    const transformMember = (values: string[]): DropdownMember[] => {
+        return values.map((value, index) => ({
+            value: `${index + 1}`,
+            label: value
+        }));
+    };
+    const loadMembersTeam = async (idTeam: string) => {
+        try {
+            const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
+            setMembersTeam(response.data.TeamsEmails);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const status = [
         { label: "Pediente", value: '1' },
         { label: "En proceso", value: '2' },
         { label: "Terminado", value: '3' },
     ];
-    const [nameTask, setNameTask] = useState('');
 
     useEffect(() => {
         loadDataProject();
     }, []);
-    useEffect(() => {
-        // Transformar los valores de la base de datos al formato requerido al cargar el componente
-        const transformedValues = transformDatabaseValues(teamProjects);
-        // Utilizar los valores transformados en el componente Dropdown
-        // ... resto de tu código aquí
-    }, [teamProjects]);
+
     return (
         <View style={styleBox.containerPage}>
             <View style={styleBox.headerPage}>
@@ -84,23 +134,63 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         }}
                     />
                 </View>
-                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Equipo del usuario</Text>
+                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Equipo del proyecto</Text>
                 <View style={styleBox.infoDropdown}>
                     <Dropdown
                         placeholderStyle={styleText.input}
                         selectedTextStyle={styleText.input}
-                        data={transformDatabaseValues(teamProjects)}
+                        data={teamData ? transformTeam(teamData) : []}
                         labelField="label"
-                        valueField="value"
+                        valueField="value_name"
                         placeholder="Selecciona un equipo"
-                        value={selectTeam}
+                        value={selectIdTeam}
                         onChange={item => {
-                            setSelectTeam(item.value);
+                            setSelectIdTeam(item.value_id);
+                            loadMembersTeam(item.value_id);
+                            console.log(item.value_id);
                         }}
                     />
                 </View>
+                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Miembros del equipo</Text>
+                <View style={styleBox.infoDropdown}>
+                    <Dropdown
+                        placeholderStyle={styleText.input}
+                        selectedTextStyle={styleText.input}
+                        data={transformMember(membersTeam)}
+                        labelField="label"
+                        valueField="value"
+                        placeholder="Selecciona un miembro"
+                        value={selectMember}
+                        onChange={item => {
 
-
+                            setSelectMember(item.value);
+                        }}
+                    />
+                </View>
+                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Descripción</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={descriptionTask}
+                    onChangeText={(text: string) => setDescriptionTask(text)}
+                />
+                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={startDate ? format(new Date(startDate), 'dd/MM/yyyy') : ""}
+                    placeholder="dd/mm/aaaa"
+                    onChangeText={(text: string) => setStarttDate(new Date(text))}
+                />
+                <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha termino</Text>
+                <TextInput
+                    style={[styleBox.infoBoton, styleText.input]}
+                    value={endDate ? format(new Date(endDate), 'dd/MM/yyyy') : ""}
+                    placeholder="dd/mm/aaaa"
+                    onChangeText={(text: string) => setEndDate(new Date(text))}
+                />
+                <TouchableOpacity style={styleBox.botonEdit} onPress={() => fetchCreateTask(nameTask, selectStatus, descriptionTask, selectIdTeam, selectMember, startDate, endDate)}>
+                    <Text style={styleText.titleOne}> Crear Tarea</Text>
+                </TouchableOpacity>
+                <View style={{ marginTop: 50 }}></View>
             </ScrollView>
         </View>
     );
