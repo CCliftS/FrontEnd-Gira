@@ -24,6 +24,7 @@ import DataProject from './src/screens/project/DataProject';
 import EditProject from './src/screens/project/EditProject';
 import AddTeamProject from './src/screens/project/AddTeamProject';
 import CreateTask from './src/screens/task/createTask';
+import DataTask from './src/screens/task/DataTask';
 
 
 
@@ -64,6 +65,7 @@ export default function App() {
         <RootStack.Screen name='EditProject' component={EditProject} />
         <RootStack.Screen name='AddTeamProject' component={AddTeamProject} />
         <RootStack.Screen name='CreateTask' component={CreateTask} />
+        <RootStack.Screen name='DataTask' component={DataTask} />
 
       </RootStack.Navigator>
     </NavigationContainer>
