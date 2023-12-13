@@ -14,9 +14,7 @@ const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
     setError(false);
     setIsButtonDisabled(true);
     try {
-      const response = await axios.post(`http://10.0.2.2:3000/user/resetPassword`, {
-        email,
-      });
+      const response = await axios.put(`http://10.0.2.2:3000/user/resetPassword/${email}`);
       navigation.navigate("Login")
     }
     catch (e: any) {

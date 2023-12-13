@@ -41,7 +41,7 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
                 </TouchableOpacity>
             </View>
             <View style={styleBox.headerEdit}>
-                <Text style={styleText.headerBlack}>Actualiza tu correo</Text>
+                <Text style={styleText.headerBlack}>Cambio de contraseña</Text>
                 <Text style={styleText.infoEdit}>No te preocupes, tus datos personales no son expuestos a otras personas. Ademas puedes cambiarlo cuando desees</Text>
             </View>
             <View style={styleBox.contentPage}>

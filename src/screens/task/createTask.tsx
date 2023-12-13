@@ -1,13 +1,14 @@
 import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native";
 import { CreateTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { format } from 'date-fns';
+import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
+import dayjs from 'dayjs';
 
 interface TeamData {
     nameProject: string;
@@ -29,16 +30,17 @@ interface DropdownMember {
 const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
     const [nameTask, setNameTask] = useState('');
     const [descriptionTask, setDescriptionTask] = useState('');
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
+    const [startDate, setStarttDate] = useState(dayjs().format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [selectIdTeam, setSelectIdTeam] = useState("");
     const [selectStatus, setSelectStatus] = useState("");
     const [selectMember, setSelectMember] = useState("");
 
-    const fetchCreateTask = async (name: string, status: string, description: string, id_team: string, email_user: string, start_date: String, finish_date: String) => {
+    const fetchCreateTask = async (name: string, status: string, description: string, id_team: string, email_user: string, start_date: Date, finish_date: Date) => {
+        console.log(start_date, finish_date);
         try {
             const id_project = await AsyncStorage.getItem('idProject');
-            const response = await axios.post(`http://10.0.2.2:3002/Tasks/createTask`, {
+            const response = await axios.post(`http://10.0.2.2:3002/Task/createTask`, {
                 name,
                 status,
                 description,
@@ -96,7 +98,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
 
     const status = [
         { label: "Pendiente", value: '1' },
-        { label: "Proceso", value: '2' },
+        { label: "En proceso", value: '2' },
         { label: "Terminado", value: '3' },
     ];
 
@@ -107,7 +109,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
     return (
         <View style={styleBox.containerPage}>
             <View style={styleBox.headerPage}>
-                <TouchableOpacity onPress={() => navigation.navigate("DataTask")}>
+                <TouchableOpacity onPress={() => navigation.navigate("DataProject")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />
                 </TouchableOpacity>
                 <Text style={styleText.header}>Nueva Tarea</Text>
@@ -126,11 +128,11 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         selectedTextStyle={styleText.input}
                         data={status}
                         labelField="label"
-                        valueField="label"
+                        valueField="value"
                         placeholder="Selecciona un estado "
                         value={selectStatus}
                         onChange={item => {
-                            setSelectStatus(item.label);
+                            setSelectStatus(item.value);
                         }}
                     />
                 </View>
@@ -158,12 +160,12 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         selectedTextStyle={styleText.input}
                         data={transformMember(membersTeam)}
                         labelField="label"
-                        valueField="label"
+                        valueField="value"
                         placeholder="Selecciona un miembro"
                         value={selectMember}
                         onChange={item => {
 
-                            setSelectMember(item.label);
+                            setSelectMember(item.value);
                         }}
                     />
                 </View>
@@ -174,21 +176,16 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                     onChangeText={(text: string) => setDescriptionTask(text)}
                 />
                 <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
-                <TextInput
-                    style={[styleBox.infoBoton, styleText.input]}
-                    value={startDate}
-                    placeholder="dd/mm/aaaa"
-                    onChangeText={(text: string) => setStartDate(text)}
-
+                <DateTimePicker
+                    value = {startDate}
+                    onValueChange ={(date: DateType) => setStarttDate(date ? date.toString() : '')}
                 />
                 <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha termino</Text>
-                <TextInput
-                    style={[styleBox.infoBoton, styleText.input]}
-                    value={endDate}
-                    placeholder="dd/mm/aaaa"
-                    onChangeText={(text: string) => setEndDate(text)}
+                <DateTimePicker
+                    value = {endDate}
+                    onValueChange ={(date: DateType | undefined) => setEndDate(date ? date.toString() : '')}
                 />
-                <TouchableOpacity style={styleBox.botonEdit} onPress={() => fetchCreateTask(nameTask, selectStatus, descriptionTask, selectIdTeam, selectMember, startDate, endDate)}>
+                <TouchableOpacity style={styleBox.botonEdit} onPress={() => fetchCreateTask(nameTask, selectStatus, descriptionTask, selectIdTeam, selectMember, new Date(startDate), new Date(endDate))}>
                     <Text style={styleText.titleOne}> Crear Tarea</Text>
                 </TouchableOpacity>
                 <View style={{ marginTop: 50 }}></View>
