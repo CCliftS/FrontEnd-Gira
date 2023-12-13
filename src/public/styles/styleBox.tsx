@@ -219,6 +219,7 @@ const styleBox = StyleSheet.create({
         height: 200,
         alignItems: 'center',
         flexDirection: 'row',
+        //backgroundColor: 'white',
     },
     infoDropdown: {
         marginTop: 10,
@@ -230,6 +231,35 @@ const styleBox = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5, // Only for Android
     },
-
+    listTask: {
+        marginTop: 10,
+        width: '100%',
+        height: 420,
+        //alignItems: 'center',
+        flexDirection: 'row',
+        //backgroundColor: 'white',
+    },
+    dataTask: {
+        width: '100%',
+        height: 300,
+        backgroundColor: 'white',
+        elevation: 5, // Only for Android
+        borderRadius: 10,
+        padding: 20,
+    },
+    infoTask: {
+        borderRadius: 10,
+        borderColor: '#cfcfcf',
+        borderWidth: 2,
+        paddingLeft: 10,
+        padding: 5
+    },
+    listComment: {
+        marginTop: 10,
+        width: '100%',
+        height: 380,
+        //alignItems: 'center',
+        flexDirection: 'row',
+    },
 });
 export default styleBox;

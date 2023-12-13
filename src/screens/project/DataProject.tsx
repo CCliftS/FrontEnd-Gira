@@ -72,7 +72,7 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                                 <Text style={{ fontSize: 20 }}>{nameProject}</Text>
                             </View>
                             <View style={{ marginTop: 10 }}>
-                                <Text style={styleText.titleOne}>Euuipos del Proyecto</Text>
+                                <Text style={styleText.titleOne}>Equipos del Proyecto</Text>
                             </View>
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
@@ -88,9 +88,9 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                                     ))}
                                 </ScrollView>
                             </View>
-                            <View style={styleBox.botonEdit}>
+                            <TouchableOpacity style={styleBox.botonEdit} onPress={() => navigation.navigate("DataTask")}>
                                 <Text style={styleText.titleOne}>Tareas del Proyecto</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     ) : (
                         <View>

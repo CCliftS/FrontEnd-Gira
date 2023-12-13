@@ -95,8 +95,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
     };
 
     const status = [
-        { label: "Pediente", value: '1' },
-        { label: "En proceso", value: '2' },
+        { label: "Pendiente", value: '1' },
+        { label: "Proceso", value: '2' },
         { label: "Terminado", value: '3' },
     ];
 

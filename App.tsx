@@ -25,6 +25,7 @@ import EditProject from './src/screens/project/EditProject';
 import AddTeamProject from './src/screens/project/AddTeamProject';
 import CreateTask from './src/screens/task/createTask';
 import DataTask from './src/screens/task/DataTask';
+import CommentTask from './src/screens/task/CommentTask';
 
 
 
@@ -66,6 +67,7 @@ export default function App() {
         <RootStack.Screen name='AddTeamProject' component={AddTeamProject} />
         <RootStack.Screen name='CreateTask' component={CreateTask} />
         <RootStack.Screen name='DataTask' component={DataTask} />
+        <RootStack.Screen name='CommentTask' component={CommentTask} />
 
       </RootStack.Navigator>
     </NavigationContainer>
