@@ -83,24 +83,23 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                                 <ScrollView>
                                     {nameTeams.map((item, index) => (
                                         <View style={styleBox.listBoton} key={index}>
-                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
                                                 <View style={{ width: 260 }}>
                                                     <Text style={{ fontSize: 25 }}>{item}</Text>
-                                                    <View style={styleBox.codeBoton}>
-                                                        <Text>Codigo: {idTeams[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idTeams[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
-                                                    <TouchableOpacity onPress={() => {
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 70, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataTeamPage");
                                                         AsyncStorage.setItem('nameTeam', item);
                                                         AsyncStorage.setItem('idTeam', idTeams[index]);
                                                         AsyncStorage.setItem('option', 'false');
                                                     }}>
-                                                        <AntDesign name="caretright" size={35} color="black" style={{ paddingBottom: 5 }} />
+                                                        <AntDesign name="caretright" size={35} color="white" />
                                                     </TouchableOpacity>
-                                                    <MaterialIcons name="edit" size={35} color="black" style={{ paddingBottom: 5 }} />
-
                                                 </View>
 
                                             </View>
@@ -122,23 +121,23 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                                 <ScrollView>
                                     {nameTeamMember.map((item, index) => (
                                         <View style={styleBox.listBoton} key={index}>
-                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
                                                 <View style={{ width: 260 }}>
                                                     <Text style={{ fontSize: 25 }}>{item}</Text>
-                                                    <View style={styleBox.codeBoton}>
-                                                        <Text>Codigo: {idTeamMember[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idTeams[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
-                                                    <TouchableOpacity onPress={() => {
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 70, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataTeamPage");
                                                         AsyncStorage.setItem('nameTeam', item);
-                                                        AsyncStorage.setItem('idTeam', idTeamMember[index]);
-                                                        AsyncStorage.setItem('option', 'true');
+                                                        AsyncStorage.setItem('idTeam', idTeams[index]);
+                                                        AsyncStorage.setItem('option', 'false');
                                                     }}>
-                                                        <AntDesign name="caretright" size={35} color="black" style={{ paddingBottom: 5 }} />
+                                                        <AntDesign name="caretright" size={35} color="white" />
                                                     </TouchableOpacity>
-
                                                 </View>
 
                                             </View>

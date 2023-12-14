@@ -10,6 +10,7 @@ import styleText from "../../public/styles/styleText";
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [membersTeam, setMembersTeam] = useState([]);
     const [membersTeamId, setMembersTeamId] = useState([]);
+    const [membersTeamRole, setMembersTeamRole] = useState([]);
 
     const [nameTeam, setNameTeam] = useState('');
     const [idTeam, setIdTeam] = useState('');
@@ -30,6 +31,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
             setMembersTeam(response.data.TeamsEmails);
             setMembersTeamId(response.data.nameId);
+            setMembersTeamRole(response.data.memberRole);
 
 
         } catch (error) {
@@ -50,7 +52,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     //este se actualiza al cambiar el estado de membersTeam
     useEffect(() => {
         loadMembersTeam();
-    }, [membersTeam]);
+    }, [membersTeamRole]);
 
     return (
         <View style={styleBox.containerPage}>
@@ -83,12 +85,11 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
-                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20 }]} key={index} >
-                                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                                <View>
-                                                    <Text style={styleText.titleOne}>{item}</Text>
-                                                    <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
-                                                </View>
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }]} key={index} >
+
+                                            <View>
+                                                <Text style={styleText.titleOne}>{item}</Text>
+                                                <Text style={{ fontSize: 20 }}>{membersTeamRole[index]}</Text>
                                             </View>
                                         </View>
                                     ))}
@@ -128,28 +129,27 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.listMember}>
                                 <ScrollView style={{ paddingTop: 10 }}>
                                     {membersTeam.map((item: any, index: any) => (
-                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20, justifyContent: 'space-between' }]} key={index} >
-                                            <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                                                <View>
-                                                    <Text style={styleText.titleOne}>{item}</Text>
-                                                    <Text style={{ fontSize: 20 }}>Aqui va el rol del usuario</Text>
-                                                </View>
-                                                <View style={{ marginLeft: 70 }}>
-                                                    <TouchableOpacity onPress={() => handleDeleteMember(item)}>
-                                                        <MaterialIcons name="delete" size={28} color="black" />
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={() => navigation.navigate("EditTeam")}>
-                                                        <MaterialIcons name="edit" size={28} color="black" />
-                                                    </TouchableOpacity>
-                                                </View>
+                                        <View style={[styleBox.listBoton, { paddingHorizontal: 20, flexDirection: 'row', justifyContent: 'space-between' }]} key={index} >
+
+                                            <View>
+                                                <Text style={styleText.titleOne}>{item}</Text>
+                                                <Text style={{ fontSize: 20 }}>{membersTeamRole[index]}</Text>
+                                            </View>
+                                            <View>
+                                                <TouchableOpacity onPress={() => handleDeleteMember(item)}>
+                                                    <MaterialIcons name="delete" size={28} color="black" />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => { navigation.navigate("EditRoles"); AsyncStorage.setItem('emailUser', membersTeam[index]); }}>
+                                                    <MaterialIcons name="edit" size={28} color="black" />
+                                                </TouchableOpacity>
                                             </View>
                                         </View>
                                     ))}
                                 </ScrollView>
                             </View>
-                            <View style={styleBox.botonEdit}>
-                                <Text style={styleText.titleOne}>Crear Roles</Text>
-                            </View>
+                            <TouchableOpacity style={styleBox.botonEdit} onPress={() => { navigation.navigate("TeamTask"); AsyncStorage.setItem('idTeam', idTeam) }}>
+                                <Text style={styleText.titleOne}>Ver Tareas</Text>
+                            </TouchableOpacity>
                             <View style={styleBox.botonDelete}>
                                 <Text style={styleText.titleOne}>Eliminar equipo</Text>
                             </View>

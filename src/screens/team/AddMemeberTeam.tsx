@@ -6,13 +6,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import { Dropdown } from "react-native-element-dropdown";
 
 
 
 const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
     const [emailMember, setEmailMember] = useState('');
     const [role, setRole] = useState('');
-
+    const roles = [
+        { label: "Scrum Master", value: '1' },
+        { label: "Frontend", value: '2' },
+        { label: "Backend", value: '3' },
+        { label: "QA", value: '4' },
+        { label: "DevOps", value: '5' },
+        { label: "Diseñador", value: '6' }
+    ]
     const handleAddMember = async (email: string, role: string) => {
         try {
 
@@ -47,11 +55,20 @@ const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
                     onChangeText={(text: string) => setEmailMember(text)}
                 />
                 <Text style={[styleText.titleOne, { marginTop: 20 }]}>Rol del integrante</Text>
-                <TextInput
-                    style={[styleBox.infoBoton, styleText.input]}
-                    value={role}
-                    onChangeText={(text: string) => setRole(text)}
-                />
+                <View style={styleBox.infoDropdown}>
+                    <Dropdown
+                        placeholderStyle={styleText.input}
+                        selectedTextStyle={styleText.input}
+                        data={roles}
+                        labelField="label"
+                        valueField="label"
+                        placeholder="Selecciona un rol"
+                        value={role}
+                        onChange={item => {
+                            setRole(item.label);
+                        }}
+                    />
+                </View>
                 <TouchableOpacity style={styleBox.botonEdit} onPress={() => handleAddMember(emailMember, role)}>
                     <Text style={styleText.titleOne}>Agregar Miembro</Text>
                 </TouchableOpacity>

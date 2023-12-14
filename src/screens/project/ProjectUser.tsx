@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, AntDesign, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 
 
@@ -88,23 +88,22 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                                 <ScrollView>
                                     {nameProjects.map((item, index) => (
                                         <View style={styleBox.listBoton} key={index}>
-                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
                                                 <View style={{ width: 260 }}>
                                                     <Text style={{ fontSize: 30 }}>{item}</Text>
-                                                    <View style={styleBox.codeBoton}>
-                                                        <Text>Codigo: {idProjects[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idProjects[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
-                                                    <TouchableOpacity onPress={() => {
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 90, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataProject");
                                                         AsyncStorage.setItem('idProject', idProjects[index]);
                                                         AsyncStorage.setItem('option', 'false');
                                                     }}>
-                                                        <AntDesign name="caretright" size={35} color="black" style={{ paddingBottom: 5 }} />
+                                                        <AntDesign name="caretright" size={30} color="white" />
                                                     </TouchableOpacity>
-                                                    <MaterialIcons name="edit" size={35} color="black" style={{ paddingBottom: 5 }} />
-
                                                 </View>
 
                                             </View>
@@ -127,22 +126,22 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                                 <ScrollView>
                                     {participedProjects.map((item, index) => (
                                         <View style={styleBox.listBoton} key={index}>
-                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 20, width: 350 }}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
                                                 <View style={{ width: 260 }}>
                                                     <Text style={{ fontSize: 30 }}>{item}</Text>
-                                                    <View style={styleBox.codeBoton}>
-                                                        <Text>Codigo: {idParticipedProjects[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idProjects[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
-                                                    <TouchableOpacity onPress={() => {
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 90, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataProject");
-                                                        AsyncStorage.setItem('idProject', idParticipedProjects[index]);
-                                                        AsyncStorage.setItem('option', 'true');
+                                                        AsyncStorage.setItem('idProject', idProjects[index]);
+                                                        AsyncStorage.setItem('option', 'false');
                                                     }}>
-                                                        <AntDesign name="caretright" size={35} color="black" style={{ paddingBottom: 5 }} />
+                                                        <AntDesign name="caretright" size={30} color="white" />
                                                     </TouchableOpacity>
-
                                                 </View>
 
                                             </View>

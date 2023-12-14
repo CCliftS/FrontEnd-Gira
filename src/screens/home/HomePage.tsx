@@ -151,6 +151,18 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                         </ScrollView>
                     </View>
                 </View>
+                {/* Contenedor de Mis Tareas */}
+                <View style={styleBox.dataContainer}>
+                    {/* Titulo del contenedor */}
+                    <View style={styleBox.dataTitle}>
+                        <Text style={styleText.titleOne}>Mis Tareas</Text>
+                        <TouchableOpacity onPress={() => navigation.navigate("UserTask")}>
+                            <Text style={styleText.titleTwo}>Ver Todos</Text>
+                        </TouchableOpacity>
+
+                    </View>
+                </View>
+
 
             </ScrollView >
             <View style={styleGeneral.footer}>

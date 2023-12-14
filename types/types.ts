@@ -27,7 +27,12 @@ export type RootStackParamList = {
   CreateTask: undefined;
   DataTask: undefined;
   CommentTask: undefined;
-
+  EditTask: undefined;
+  AddComment: undefined;
+  UserTask: undefined;
+  EditState: undefined;
+  EditRoles: undefined;
+  TeamTask: undefined;
   // Otras rutas de tu aplicación
 };
 
@@ -54,4 +59,10 @@ export type AddTeamProjectProps = NativeStackScreenProps<RootStackParamList, 'Ad
 export type CreateTaskProps = NativeStackScreenProps<RootStackParamList, 'CreateTask'>;
 export type DataTaskProps = NativeStackScreenProps<RootStackParamList, 'DataTask'>;
 export type CommentTaskProps = NativeStackScreenProps<RootStackParamList, 'CommentTask'>;
+export type EditTaskProps = NativeStackScreenProps<RootStackParamList, 'EditTask'>;
+export type AddCommentProps = NativeStackScreenProps<RootStackParamList, 'AddComment'>;
+export type UsertaskProps = NativeStackScreenProps<RootStackParamList, 'UserTask'>;
+export type EditStateProps = NativeStackScreenProps<RootStackParamList, 'EditState'>;
+export type EditRolesProps = NativeStackScreenProps<RootStackParamList, 'EditRoles'>;
+export type TeamTaskProps = NativeStackScreenProps<RootStackParamList, 'TeamTask'>;
 // Definir tipos para otras pantallas según sea necesario

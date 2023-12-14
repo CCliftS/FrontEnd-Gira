@@ -26,6 +26,12 @@ import AddTeamProject from './src/screens/project/AddTeamProject';
 import CreateTask from './src/screens/task/createTask';
 import DataTask from './src/screens/task/DataTask';
 import CommentTask from './src/screens/task/CommentTask';
+import EditTask from './src/screens/task/EditTask';
+import AddComment from './src/screens/task/AddComment';
+import UserTask from './src/screens/user/UserTask';
+import EditState from './src/screens/task/EditState';
+import EditRoles from './src/screens/team/EditRoles';
+import TeamTask from './src/screens/team/TeamTask';
 
 
 
@@ -68,6 +74,12 @@ export default function App() {
         <RootStack.Screen name='CreateTask' component={CreateTask} />
         <RootStack.Screen name='DataTask' component={DataTask} />
         <RootStack.Screen name='CommentTask' component={CommentTask} />
+        <RootStack.Screen name='EditTask' component={EditTask} />
+        <RootStack.Screen name='AddComment' component={AddComment} />
+        <RootStack.Screen name='UserTask' component={UserTask} />
+        <RootStack.Screen name='EditState' component={EditState} />
+        <RootStack.Screen name='EditRoles' component={EditRoles} />
+        <RootStack.Screen name='TeamTask' component={TeamTask} />
 
       </RootStack.Navigator>
     </NavigationContainer>

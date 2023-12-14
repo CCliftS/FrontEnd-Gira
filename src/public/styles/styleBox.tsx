@@ -241,11 +241,12 @@ const styleBox = StyleSheet.create({
     },
     dataTask: {
         width: '100%',
-        height: 300,
+        height: 355,
         backgroundColor: 'white',
         elevation: 5, // Only for Android
         borderRadius: 10,
         padding: 20,
+        marginBottom: 10,
     },
     infoTask: {
         borderRadius: 10,
@@ -261,5 +262,22 @@ const styleBox = StyleSheet.create({
         //alignItems: 'center',
         flexDirection: 'row',
     },
+    editTask: {
+        height: 510,
+        backgroundColor: '#f5f5f5',
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
+        padding: 20,
+    },
+    dataComment: {
+        width: '100%',
+        height: 200,
+        backgroundColor: 'white',
+        elevation: 5, // Only for Android
+        borderRadius: 10,
+        padding: 20,
+        marginBottom: 10,
+    },
+
 });
 export default styleBox;

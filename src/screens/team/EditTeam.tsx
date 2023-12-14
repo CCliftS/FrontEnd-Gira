@@ -13,7 +13,7 @@ import styleText from "../../public/styles/styleText";
 
 const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
     const [newName, setNewName] = useState('');
-    
+
     const hanleChangeTeamName = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idTeam');
@@ -27,7 +27,7 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
         };
     }
 
-    return(
+    return (
         <View style={styleBox.container}>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataTeamPage")}>
@@ -49,44 +49,40 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
                     <Text style={styleText.confirmEdit}>Confirmar cambios</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styleBox.botonDelete}>
-                    <Text style={styleText.confirmEdit}>Eliminar equipo</Text>
-                </TouchableOpacity>
-
             </View>
         </View>
     );
 }
 export default EditTeam;
-    /*
-    return (
-        <View style={styleEditPage.container}>
-            <View style={styleEditPage.boxData}>
-                <Text style={styleEditPage.textPrimary}>Edición de datos</Text>
+/*
+return (
+    <View style={styleEditPage.container}>
+        <View style={styleEditPage.boxData}>
+            <Text style={styleEditPage.textPrimary}>Edición de datos</Text>
 
-                <View style={styleGeneral.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Nombre del proyecto</Text>
-                    <TextInput
-                        style={[styleUserPage.boxDataItem2, styleUserPage.textSecundary]}
-                        value={newName}
-                        onChangeText={(text: string) => setNewName(text)}
-                    />
-                </View>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => hanleChangeProject(newName)}>
-                    <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} >
-                    <Text style={styleUserPage.textBottom}>Crear roles</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} >
-                    <Text style={styleUserPage.textBottom}>Eliminar equipo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("DataTeamPage")}>
-                    <Text style={styleUserPage.textBottom}>Volver</Text>
-                </TouchableOpacity>
-
+            <View style={styleGeneral.boxDataItem}>
+                <Text style={styleUserPage.textPrimary}>Nombre del proyecto</Text>
+                <TextInput
+                    style={[styleUserPage.boxDataItem2, styleUserPage.textSecundary]}
+                    value={newName}
+                    onChangeText={(text: string) => setNewName(text)}
+                />
             </View>
+            <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => hanleChangeProject(newName)}>
+                <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styleUserPage.boxEditPassword} >
+                <Text style={styleUserPage.textBottom}>Crear roles</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styleUserPage.boxEditPassword} >
+                <Text style={styleUserPage.textBottom}>Eliminar equipo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("DataTeamPage")}>
+                <Text style={styleUserPage.textBottom}>Volver</Text>
+            </TouchableOpacity>
 
-        </View >
-    );*/
+        </View>
+
+    </View >
+);*/
 

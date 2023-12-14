@@ -20,7 +20,7 @@ const styleNavbar = StyleSheet.create({
     firstNavItem: {
         fontSize: 20,
         height: 55,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: 'white',
         borderRadius: 12,
         paddingVertical: 12,
         paddingHorizontal: 18,
