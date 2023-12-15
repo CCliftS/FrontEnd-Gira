@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Modal } from "react-native";
 import { CreateTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons } from '@expo/vector-icons';
+import { Feather, Ionicons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import { Dropdown } from "react-native-element-dropdown";
@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
+
 
 interface TeamData {
     nameProject: string;
@@ -28,6 +29,9 @@ interface DropdownMember {
 }
 
 const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [nameTask, setNameTask] = useState('');
     const [descriptionTask, setDescriptionTask] = useState('');
     const [startDate, setStarttDate] = useState(dayjs().format('YYYY-MM-DD'));
@@ -53,7 +57,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
             });
             navigation.navigate("DataTask");
         } catch (error) {
-            console.log(error, "No se creó la tarea");
+            setError("No se pudo crear la tarea");
+            setModalVisible(true);
         }
     };
 
@@ -75,7 +80,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
             setTeamData(response.data);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar el proyecto");
+            setModalVisible(true);
         }
     }
     const [membersTeam, setMembersTeam] = useState([]);
@@ -92,7 +98,8 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
             setMembersTeam(response.data.TeamsEmails);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los miembros del equipo");
+            setModalVisible(true);
         }
     };
 
@@ -108,6 +115,21 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataTask")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />

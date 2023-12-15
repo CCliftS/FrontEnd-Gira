@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 import { DataTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, FontAwesome5, MaterialIcons, AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, MaterialIcons, AntDesign, FontAwesome, Fontisto, Feather } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,7 +9,8 @@ import axios from "axios";
 
 
 const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
-
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
 
     const [estado, setEstado] = useState("Pendiente");
     const [option, setOption] = useState("");
@@ -44,7 +45,8 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeam(response.data.taskTeamName);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar las tareas");
+            setModalVisible(true);
         }
     };
     useEffect(() => {
@@ -56,6 +58,21 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
     }, [estado]);
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataProject")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />
@@ -64,21 +81,46 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
             </View>
             <View style={styleBox.contentPage}>
                 <View style={{ width: 225, justifyContent: 'space-between', flexDirection: 'row' }}>
-                    <View style={[styleBox.option, { marginRight: 10 }]}>
-                        <TouchableOpacity onPress={() => setEstado("Pendiente")}>
-                            <Text style={styleText.titleOne}>Pendiente</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={[styleBox.option, { marginRight: 10 }]}>
-                        <TouchableOpacity onPress={() => setEstado("Proceso")}>
-                            <Text style={styleText.titleOne}>Proceso</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={[styleBox.option, { marginRight: 10 }]}>
-                        <TouchableOpacity onPress={() => setEstado("Terminado")}>
-                            <Text style={styleText.titleOne}>Terminado</Text>
-                        </TouchableOpacity>
-                    </View>
+                    {estado === "Pendiente" ? (
+                        <View style={[styleBox.option2, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Pendiente")}>
+                                <Text style={styleText.confirmEdit}>Pendiente</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={[styleBox.option, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Pendiente")}>
+                                <Text style={styleText.titleOne}>Pendiente</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    {estado === "Proceso" ? (
+                        <View style={[styleBox.option2, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Proceso")}>
+                                <Text style={styleText.confirmEdit}>Proceso</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={[styleBox.option, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Proceso")}>
+                                <Text style={styleText.titleOne}>Proceso</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+                    {estado === "Terminado" ? (
+                        <View style={[styleBox.option2, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Terminado")}>
+                                <Text style={styleText.confirmEdit}>Terminado</Text>
+                            </TouchableOpacity>
+                        </View>
+                    ) : (
+                        <View style={[styleBox.option, { marginRight: 10 }]}>
+                            <TouchableOpacity onPress={() => setEstado("Terminado")}>
+                                <Text style={styleText.titleOne}>Terminado</Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
+
                 </View>
                 <View style={{ marginTop: 20 }}>
                     {/* True para participantes, false para Owner */}

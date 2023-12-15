@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { AddTeamProjectProps } from "../../../types/types"
 import { useState } from "react";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
@@ -9,6 +9,9 @@ import styleText from "../../public/styles/styleText";
 
 const AddTeamProject: React.FC<AddTeamProjectProps> = ({ navigation }) => {
     const [idTeam, setIdTeam] = useState('');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const handleAddTeam = async (idTeam: string) => {
         try {
 
@@ -19,11 +22,27 @@ const AddTeamProject: React.FC<AddTeamProjectProps> = ({ navigation }) => {
             });
             navigation.navigate("DataProject");
         } catch (error) {
-            console.log(error, "No se agrego al equipo  ");
+            setError("El equipo no existe");
+            setModalVisible(true);
         }
     }
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataProject")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />

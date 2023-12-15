@@ -202,6 +202,14 @@ const styleBox = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    option2: {
+        width: '49%',
+        height: 50,
+        backgroundColor: '#0c04b6',
+        borderRadius: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     dataList: {
         width: '100%',
         height: 500,
@@ -294,6 +302,17 @@ const styleBox = StyleSheet.create({
         alignItems: 'center',
         elevation: 5,
 
+    },
+    modalError: {
+        margin: 20,
+        width: 300,
+        height: 250,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
     },
 });
 export default styleBox;

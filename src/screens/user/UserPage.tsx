@@ -1,5 +1,5 @@
 import { UserPageProps } from "../../../types/types";
-import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent, ScrollView, TouchableOpacityBase, TouchableHighlight } from "react-native";
+import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent, ScrollView, TouchableOpacityBase, TouchableHighlight, Modal } from "react-native";
 import styleUserPage from "../../public/styles/StyleUserPage";
 import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
@@ -7,12 +7,14 @@ import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 
 const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
-    const email = useAsyncStorage('email');
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
 
+    const email = useAsyncStorage('email');
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
 
@@ -23,7 +25,8 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
             setName(fetchedName);
             setLastName(fetchedLastName);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los datos del usuario");
+            setModalVisible(true);
         }
     }
     useFocusEffect(() => {
@@ -32,7 +35,21 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.containerPage}>
-
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />

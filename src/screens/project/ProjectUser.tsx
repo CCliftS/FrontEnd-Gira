@@ -1,10 +1,10 @@
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal } from "react-native";
 import { ProjectUserProps } from "../../../types/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 
 
@@ -19,6 +19,9 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
     const [participedProjects, setParticipedProjects] = useState([]);
     const [idParticipedProjects, setIdParticipedProjects] = useState([]);
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     /* Aqui pido los projects del Owner*/
 
     const loadMyProjects = async () => {
@@ -31,7 +34,8 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
 
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los proyectos");
+            setModalVisible(true);
         }
     }
     const loadParticipatesProjects = async () => {
@@ -43,7 +47,8 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
             setIdParticipedProjects(response.data.idParticipedProjects);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los proyectos");
+            setModalVisible(true);
         }
     }
     useEffect(() => {
@@ -53,6 +58,21 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />
@@ -61,17 +81,26 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
             </View>
             <View style={styleBox.contentPage}>
                 <View style={styleBox.dataTitle}>
-                    <View style={styleBox.option}>
+                    {option == false && <View style={styleBox.option2}>
                         <TouchableOpacity onPress={() => setOption(false)}>
-
+                            <Text style={styleText.confirmEdit}>Owner</Text>
+                        </TouchableOpacity>
+                    </View>}
+                    {option == true && <View style={styleBox.option}>
+                        <TouchableOpacity onPress={() => setOption(false)}>
                             <Text style={styleText.titleOne}>Owner</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styleBox.option}>
+                    </View>}
+                    {option == false && <View style={styleBox.option}>
                         <TouchableOpacity onPress={() => setOption(true)}>
                             <Text style={styleText.titleOne}>Participante</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View>}
+                    {option == true && <View style={styleBox.option2}>
+                        <TouchableOpacity onPress={() => setOption(true)}>
+                            <Text style={styleText.confirmEdit}>Participante</Text>
+                        </TouchableOpacity>
+                    </View>}
                 </View>
                 <View style={{ marginTop: 20 }}>
 

@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Modal } from "react-native";
 import { EditEmailPageProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import NavigationBar from "../common/navbar";
@@ -7,11 +7,13 @@ import { useState } from "react";
 import styleEditPage from "../../public/styles/StyleEditPage";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
 
 const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
     const [newName, setNewName] = useState('');
 
     const hanleChangeTeamName = async (newName: string) => {
@@ -23,12 +25,28 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
             });
             navigation.navigate("DataTeamPage");
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar el nombre del equipo");
+            setModalVisible(true);
         };
     }
 
     return (
         <View style={styleBox.container}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataTeamPage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />

@@ -1,26 +1,29 @@
 import axios from 'axios';
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Modal } from 'react-native';
 import { RecoveryScreenProps } from '../../../types/types';
+import styleBox from '../../public/styles/styleBox';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import styleText from '../../public/styles/styleText';
 
 
 const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState('');
+
   const [email, setEmail] = useState('');
-  const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleEmail = async (email: string) => {
-    setError(false);
     setIsButtonDisabled(true);
     try {
       const response = await axios.put(`http://10.0.2.2:3000/user/resetPassword/${email}`);
       navigation.navigate("Login")
     }
-    catch (e: any) {
-      setError(true);
-      setErrorMessage(e?.response?.data.message);
-      console.log(errorMessage);
+    catch (error) {
+      setError("Correo no registrado");
+      setModalVisible(true);
     }
     finally {
       setIsButtonDisabled(false);
@@ -29,6 +32,21 @@ const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        transparent={true}
+      >
+        <View style={styleBox.modalCenter}>
+          <View style={styleBox.modalError}>
+            <Feather name="alert-triangle" size={54} color="#da1a29" />
+            <Text style={styleText.titleOne}>{error}</Text>
+            <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styleText.confirmEdit}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <Image
         source={require('../../public/icons/pass.png')}
         style={styles.logo}

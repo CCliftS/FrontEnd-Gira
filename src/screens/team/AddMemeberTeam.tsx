@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, TextInput, Modal } from "react-native";
 import { AddMemberTeamProps } from "../../../types/types";
 import { useState } from "react";
 import axios from "axios";
@@ -11,6 +11,9 @@ import { Dropdown } from "react-native-element-dropdown";
 
 
 const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [emailMember, setEmailMember] = useState('');
     const [role, setRole] = useState('');
     const roles = [
@@ -34,13 +37,27 @@ const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
             });
             navigation.navigate("DataTeamPage");
         } catch (error) {
-            console.log(error, "No se agrego al equipo  ");
+            setError("No se pudo agregar el miembro");
+            setModalVisible(true);
         }
-    }
-
-
+    };
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataTeamPage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />

@@ -1,7 +1,7 @@
-import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 import { CommentTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { FontAwesome5, Ionicons } from "@expo/vector-icons";
+import { Feather, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,6 +9,10 @@ import axios from "axios";
 
 
 const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [option, setOption] = useState("");
     const [nav, setNav] = useState("");
     const [nameTask, setNameTask] = useState("");
@@ -23,7 +27,8 @@ const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
             setNameTask(response.data.name);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar la tarea");
+            setModalVisible(true);
         }
     };
     const [comments, setComments] = useState([]);
@@ -37,7 +42,8 @@ const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
             setEmailUser(response.data.commentEmailUser);
             setIdTask(response.data.commentIdTask);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los comentarios");
+            setModalVisible(true);
         }
     }
     useEffect(() => {
@@ -50,6 +56,21 @@ const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
     }, [comments]);
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 {nav === "UserTask" && <View>
                     <TouchableOpacity

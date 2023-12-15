@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, Image, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, Image, TouchableOpacity, Modal } from "react-native";
 import { DataTeamPageProps } from "../../../types/types";
 import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -8,6 +8,9 @@ import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo
 import styleText from "../../public/styles/styleText";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [membersTeam, setMembersTeam] = useState([]);
     const [membersTeamId, setMembersTeamId] = useState([]);
     const [membersTeamRole, setMembersTeamRole] = useState([]);
@@ -22,7 +25,8 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             const response = await axios.delete(`http://10.0.2.2:3001/Member/removeMember/${id}/${idTeam}`);
             navigation.navigate("DataTeamPage");
         } catch (error) {
-            console.log(error);
+            setError("No se pudo eliminar el miembro");
+            setModalVisible(true);
         }
     }
     const loadMembersTeam = async () => {
@@ -35,7 +39,8 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
 
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los miembros");
+            setModalVisible(true);
         }
     };
     const loadData = async () => {
@@ -56,6 +61,21 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("MyTeamsPage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 60 }} />

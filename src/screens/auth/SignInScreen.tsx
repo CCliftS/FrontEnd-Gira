@@ -1,19 +1,22 @@
 import { useState } from 'react';
-import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert, Modal } from 'react-native';
 import axios from 'axios';
 import { SignInScreenProps } from '../../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
 import styleGeneral from '../../public/styles/StyleGeneral';
+import styleBox from '../../public/styles/styleBox';
+import { Feather } from '@expo/vector-icons';
+import styleText from '../../public/styles/styleText';
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [lastname, setLastname] = useState('');
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState('');
 
   const handleRegister = async (
     email: string,
@@ -22,7 +25,6 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
     lastName: string
   ) => {
     setIsButtonDisabled(true);
-    setError(false);
 
     try {
       const response = await axios.post(`http://10.0.2.2:3000/auth/singIn`, {
@@ -32,38 +34,32 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
         lastName,
       });
       navigation.navigate('Login');
-    } catch (e: any) {
-      setError(true);
-      setErrorMessage(e?.response?.data?.message);
-      twoOptionAlertHandler();
+    } catch (error) {
+      setError('Error al registrar');
+      setModalVisible(true);
     }
     finally {
       setIsButtonDisabled(false);
     }
   };
 
-  const twoOptionAlertHandler = () => {
-    //function to make two option alert
-    Alert.alert(
-      //title
-      'Alerta!',
-      //body
-      'Registro Incorrecto',
-      [
-        { text: 'Reintentar', onPress: () => navigation.navigate('SignIn') },
-        {
-          text: 'Iniciar Sesión',
-          onPress: () => navigation.navigate('Login'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false }
-      //clicking out side of alert will not cancel
-    );
-  };
-
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        transparent={true}
+      >
+        <View style={styleBox.modalCenter}>
+          <View style={styleBox.modalError}>
+            <Feather name="alert-triangle" size={54} color="#da1a29" />
+            <Text style={styleText.titleOne}>{error}</Text>
+            <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styleText.confirmEdit}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styleGeneral.boxContainer}>
         <Image
           source={require('../../public/icons/gira_logo.png')}

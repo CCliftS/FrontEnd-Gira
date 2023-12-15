@@ -1,13 +1,16 @@
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Modal } from "react-native";
 import { AddCommentProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 const AddComment: React.FC<AddCommentProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const handleNewComment = async (comment: string) => {
         try {
             const id_task = await AsyncStorage.getItem('idTask');
@@ -20,13 +23,29 @@ const AddComment: React.FC<AddCommentProps> = ({ navigation }) => {
             });
             navigation.navigate("CommentTask");
         } catch (error) {
-            console.log(error);
+            setError("No se pudo crear el comentario");
+            setModalVisible(true);
         }
     }
     const [newComment, setNewComment] = useState('');
 
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("CommentTask")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 40 }} />

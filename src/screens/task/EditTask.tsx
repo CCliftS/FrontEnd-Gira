@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, TextInput, Modal } from "react-native";
 import { EditTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { Feather, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -9,6 +9,7 @@ import axios from "axios";
 import { Dropdown } from "react-native-element-dropdown";
 import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
+import { set } from "date-fns";
 
 
 interface TeamData {
@@ -30,6 +31,9 @@ interface DropdownMember {
 const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
 
+    const [modalVisibleOne, setModalVisibleOne] = useState(false);
+    const [error, setError] = useState('');
+
     const fecthDataTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
@@ -43,7 +47,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setStatusTask(response.data.status);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar la tarea");
+            setModalVisibleOne(true);
         }
     };
     const status = [
@@ -70,7 +75,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setTeamData(response.data);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar el proyecto");
+            setModalVisibleOne(true);
         }
     }
     const [membersTeam, setMembersTeam] = useState([]);
@@ -87,7 +93,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setMembersTeam(response.data.TeamsEmails);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los miembros del equipo");
+            setModalVisibleOne(true);
         }
     };
     const [descriptionTask, setDescriptionTask] = useState("");
@@ -109,7 +116,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar el nombre");
+            setModalVisibleOne(true);
         }
     };
     const handleChangeDescription = async (newDescription: string) => {
@@ -121,7 +129,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar la descripción");
+            setModalVisibleOne(true);
         };
     };
     const handleChangeStatus = async (newStatus: string) => {
@@ -133,7 +142,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar el estado");
+            setModalVisibleOne(true);
         }
     };
     const handleTeamAndUser = async (id_team: string, email_user: string) => {
@@ -146,7 +156,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar el equipo y el usuario");
+            setModalVisibleOne(true);
         }
     };
     const handleChangeStartDate = async (newDate: Date) => {
@@ -159,7 +170,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar la fecha de inicio");
+            setModalVisibleOne(true);
         }
     };
     const handleChangeEndDate = async (newDate: Date) => {
@@ -172,7 +184,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             fecthDataTask();
             setModalVisible(true);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar la fecha de termino");
+            setModalVisibleOne(true);
         }
     };
     useEffect(() => {
@@ -182,6 +195,21 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.container}>
+            <Modal
+                animationType="slide"
+                visible={modalVisibleOne}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("DataTask")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />

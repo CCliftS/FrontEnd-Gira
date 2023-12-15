@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, FlatList, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, Image, FlatList, ScrollView, Modal } from "react-native";
 import { MyTeamsPageProps } from "../../../types/types";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import NavigationBar from "../common/navbar";
@@ -9,9 +9,12 @@ import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
-import { Ionicons, AntDesign, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 
 const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [option, setOption] = useState(false);
 
     const [nameTeams, setNameTeams] = useState([]);
@@ -25,7 +28,8 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
             setIdTeams(response.data.teamsId);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los equipos");
+            setModalVisible(true);
         }
     };
 
@@ -40,7 +44,8 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
             setIdTeamMember(response.data.teamsId);
 
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los equipos");
+            setModalVisible(true);
         }
     };
 
@@ -51,6 +56,21 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.containerPage}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />
@@ -59,16 +79,26 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
             </View>
             <View style={styleBox.contentPage}>
                 <View style={styleBox.dataTitle}>
-                    <View style={styleBox.option}>
+                    {option == false && <View style={styleBox.option2}>
+                        <TouchableOpacity onPress={() => setOption(false)}>
+                            <Text style={styleText.confirmEdit}>Owner</Text>
+                        </TouchableOpacity>
+                    </View>}
+                    {option == true && <View style={styleBox.option}>
                         <TouchableOpacity onPress={() => setOption(false)}>
                             <Text style={styleText.titleOne}>Owner</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styleBox.option}>
+                    </View>}
+                    {option == false && <View style={styleBox.option}>
                         <TouchableOpacity onPress={() => setOption(true)}>
                             <Text style={styleText.titleOne}>Participante</Text>
                         </TouchableOpacity>
-                    </View>
+                    </View>}
+                    {option == true && <View style={styleBox.option2}>
+                        <TouchableOpacity onPress={() => setOption(true)}>
+                            <Text style={styleText.confirmEdit}>Participante</Text>
+                        </TouchableOpacity>
+                    </View>}
                 </View>
                 <View style={{ marginTop: 20 }}>
                     {option == false ? (

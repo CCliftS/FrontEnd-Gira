@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, Modal } from "react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { HomePageScreenProps } from "../../../types/types";
@@ -7,12 +7,16 @@ import NavigationBar from "../common/navbar";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
+
 const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
     {/* Datos del usuario */ }
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const [userName, setUserName] = useState('');
     const [userLastName, setUserLastName] = useState('');
 
@@ -24,7 +28,8 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setUserName(response.data.name);
             setUserLastName(response.data.lastName);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los datos del usuario");
+            setModalVisible(true);
         }
     };
     {/* Proyectos del usuario Owner */ }
@@ -38,10 +43,9 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
 
             setNameProject(response.data.nameProjects);
             setIdProject(response.data.idProjects);
-
-
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los datos de los proyectos");
+            setModalVisible(true);
         }
     }
     {/* Equipos del usuario */ }
@@ -57,7 +61,8 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setNameTeam(response.data.teamsName);
             setIdTeam(response.data.teamsId);
         } catch (error) {
-            console.log(error);
+            setError("No se pudo cargar los datos de los equipos");
+            setModalVisible(true);
         }
     };
 
@@ -69,6 +74,21 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.container}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <ScrollView>
                 <View style={{ marginTop: 25 }}>
                     <View style={styleBox.header} >

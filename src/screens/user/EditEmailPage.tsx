@@ -1,14 +1,16 @@
-import { View, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, Modal } from "react-native";
 import { EditEmailPageProps } from "../../../types/types";
 import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons } from "@expo/vector-icons";
+import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 
 const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
 
     const email = useAsyncStorage('email');
     const [newEmail, setNewEmail] = useState('');
@@ -18,7 +20,8 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
     const handlerChangeEmail = async (newEmail: string, newEmail2: string, email: string) => {
         setIsButtonDisabled(true);
         if (newEmail !== newEmail2) {
-            alert('Los correos no coinciden');
+            setError("Los correos no coinciden");
+            setModalVisible(true);
             return;
         }
         try {
@@ -30,7 +33,8 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
             setNewEmail(fecthEmail);
             navigation.navigate("Login");
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar el correo");
+            setModalVisible(true);
         } finally {
             setIsButtonDisabled(false);
         }
@@ -38,6 +42,21 @@ const EditEmailPage: React.FC<EditEmailPageProps> = ({ navigation }) => {
 
     return (
         <View style={styleBox.container}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("UserPage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />
@@ -77,28 +96,28 @@ export default EditEmailPage;
 
 
 
-    /*
-    return (
-        <View style={styleEditPage.container}>
-            <View style={styleEditPage.boxData}>
-                <Text style={styleEditPage.textPrimary}>Cambio de Correo</Text>
-                <View style={styleEditPage.boxDataItem}>
-                    <Text style={styleEditPage.textSecundary}>Ingrese su nuevo correo</Text>
-                    <TextInput
-                        style={[styleEditPage.boxDataItem2, styleEditPage.textSecundary]}
-                        value={newEmail}
-                        onChangeText={(text: string) => setNewEmail(text)}
-                    />
-                </View>
-                <TouchableOpacity
-                    disabled={isButtonDisabled}
-                    style={styleEditPage.boxBottom}
-                    onPress={() => handlerChangeEmail(newEmail, email)}>
-                    <Text style={styleEditPage.textSecundary}>Actualizar correo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleEditPage.boxBottom} onPress={() => navigation.navigate("UserEdit")}>
-                    <Text style={styleEditPage.textSecundary}>Volver</Text>
-                </TouchableOpacity>
+/*
+return (
+    <View style={styleEditPage.container}>
+        <View style={styleEditPage.boxData}>
+            <Text style={styleEditPage.textPrimary}>Cambio de Correo</Text>
+            <View style={styleEditPage.boxDataItem}>
+                <Text style={styleEditPage.textSecundary}>Ingrese su nuevo correo</Text>
+                <TextInput
+                    style={[styleEditPage.boxDataItem2, styleEditPage.textSecundary]}
+                    value={newEmail}
+                    onChangeText={(text: string) => setNewEmail(text)}
+                />
             </View>
+            <TouchableOpacity
+                disabled={isButtonDisabled}
+                style={styleEditPage.boxBottom}
+                onPress={() => handlerChangeEmail(newEmail, email)}>
+                <Text style={styleEditPage.textSecundary}>Actualizar correo</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styleEditPage.boxBottom} onPress={() => navigation.navigate("UserEdit")}>
+                <Text style={styleEditPage.textSecundary}>Volver</Text>
+            </TouchableOpacity>
         </View>
-    )*/
+    </View>
+)*/

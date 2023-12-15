@@ -1,5 +1,5 @@
 import { UserPageProps } from "../../../types/types";
-import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Modal } from "react-native";
 import { useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
@@ -9,6 +9,9 @@ import styleText from "../../public/styles/styleText";
 
 
 const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [error, setError] = useState('');
+
     const email = useAsyncStorage('email');
     const [name, setName] = useState('');
     const [lastName, setLastname] = useState('');
@@ -24,13 +27,29 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
             });
             navigation.navigate("UserPage");
         } catch (error) {
-            console.log(error);
+            setError("No se pudo actualizar los datos");
+            setModalVisible(true);
         } finally {
             setIsButtonDisabled(false);
         }
     }
     return (
         <View style={styleBox.container}>
+            <Modal
+                animationType="slide"
+                visible={modalVisible}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalError}>
+                        <Feather name="alert-triangle" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>{error}</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+                            <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("UserPage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />

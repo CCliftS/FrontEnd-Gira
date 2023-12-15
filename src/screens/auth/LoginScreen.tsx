@@ -1,23 +1,25 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, TouchableOpacity, Alert, Modal } from 'react-native';
 import axios from 'axios';
 import { LoginScreenProps } from '../../../types/types';
 import styleGeneral from '../../public/styles/StyleGeneral';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import styleBox from '../../public/styles/styleBox';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+import styleText from '../../public/styles/styleText';
 
 
 const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [error, setError] = useState('');
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const handleLogin = async (email: string, password: string) => {
-    setError(false);
     setIsButtonDisabled(true); // Deshabilita el botón al inicio
-
     try {
       const response = await axios.post(`http://10.0.2.2:3000/auth/Login`, {
         email,
@@ -25,9 +27,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
       });
       await AsyncStorage.setItem('email', email);
       navigation.navigate("HomePage");
-    } catch (e: any) {
-      setError(true);
-      setErrorMessage(e?.response?.data?.message);
+    } catch (error) {
+      setError("Correo o contraseña incorrectos");
+      setModalVisible(true);
     } finally {
       setIsButtonDisabled(false); // Habilita el botón después de que la operación esté completa
     }
@@ -37,6 +39,21 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <Modal
+        animationType="slide"
+        visible={modalVisible}
+        transparent={true}
+      >
+        <View style={styleBox.modalCenter}>
+          <View style={styleBox.modalError}>
+            <Feather name="alert-triangle" size={54} color="#da1a29" />
+            <Text style={styleText.titleOne}>{error}</Text>
+            <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={styleText.confirmEdit}>OK</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style={styleGeneral.boxContainer}>
         <Image
           source={require('../../public/icons/gira_logo.png')}
