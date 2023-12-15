@@ -19,9 +19,8 @@ const EditTeam: React.FC<EditEmailPageProps> = ({ navigation }) => {
     const hanleChangeTeamName = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idTeam');
-            const response = await axios.post(`http://10.0.2.2:3001/Teams/updateName`, {
+            const response = await axios.put(`http://10.0.2.2:3001/Teams/updateName/${id}`, {
                 newName,
-                id,
             });
             navigation.navigate("DataTeamPage");
         } catch (error) {

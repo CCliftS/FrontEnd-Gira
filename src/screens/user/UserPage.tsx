@@ -97,10 +97,10 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
 
                 </View>
                 <View style={styleBox.infoBoton}>
-                    <Text style={styleText.info}>{name}</Text>
+                    <Text style={{ fontSize: 20 }}>{name}</Text>
                 </View>
                 <View style={styleBox.infoBoton}>
-                    <Text style={styleText.info}>{lastName}</Text>
+                    <Text style={{ fontSize: 20 }}>{lastName}</Text>
                 </View>
                 <View style={{ marginTop: 20 }}></View>
                 <View style={styleBox.dataTitle}>
@@ -111,7 +111,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
 
                 </View>
                 <View style={styleBox.infoBoton}>
-                    <Text style={styleText.info}>{email}</Text>
+                    <Text style={{ fontSize: 20 }}>{email}</Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate("EditPassPage")}>
                     <View style={styleBox.botonEdit}>
