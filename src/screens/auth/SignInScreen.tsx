@@ -5,7 +5,7 @@ import { SignInScreenProps } from '../../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
 import styleGeneral from '../../public/styles/StyleGeneral';
 import styleBox from '../../public/styles/styleBox';
-import { Feather } from '@expo/vector-icons';
+import { Feather, Fontisto } from '@expo/vector-icons';
 import styleText from '../../public/styles/styleText';
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
@@ -44,7 +44,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styleBox.containerPage, { alignItems: 'center', justifyContent: 'center' }]}>
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -60,50 +60,48 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      <View style={styleGeneral.boxContainer}>
-        <Image
-          source={require('../../public/icons/gira_logo.png')}
-          style={styles.logo}
-        />
-        <View style={styles.container2}>
-          <Text style={styles.title}>Registro</Text>
+      <Fontisto name="jira" size={134} color="#f5f5f5" style={{ marginBottom: 20 }} />
+      <View style={styleBox.boxHome}>
+        <Text style={styleText.textHome}>Registro</Text>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Correo Electrónico"
             value={email}
             onChangeText={(text: string) => setEmail(text)}
-            style={styles.input}
           />
+        </View>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Contraseña"
             value={password}
             onChangeText={(text: string) => setPassword(text)}
             secureTextEntry
-            style={styles.input}
           />
+        </View>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Nombre"
             value={name}
             onChangeText={(text: string) => setName(text)}
-            style={styles.input}
           />
+        </View>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Apellido"
             value={lastname}
             onChangeText={(text: string) => setLastname(text)}
-            style={styles.input}
           />
-
-          <TouchableOpacity
-            disabled={isButtonDisabled}
-            style={[styles.button]}
-            onPress={() => handleRegister(email, password, name, lastname)}
-          >
-            <Text style={styles.buttonText}>Registrarse</Text>
-          </TouchableOpacity>
-          <Text onPress={() => navigation.navigate("Login")} style={styles.link}>
-            Ya tienes una cuenta? Inicia Sesión.
-          </Text>
         </View>
+        <TouchableOpacity
+          disabled={isButtonDisabled}
+          style={styleBox.botonEdit}
+          onPress={() => handleRegister(email, password, name, lastname)}
+        >
+          <Text style={styleText.titleOne}>Registrarse</Text>
+        </TouchableOpacity>
+        <Text onPress={() => navigation.navigate("Login")} style={[styleText.titleTwo, { marginTop: 15 }]}>
+          Ya tienes una cuenta? Inicia Sesión.
+        </Text>
       </View>
     </View>
   );

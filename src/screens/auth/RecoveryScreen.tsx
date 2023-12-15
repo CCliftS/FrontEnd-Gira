@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Modal } from 'react-native';
 import { RecoveryScreenProps } from '../../../types/types';
 import styleBox from '../../public/styles/styleBox';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
 import styleText from '../../public/styles/styleText';
 
 
@@ -31,7 +31,7 @@ const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styleBox.container}>
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -47,27 +47,32 @@ const RecoveryScreen: React.FC<RecoveryScreenProps> = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      <Image
-        source={require('../../public/icons/pass.png')}
-        style={styles.logo}
-      />
-      <View style={styles.container2}>
-        <Text style={styles.title}>Olvide mi contraseña</Text>
-        <Text style={styles.subtitle}>Ingrese su correo electronico</Text>
+      <View style={styleBox.headerPage}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Ionicons name="arrow-back-circle-sharp" size={45} color="#0c04b6" style={{ paddingRight: 60 }} />
+        </TouchableOpacity>
+      </View>
+      <View style={styleBox.headerEdit}>
+        <Text style={styleText.headerBlack}>Recuperar contraseña</Text>
+        <Text style={styleText.infoEdit}>En esta ventana puedes recuperar tu contraseña, se enviara a tu email una nueva contraseña aleatoria, recomendamos cambiarla una vez ingresado.</Text>
+      </View>
+      <View style={styleBox.contentPage}>
+        <Text style={styleText.titleOne}>Ingrese su correo electronico</Text>
         <TextInput
           placeholder="Correo Electrónico"
           value={email}
           onChangeText={setEmail}
-          style={styles.input}
+          style={[styleBox.infoBoton, styleText.input]}
         />
         <TouchableOpacity
           disabled={isButtonDisabled}
           onPress={() => handleEmail(email)}
-          style={[styles.button]}
+          style={styleBox.botonConfirm}
         >
-          <Text style={styles.buttonText}>Siguiente</Text>
+          <Text style={styleText.confirmEdit}>Siguiente</Text>
         </TouchableOpacity>
       </View>
+
     </View>
   );
 };

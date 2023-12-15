@@ -1,7 +1,7 @@
 import { View, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 import { DataTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, FontAwesome5, MaterialIcons, AntDesign, FontAwesome, Fontisto, Feather } from "@expo/vector-icons";
+import { Ionicons, FontAwesome5, MaterialIcons, AntDesign, FontAwesome, Fontisto, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -11,6 +11,8 @@ import axios from "axios";
 const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
+
+    const [modalDelete, setModalDelete] = useState(false);
 
     const [estado, setEstado] = useState("Pendiente");
     const [option, setOption] = useState("");
@@ -29,7 +31,16 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
     const [startDateTask, setStartDateTask] = useState([]);
     const [statusTask, setStatusTask] = useState([]);
     const [nameTeam, setNameTeam] = useState([]);
-
+    const handleDeleteTask = async () => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            const response = await axios.delete(`http://10.0.2.2:3002/Tasks/removeTask/${id}`);
+            navigation.navigate("DataTask");
+        } catch (error) {
+            setError("No se pudo eliminar la tarea");
+            setModalVisible(true);
+        }
+    };
     const fecthTaskStatus = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
@@ -69,6 +80,24 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                         <Text style={styleText.titleOne}>{error}</Text>
                         <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
                             <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDelete}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDelete(false); handleDeleteTask() }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDelete(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -281,7 +310,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => navigation.navigate("DataProject")}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask"); AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>
@@ -327,7 +356,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => navigation.navigate("DataProject")}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask");; AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>
@@ -373,7 +402,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => navigation.navigate("DataProject")}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask");; AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>

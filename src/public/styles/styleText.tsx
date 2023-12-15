@@ -45,7 +45,11 @@ const styleText = StyleSheet.create({
         color: 'white',
         fontWeight: '800',
     },
-
+    textHome: {
+        fontSize: 30,
+        color: 'black',
+        fontWeight: '800',
+    },
 }
 );
 export default styleText;

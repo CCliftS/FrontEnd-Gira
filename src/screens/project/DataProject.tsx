@@ -4,7 +4,7 @@ import AsyncStorage, { useAsyncStorage } from "@react-native-async-storage/async
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 
 
@@ -18,6 +18,11 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
+
+    const [modalDeleteTeam, setModalDeleteTeam] = useState(false);
+    const [idDelete, setIdDelete] = useState('');
+
+    const [modalDeleteProject, setModalDeleteProject] = useState(false);
 
     const loadDataProject = async () => {
         try {
@@ -45,6 +50,16 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
         }
 
     };
+    const handleDeleteProject = async () => {
+        try {
+            const id = await AsyncStorage.getItem('idProject');
+            const response = await axios.delete(`http://10.0.2.2:3001/Project/removeProject/${id}`);
+            navigation.navigate("DataProject");
+        } catch (error) {
+            setError("No se elimino el proyecto");
+            setModalVisible(true);
+        };
+    }
     const loadData = async () => {
         setOption(await AsyncStorage.getItem('option') ?? '');
         setIdProject(await AsyncStorage.getItem('idProject') ?? '');
@@ -67,10 +82,47 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
             >
                 <View style={styleBox.modalCenter}>
                     <View style={styleBox.modalError}>
+
                         <Feather name="alert-triangle" size={54} color="#da1a29" />
                         <Text style={styleText.titleOne}>{error}</Text>
                         <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
                             <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDeleteTeam}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDeleteTeam(false); handleDeleteTeam(idDelete) }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDeleteTeam(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDeleteProject}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDeleteProject(false); handleDeleteProject() }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDeleteProject(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -140,7 +192,7 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                                                     <Text style={{ fontSize: 15 }}> Codigo: {idTeams[index]} </Text>
                                                 </View>
                                                 <View style={{ marginLeft: 20 }}>
-                                                    <TouchableOpacity onPress={() => handleDeleteTeam(idTeams[index])}>
+                                                    <TouchableOpacity onPress={() => { setIdDelete(idTeams[index]); setModalDeleteTeam(true) }}>
                                                         <MaterialIcons name="delete" size={28} color="black" />
                                                     </TouchableOpacity>
                                                 </View>
@@ -152,9 +204,9 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
                             <TouchableOpacity style={styleBox.botonEdit} onPress={() => navigation.navigate("DataTask")}>
                                 <Text style={styleText.titleOne}>Gestionar Tareas</Text>
                             </TouchableOpacity>
-                            <View style={styleBox.botonDelete}>
+                            <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalDeleteProject(true)}>
                                 <Text style={styleText.titleOne}>Eliminar Proyecto</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     )}
                 </View>

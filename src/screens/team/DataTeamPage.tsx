@@ -4,12 +4,15 @@ import { useCallback, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import styleBox from "../../public/styles/styleBox";
-import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
+    const [modalDeleteTeam, setModalDeleteTeam] = useState(false);
+    const [modalDeleteMember, setModalDeleteMember] = useState(false);
+    const [idMember, setIdMember] = useState('');
 
     const [membersTeam, setMembersTeam] = useState([]);
     const [membersTeamId, setMembersTeamId] = useState([]);
@@ -19,6 +22,16 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const [idTeam, setIdTeam] = useState('');
     const [option, setOption] = useState('');
 
+    const handleDeleteTeam = async () => {
+        try {
+            const id = await AsyncStorage.getItem('idTeam');
+            const response = await axios.delete(`http://10.0.2.2:3001/Teams/removeTeam/${id}`);
+            navigation.navigate("MyTeamsPage");
+        } catch (error) {
+            setError("No se pudo eliminar el equipo");
+            setModalVisible(true);
+        }
+    };
     const handleDeleteMember = async (id: string) => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
@@ -72,6 +85,42 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                         <Text style={styleText.titleOne}>{error}</Text>
                         <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalVisible(!modalVisible)}>
                             <Text style={styleText.confirmEdit}>OK</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDeleteMember}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDeleteMember(false); handleDeleteMember(idMember) }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDeleteMember(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDeleteTeam}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDeleteTeam(false); handleDeleteTeam() }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDeleteTeam(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -156,7 +205,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                                                 <Text style={{ fontSize: 20 }}>{membersTeamRole[index]}</Text>
                                             </View>
                                             <View>
-                                                <TouchableOpacity onPress={() => handleDeleteMember(item)}>
+                                                <TouchableOpacity onPress={() => { setIdMember(item); setModalDeleteMember(true) }}>
                                                     <MaterialIcons name="delete" size={28} color="black" />
                                                 </TouchableOpacity>
                                                 <TouchableOpacity onPress={() => { navigation.navigate("EditRoles"); AsyncStorage.setItem('emailUser', membersTeam[index]); }}>
@@ -170,9 +219,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <TouchableOpacity style={styleBox.botonEdit} onPress={() => { navigation.navigate("TeamTask"); AsyncStorage.setItem('idTeam', idTeam) }}>
                                 <Text style={styleText.titleOne}>Ver Tareas</Text>
                             </TouchableOpacity>
-                            <View style={styleBox.botonDelete}>
+                            <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalDeleteTeam(true)}>
                                 <Text style={styleText.titleOne}>Eliminar equipo</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     )}
                 </View>

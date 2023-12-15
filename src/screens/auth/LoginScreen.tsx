@@ -5,7 +5,7 @@ import { LoginScreenProps } from '../../../types/types';
 import styleGeneral from '../../public/styles/StyleGeneral';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styleBox from '../../public/styles/styleBox';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Fontisto, MaterialIcons } from '@expo/vector-icons';
 import styleText from '../../public/styles/styleText';
 
 
@@ -38,7 +38,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
 
   return (
-    <View style={styles.container}>
+    <View style={[styleBox.containerPage, { alignItems: 'center', justifyContent: 'center' }]}>
       <Modal
         animationType="slide"
         visible={modalVisible}
@@ -54,40 +54,38 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-      <View style={styleGeneral.boxContainer}>
-        <Image
-          source={require('../../public/icons/gira_logo.png')}
-          style={styles.logo}
-        />
-        <View style={styles.container2}>
-          <Text style={styles.title}>Bienvenido a Gira</Text>
+
+      <Fontisto name="jira" size={134} color="#f5f5f5" style={{ marginBottom: 20 }} />
+      <View style={styleBox.boxHome}>
+        <Text style={styleText.textHome}>Bienvenido a Jira</Text>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Correo Electrónico"
             value={email}
             onChangeText={(text: string) => setEmail(text)}
-            style={styles.input}
           />
+        </View>
+        <View style={styleBox.infoBoton}>
           <TextInput
             placeholder="Contraseña"
             value={password}
             onChangeText={(text: string) => setPassword(text)}
             secureTextEntry
-            style={styles.input}
           />
-          <TouchableOpacity
-            disabled={isButtonDisabled}
-            onPress={() => handleLogin(email, password)}
-            style={[styles.button]}
-          >
-            <Text style={styles.buttonText}>Iniciar Sesión</Text>
-          </TouchableOpacity>
-          <Text onPress={() => navigation.navigate("SignIn")} style={styles.link}>
-            ¿No tienes una cuenta? Regístrate aquí.
-          </Text>
-          <Text onPress={() => navigation.navigate("Recovery")} style={styles.link}>
-            Olvide mi contraseña.
-          </Text>
         </View>
+        <TouchableOpacity
+          disabled={isButtonDisabled}
+          onPress={() => handleLogin(email, password)}
+          style={styleBox.botonEdit}
+        >
+          <Text style={styleText.titleOne}>Iniciar Sesión</Text>
+        </TouchableOpacity>
+        <Text onPress={() => navigation.navigate("SignIn")} style={[styleText.titleTwo, { marginTop: 15 }]}>
+          ¿No tienes una cuenta? Regístrate aquí.
+        </Text>
+        <Text onPress={() => navigation.navigate("Recovery")} style={[styleText.titleTwo, { marginTop: 15 }]}>
+          Olvide mi contraseña.
+        </Text>
       </View>
     </View>
   );

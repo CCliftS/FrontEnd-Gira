@@ -7,23 +7,37 @@ import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import styleBox from "../../public/styles/styleBox";
-import { Feather, Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
 
-    const email = useAsyncStorage('email');
+    const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [lastName, setLastName] = useState('');
 
+    const [modalDelete, setModalDelete] = useState(false);
+    const handleDeleteUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.delete(`http://10.0.2.2:3000/user/deleteUser/${email}`);
+            navigation.navigate("Login");
+        } catch (error) {
+            setError("No se pudo eliminar el usuario");
+            setModalVisible(true);
+        }
+    }
     const dataUser = async () => {
         try {
-            const response = await axios.get(`http://10.0.2.2:3000/user/data/${email}`);
+            const emailUser = await AsyncStorage.getItem('email');
+            const response = await axios.get(`http://10.0.2.2:3000/user/data/${emailUser}`);
             const { name: fetchedName, lastName: fetchedLastName } = response.data;
             setName(fetchedName);
             setLastName(fetchedLastName);
+            setEmail(emailUser ?? '');
         } catch (error) {
             setError("No se pudo cargar los datos del usuario");
             setModalVisible(true);
@@ -50,6 +64,24 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                     </View>
                 </View>
             </Modal>
+            <Modal
+                animationType="slide"
+                visible={modalDelete}
+                transparent={true}
+            >
+                <View style={styleBox.modalCenter}>
+                    <View style={styleBox.modalDelete}>
+                        <MaterialCommunityIcons name="delete-restore" size={54} color="#da1a29" />
+                        <Text style={styleText.titleOne}>¿Estas seguro de eliminar?</Text>
+                        <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setModalDelete(false); handleDeleteUser() }}>
+                            <Text style={styleText.confirmEdit}>Si</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styleBox.botonEdit} onPress={() => setModalDelete(false)}>
+                            <Text style={styleText.confirmEdit}>Volver</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
             <View style={styleBox.headerPage}>
                 <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
                     <Ionicons name="arrow-back-circle-sharp" size={45} color="white" style={{ paddingRight: 50 }} />
@@ -64,10 +96,10 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                     </TouchableOpacity>
 
                 </View>
-                <View style={styleBox.dataInfo}>
+                <View style={styleBox.infoBoton}>
                     <Text style={styleText.info}>{name}</Text>
                 </View>
-                <View style={styleBox.dataInfo}>
+                <View style={styleBox.infoBoton}>
                     <Text style={styleText.info}>{lastName}</Text>
                 </View>
                 <View style={{ marginTop: 20 }}></View>
@@ -78,7 +110,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                     </TouchableOpacity>
 
                 </View>
-                <View style={styleBox.dataInfo}>
+                <View style={styleBox.infoBoton}>
                     <Text style={styleText.info}>{email}</Text>
                 </View>
                 <TouchableOpacity onPress={() => navigation.navigate("EditPassPage")}>
@@ -86,13 +118,9 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
                         <Text style={styleText.titleOne}>Editar Contraseña</Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-                    <View style={styleBox.botonDelete}>
-                        <Text style={styleText.titleOne}>Eliminar Cuenta</Text>
-                    </View>
+                <TouchableOpacity style={styleBox.botonDelete} onPress={() => setModalDelete(true)}>
+                    <Text style={styleText.titleOne}>Eliminar Cuenta</Text>
                 </TouchableOpacity>
-
-
             </View>
 
         </View>

@@ -71,7 +71,9 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
         fetchOwnerProjectsUser();
         fechtTeamUser();
     }, []);
-
+    useEffect(() => {
+        fetchDataUser();
+    }, [userName]);
     return (
         <View style={styleBox.container}>
             <Modal

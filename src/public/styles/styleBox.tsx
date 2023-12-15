@@ -314,5 +314,25 @@ const styleBox = StyleSheet.create({
         justifyContent: 'center',
         elevation: 5,
     },
+    boxHome: {
+        width: 320,
+        height: 500,
+        backgroundColor: '#f5f5f5',
+        elevation: 5, // Only for Android
+        borderRadius: 10,
+        padding: 20,
+        alignItems: 'center',
+    },
+    modalDelete: {
+        margin: 20,
+        width: 300,
+        height: 350,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+        elevation: 5,
+    }
 });
 export default styleBox;

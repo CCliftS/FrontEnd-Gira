@@ -53,6 +53,10 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
         fetchOwnerTeam();
         fetchTeamMember();
     }, []);
+    useEffect(() => {
+        fetchOwnerTeam();
+        fetchTeamMember();
+    }, [option]);
 
     return (
         <View style={styleBox.containerPage}>
