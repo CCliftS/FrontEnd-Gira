@@ -109,7 +109,7 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                         <View>
                             <View style={styleBox.dataTitle}>
                                 <Text style={styleText.titleOne}>Mis equipos como Owner</Text>
-                                <TouchableOpacity onPress={() => navigation.navigate("EditEmailPage")}>
+                                <TouchableOpacity onPress={() => navigation.navigate("CreateTeam")}>
                                     <Ionicons name="md-add-circle-sharp" size={40} color="black" />
                                 </TouchableOpacity>
                             </View>

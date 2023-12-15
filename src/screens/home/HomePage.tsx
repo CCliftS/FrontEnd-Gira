@@ -7,9 +7,10 @@ import NavigationBar from "../common/navbar";
 import styleGeneral from "../../public/styles/StyleGeneral";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
-import { Ionicons, AntDesign, MaterialIcons, Feather } from '@expo/vector-icons';
+import { Ionicons, AntDesign, MaterialIcons, Feather, FontAwesome5, Fontisto, Zocial } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { id } from "date-fns/locale";
 
 
 const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
@@ -65,11 +66,40 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
+    const [idTask, setIdTask] = useState([]);
+    const [descriptionTask, setDescriptionTask] = useState([]);
+    const [finishDateTask, setFinishDateTask] = useState([]);
+    const [idTeamTask, setIdTeamTask] = useState([]);
+    const [nameTask, setNameTask] = useState([]);
+    const [startDateTask, setStartDateTask] = useState([]);
+    const [statusTask, setStatusTask] = useState([]);
+    const [nameTeamTask, setNameTeamTask] = useState([]);
+    const [emailUserTask, setEmailUserTask] = useState([]);
+
+    const fecthTaskUser = async () => {
+        try {
+            const email = await AsyncStorage.getItem('email');
+            const response = await axios.get(`http://10.0.2.2:3002/Tasks/findTaskByUser/${email}`);
+            setIdTask(response.data.taskId);
+            setDescriptionTask(response.data.taskDescription);
+            setFinishDateTask(response.data.taskFinishDate);
+            setIdTeamTask(response.data.taskIdTeam);
+            setEmailUserTask(response.data.taskEmailUser);
+            setNameTask(response.data.taskName);
+            setStartDateTask(response.data.taskStartDate);
+            setStatusTask(response.data.taskStatus);
+            setNameTeamTask(response.data.taskTeamName);
+        } catch (error) {
+            setError("No se pudo cargar las tareas");
+            setModalVisible(true);
+        }
+    };
 
     useEffect(() => {
         fetchDataUser();
         fetchOwnerProjectsUser();
         fechtTeamUser();
+        fecthTaskUser();
     }, []);
     useEffect(() => {
         fetchDataUser();
@@ -96,7 +126,7 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                     <View style={styleBox.header} >
                         <View>
                             <Text style={styleText.header}>Bienvenido</Text>
-                            <Text style={styleText.secundaryHeader}>{userName} {userLastName}</Text>
+                            <Text style={styleText.header}>{userName} {userLastName}</Text>
                         </View>
                         <View style={styleBox.iconHeader}>
                             <Ionicons name="notifications" size={30} color="#0c04b6" />
@@ -105,7 +135,7 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                 </View>
                 {/* Contenedor de Mis Proyectos */}
 
-                <View style={styleBox.dataContainer}>
+                <View style={styleBox.dataHome}>
                     {/* Titulo del contenedor */}
                     <View style={styleBox.dataTitle}>
                         <Text style={styleText.titleOne}>Mis Proyectos</Text>
@@ -114,78 +144,171 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                         </TouchableOpacity>
                     </View>
                     {/* Componentes del contenedor */}
-                    <ScrollView horizontal>
-                        {idProject.slice(0, 3).map((item, index) => (
-                            <View key={index}>
-                                <View style={styleBox.dataBox}>
-                                    {/* Titulo e icono*/}
-                                    <Text style={{ fontSize: 25, fontWeight: '800', textAlign: 'center' }}>{nameProject[index]}</Text>
-                                    <View style={styleBox.line}></View>
-                                    <Text>Aqui va una pequeña descrición del proyecto, la funciona que cumple y el objetivo que tiene en la empresa, cuales son sus aspraciones, no mas de 150 caracteres.</Text>
-                                    <View style={styleBox.codeBoton}>
-                                        <Text>codigo : {idProject[index]}</Text>
-                                    </View>
-                                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                        <View style={styleBox.goBoton}>
-                                            <AntDesign name="caretright" size={24} color="white" />
+
+                    {idProject.length === 0 ? (
+                        <View>
+                            <View style={[styleBox.infoBoton]}>
+                                <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                    <Feather name="alert-triangle" size={34} color="#da1a29" style={{ marginRight: 10 }} />
+                                    <Text style={styleText.titleOne}>No tienes proyectos como Owner</Text>
+                                </View>
+
+                            </View>
+                            <Text style={{ marginTop: 10 }}>Nota: Para crear un proyecto, dirigete a "Ver todos"</Text>
+                        </View>
+
+
+                    ) : (
+                        <ScrollView horizontal>
+                            <View>
+                                {idProject.slice(0, 3).map((item, index) => (
+                                    <View key={index}>
+                                        <View style={styleBox.dataBox} key={index}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
+                                                <View style={{ width: 260 }}>
+                                                    <Text style={{ fontSize: 30 }}>{nameProject[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idProject[index]}</Text>
+                                                    </View>
+                                                </View>
+                                                <View>
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 90, justifyContent: 'center' }} onPress={() => {
+                                                        navigation.navigate("DataProject");
+                                                        AsyncStorage.setItem('idProject', idProject[index]);
+                                                        AsyncStorage.setItem('option', 'false');
+                                                    }}>
+                                                        <AntDesign name="caretright" size={30} color="white" />
+                                                    </TouchableOpacity>
+                                                </View>
+
+                                            </View>
                                         </View>
                                     </View>
-
-                                </View>
+                                ))}
                             </View>
-                        ))}
-                    </ScrollView>
+                        </ScrollView>
+                    )}
+
 
                 </View>
                 {/* Contenedor de Mis Equipos */}
-                <View style={styleBox.dataContainer}>
+                <View style={styleBox.dataHome}>
                     {/* Titulo del contenedor */}
                     <View style={styleBox.dataTitle}>
                         <Text style={styleText.titleOne}>Mis Equipos</Text>
                         <TouchableOpacity onPress={() => navigation.navigate("MyTeamsPage")}>
                             <Text style={styleText.titleTwo}>Ver Todos</Text>
                         </TouchableOpacity>
-
                     </View>
 
                     <View>
                         {/* Componentes del contenedor : Mis Equipos */}
-                        <ScrollView horizontal>
-                            {idTeam.slice(0, 3).map((item, index) => (
-                                <View key={index}>
-                                    <View style={styleBox.dataBox}>
-                                        {/* Titulo e icono*/}
-                                        <Text style={{ fontSize: 25, fontWeight: '800', textAlign: 'center' }}>{nameTeam[index]}</Text>
-                                        <View style={styleBox.line}></View>
-                                        <Text>Aqui va una pequeña descrición del proyecto, la funciona que cumple y el objetivo que tiene en la empresa, cuales son sus aspraciones, no mas de 150 caracteres.</Text>
-                                        <View style={styleBox.codeBoton}>
-                                            <Text>codigo : {idTeam[index]}</Text>
-                                        </View>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                                            <View style={styleBox.goBoton}>
-                                                <AntDesign name="caretright" size={24} color="white" />
-                                            </View>
-                                        </View>
-
+                        {idTeam.length === 0 ? (
+                            <View>
+                                <View style={[styleBox.infoBoton]}>
+                                    <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                        <Feather name="alert-triangle" size={34} color="#da1a29" style={{ marginRight: 10 }} />
+                                        <Text style={styleText.titleOne}>No tienes equipos</Text>
                                     </View>
+
                                 </View>
-                            ))}
-                        </ScrollView>
+                                <Text style={{ marginTop: 10 }}>Nota: Para crear un equipo, dirigete a "Ver todos"</Text>
+                            </View>
+                        ) : (
+                            <ScrollView horizontal>
+                                {idTeam.slice(0, 3).map((item, index) => (
+                                    <View key={index}>
+                                        <View style={styleBox.dataBox}>
+                                            <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', padding: 15, width: 350 }}>
+                                                <View style={{ width: 260 }}>
+                                                    <Text style={{ fontSize: 25 }}>{nameTeam[index]}</Text>
+                                                    <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
+                                                        <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
+                                                        <Text>{idTeam[index]}</Text>
+                                                    </View>
+                                                </View>
+                                                <View>
+                                                    <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 70, justifyContent: 'center' }} onPress={() => {
+                                                        navigation.navigate("DataTeamPage");
+                                                        AsyncStorage.setItem('nameTeam', nameTeam[index]);
+                                                        AsyncStorage.setItem('idTeam', idTeam[index]);
+                                                        AsyncStorage.setItem('option', 'false');
+                                                    }}>
+                                                        <AntDesign name="caretright" size={35} color="white" />
+                                                    </TouchableOpacity>
+                                                </View>
+
+                                            </View>
+
+                                        </View>
+                                    </View>
+                                ))}
+                            </ScrollView>
+                        )}
+
                     </View>
                 </View>
                 {/* Contenedor de Mis Tareas */}
-                <View style={styleBox.dataContainer}>
+                <View style={styleBox.dataHomeTask}>
                     {/* Titulo del contenedor */}
                     <View style={styleBox.dataTitle}>
                         <Text style={styleText.titleOne}>Mis Tareas</Text>
                         <TouchableOpacity onPress={() => navigation.navigate("UserTask")}>
                             <Text style={styleText.titleTwo}>Ver Todos</Text>
                         </TouchableOpacity>
+                    </View>
+                    <View>
+                        {idTask.length === 0 ? (
+                            <View>
+                                <View style={[styleBox.infoBoton]}>
+                                    <View style={{ justifyContent: 'center', flexDirection: 'row', alignItems: 'center' }}>
+                                        <Feather name="alert-triangle" size={34} color="#da1a29" style={{ marginRight: 10 }} />
+                                        <Text style={styleText.titleOne}>No tienes tareas</Text>
+                                    </View>
 
+                                </View>
+                                <Text style={{ marginTop: 10 }}>Nota: Para crear una tarea, debes crear un proyecto primero</Text>
+                            </View>
+                        ) : (
+                            <View style={styleBox.listTask}>
+                                {/* Hacer el map de la lista */}
+                                <ScrollView horizontal>
+                                    {idTask.map((item, index) => (
+                                        <View key={index}>
+                                            <View style={[styleBox.dataTask, { marginRight: 20 }]}>
+                                                <Text style={{ fontSize: 25, fontWeight: '800', marginBottom: 5 }}>{nameTask[index]}</Text>
+                                                <Text style={{ fontSize: 15, marginBottom: 10 }}>{descriptionTask[index]}</Text>
+                                                <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
+                                                    <FontAwesome5 name="user-alt" size={20} color="black" />
+                                                    <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{emailUserTask[index]}</Text>
+                                                </View>
+                                                <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
+                                                    <MaterialIcons name="group" size={24} color="black" />
+                                                    <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{nameTeam[index]}</Text>
+                                                </View>
+                                                <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
+                                                    <Zocial name="statusnet" size={22} color="black" />
+                                                    <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{statusTask[index]}</Text>
+                                                </View>
+                                                <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
+                                                    <MaterialIcons name="date-range" size={24} color="black" />
+                                                    <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{startDateTask[index]}</Text>
+                                                </View>
+                                                <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
+                                                    <Fontisto name="date" size={24} color="black" />
+                                                    <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{finishDateTask[index]}</Text>
+                                                </View>
+                                            </View>
+
+                                        </View>
+                                    ))}
+                                </ScrollView>
+                            </View>
+                        )}
                     </View>
                 </View>
-
-
+                <View style={{ height: 100 }}></View>
             </ScrollView >
             <View style={styleGeneral.footer}>
                 <NavigationBar navigation={navigation} />

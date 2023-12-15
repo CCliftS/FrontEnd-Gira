@@ -30,6 +30,7 @@ import UserTask from './src/screens/user/UserTask';
 import EditState from './src/screens/task/EditState';
 import EditRoles from './src/screens/team/EditRoles';
 import TeamTask from './src/screens/team/TeamTask';
+import CreateTeam from './src/screens/team/CreateTeam';
 
 
 
@@ -76,6 +77,7 @@ export default function App() {
         <RootStack.Screen name='EditState' component={EditState} />
         <RootStack.Screen name='EditRoles' component={EditRoles} />
         <RootStack.Screen name='TeamTask' component={TeamTask} />
+        <RootStack.Screen name='CreateTeam' component={CreateTeam} />
 
       </RootStack.Navigator>
     </NavigationContainer>

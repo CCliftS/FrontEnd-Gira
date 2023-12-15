@@ -58,18 +58,16 @@ const styleBox = StyleSheet.create({
         //backgroundColor: 'black',
     },
     dataBox: {
-        width: 320,
-        height: 245,
-        backgroundColor: 'white',
-        borderRadius: 30,
         marginTop: 10,
-        padding: 15,
-        marginHorizontal: 10,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
+        width: 350,
+        height: 110,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        alignItems: 'center',
+        flexDirection: 'row',
         elevation: 5, // Only for Android
+        marginBottom: 10,
+        marginRight: 20,
     },
     line: {
         width: '100%',
@@ -248,7 +246,7 @@ const styleBox = StyleSheet.create({
         //backgroundColor: 'white',
     },
     dataTask: {
-        width: '100%',
+        width: 350,
         height: 355,
         backgroundColor: 'white',
         elevation: 5, // Only for Android
@@ -333,6 +331,18 @@ const styleBox = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 5,
-    }
+    },
+    dataHome: {
+        paddingTop: 5,
+        paddingHorizontal: 20,
+        height: 180,
+        //backgroundColor: 'green'
+    },
+    dataHomeTask: {
+        paddingTop: 5,
+        paddingHorizontal: 20,
+        height: 400,
+        //backgroundColor: 'green'
+    },
 });
 export default styleBox;
