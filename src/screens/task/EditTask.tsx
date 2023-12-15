@@ -149,9 +149,10 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             console.log(error);
         }
     };
-    const handleChangeStartDate = async (newDate: string) => {
+    const handleChangeStartDate = async (newDate: Date) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
+            console.log(id);
             const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStartDate/${id}`, {
                 newDate,
             });
@@ -161,10 +162,10 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             console.log(error);
         }
     };
-    const handleChangeEndDate = async (newDate: string) => {
+    const handleChangeEndDate = async (newDate: Date) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            console.log(newDate);
+            console.log(id);
             const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateFinishDate/${id}`, {
                 newDate,
             });
@@ -290,7 +291,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
-                        <TouchableOpacity onPress={() => handleChangeStartDate(startDate)}>
+                        <TouchableOpacity onPress={() => handleChangeStartDate(new Date(startDate))}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -322,7 +323,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha Termino</Text>
-                        <TouchableOpacity onPress={() => handleChangeEndDate(endDate)}>
+                        <TouchableOpacity onPress={() => handleChangeEndDate(new Date(endDate))}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
