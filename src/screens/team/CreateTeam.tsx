@@ -15,6 +15,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
     const [error, setError] = useState('');
     const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {
         try {
+            console.log(email, role, idTeam, nameTeam);
             const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
                 email,
                 role,
@@ -23,7 +24,8 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
             })
             navigation.navigate("MyTeamsPage");
         } catch (error) {
-            console.log(error, "No se creo el miembro");
+            setError("No se pudo crear el equipo");
+            setModalVisible(true);
         }
     }
     const handleCreateTeam = async (nameTeam: string) => {
@@ -37,7 +39,8 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
 
             hanleCreateFirtsMember(email, role, idTeam, nameTeam);
         } catch (error) {
-            console.log(error, "No se creo el equipo");
+            setError("No se pudo crear el equipo");
+            setModalVisible(true);
         }
     }
     const [nameTeam, setNameTeam] = useState('');

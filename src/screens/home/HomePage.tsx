@@ -90,11 +90,10 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeamTask(response.data.taskTeamName);
         } catch (error) {
-            setError("No se pudo cargar las tareas");
-            setModalVisible(true);
+            //setError("No se pudo cargar las tareas");
+            //setModalVisible(true);
         }
     };
-
     useEffect(() => {
         fetchDataUser();
         fetchOwnerProjectsUser();
@@ -104,6 +103,16 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
     useEffect(() => {
         fetchDataUser();
     }, [userName]);
+    useEffect(() => {
+        fetchOwnerProjectsUser();
+    }, [nameProject]);
+    useEffect(() => {
+        fechtTeamUser();
+    }, [nameTeam]);
+    useEffect(() => {
+        fecthTaskUser();
+    }, [idTask]);
+
     return (
         <View style={styleBox.container}>
             <Modal
@@ -233,7 +242,6 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                                                         navigation.navigate("DataTeamPage");
                                                         AsyncStorage.setItem('nameTeam', nameTeam[index]);
                                                         AsyncStorage.setItem('idTeam', idTeam[index]);
-                                                        AsyncStorage.setItem('option', 'false');
                                                     }}>
                                                         <AntDesign name="caretright" size={35} color="white" />
                                                     </TouchableOpacity>

@@ -40,8 +40,8 @@ const TeamTask: React.FC<TeamTaskProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeam(response.data.taskTeamName);
         } catch (error) {
-            setError("No se pudo cargar las tareas del equipo");
-            setModalVisible(true);
+            //setError("No se pudo cargar las tareas del equipo");
+            //setModalVisible(true);
         }
     };
     useEffect(() => {

@@ -152,8 +152,11 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={{ marginTop: 10 }}>
                                 <Text style={styleText.titleOne}>Codigo del equipo</Text>
                             </View>
-                            <View style={styleBox.infoBoton}>
+                            <View style={[styleBox.infoBoton, { justifyContent: 'space-around', flexDirection: 'row' }]}>
                                 <Text style={{ fontSize: 20 }}>{idTeam}</Text>
+                                <TouchableOpacity onPress={() => copyToClipboard(idTeam)}>
+                                    <FontAwesome5 name="copy" size={24} color="black" />
+                                </TouchableOpacity>
                             </View>
                             <View style={{ marginTop: 10 }}>
                                 <Text style={styleText.titleOne}>Miembros del equipo</Text>

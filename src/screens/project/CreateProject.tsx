@@ -63,7 +63,7 @@ const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
                     value={nameProject}
                     onChangeText={(text: string) => setNameProject(text)}
                 />
-                <Text style={[styleText.titleOne, { marginTop: 20 }]}>Descripcion (opcional)</Text>
+                <Text style={[styleText.titleOne, { marginTop: 20 }]}>Descripcion *</Text>
                 <TextInput
                     style={[styleBox.listBoton, { paddingHorizontal: 20 }, styleText.input]}
                     value={description}

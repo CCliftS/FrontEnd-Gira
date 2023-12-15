@@ -39,8 +39,8 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeam(response.data.taskTeamName);
         } catch (error) {
-            setError("No se pudo cargar las tareas");
-            setModalVisible(true);
+            //setError("No se pudo cargar las tareas");
+            //setModalVisible(true);
         }
     };
     useEffect(() => {
