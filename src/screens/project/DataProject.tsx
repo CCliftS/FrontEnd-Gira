@@ -72,6 +72,9 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
     useEffect(() => {
         loadDataProject();
     }, [teamProjects]);
+    useEffect(() => {
+        loadDataProject();
+    }, [nameProject]);
 
     return (
         <View style={styleBox.containerPage}>
