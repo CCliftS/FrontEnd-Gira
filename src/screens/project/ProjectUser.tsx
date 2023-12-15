@@ -63,6 +63,7 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                 <View style={styleBox.dataTitle}>
                     <View style={styleBox.option}>
                         <TouchableOpacity onPress={() => setOption(false)}>
+
                             <Text style={styleText.titleOne}>Owner</Text>
                         </TouchableOpacity>
                     </View>
@@ -131,14 +132,14 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
                                                     <Text style={{ fontSize: 30 }}>{item}</Text>
                                                     <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
                                                         <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
-                                                        <Text>{idProjects[index]}</Text>
+                                                        <Text>{idParticipedProjects[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
                                                     <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 90, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataProject");
-                                                        AsyncStorage.setItem('idProject', idProjects[index]);
-                                                        AsyncStorage.setItem('option', 'false');
+                                                        AsyncStorage.setItem('idProject', idParticipedProjects[index]);
+                                                        AsyncStorage.setItem('option', 'true');
                                                     }}>
                                                         <AntDesign name="caretright" size={30} color="white" />
                                                     </TouchableOpacity>

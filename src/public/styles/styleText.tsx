@@ -34,7 +34,7 @@ const styleText = StyleSheet.create({
     infoEdit: {
         fontSize: 15,
         color: 'black',
-        textAlign: 'center',
+        textAlign: 'justify',
     },
     input: {
         fontSize: 18,

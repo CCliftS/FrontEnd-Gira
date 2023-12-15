@@ -10,6 +10,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
 
+
 interface TeamData {
     nameProject: string;
     teamProjects: string[];
@@ -27,6 +28,8 @@ interface DropdownMember {
     value: string;
 }
 const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+
     const fecthDataTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
@@ -97,14 +100,76 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     const [modalStartDateVisible, setModalStartDateVisible] = useState(false);
     const [modalEndDateVisible, setModalEndDateVisible] = useState(false);
 
-    const handleChangeName = async (nameTask: string) => {
+    const handleChangeName = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.post(`http://10.0.2.2:3002/Tasks/updateName`, {
-                id,
-                nameTask,
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateName/${id}`, {
+                newName,
             });
-            navigation.navigate("DataTask");
+            fecthDataTask();
+            setModalVisible(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleChangeDescription = async (newDescription: string) => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateDescription/${id}`, {
+                newDescription,
+            });
+            fecthDataTask();
+            setModalVisible(true);
+        } catch (error) {
+            console.log(error);
+        };
+    };
+    const handleChangeStatus = async (newStatus: string) => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStatus/${id}`, {
+                newStatus,
+            });
+            fecthDataTask();
+            setModalVisible(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleTeamAndUser = async (id_team: string, email_user: string) => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateTeamAndEmailUser/${id}`, {
+                id_team,
+                email_user,
+            });
+            fecthDataTask();
+            setModalVisible(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleChangeStartDate = async (newDate: string) => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStartDate/${id}`, {
+                newDate,
+            });
+            fecthDataTask();
+            setModalVisible(true);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleChangeEndDate = async (newDate: string) => {
+        try {
+            const id = await AsyncStorage.getItem('idTask');
+            console.log(newDate);
+            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateFinishDate/${id}`, {
+                newDate,
+            });
+            fecthDataTask();
+            setModalVisible(true);
         } catch (error) {
             console.log(error);
         }
@@ -123,7 +188,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             </View>
             <View style={styleBox.headerEdit}>
                 <Text style={styleText.headerBlack}>Editar Tarea</Text>
-                <Text style={styleText.infoEdit}>Aca puedes actualizar los valores de tu tarea, ingresa los datos y dependiendo de cual dato quieras cambiar, selecciona el boton correspondiente </Text>
+                <Text style={styleText.infoEdit}>En esta pestaña se actualiza cada valor de la tarea por serapado, porfavor realiza el cambio que desees y luego presiona el boton de editar, al lado derecho del atributo que deseas cambiar.</Text>
             </View>
             <View style={styleBox.editTask}>
                 <ScrollView>
@@ -139,9 +204,23 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
                         placeholder={nameTask}
                         onChangeText={(text: string) => setNameTask(text)}
                     />
+                    <Modal
+                        animationType="slide"
+                        visible={modalVisible}
+                        transparent={true}
+                    >
+                        <View style={styleBox.modalCenter}>
+                            <View style={styleBox.modalAlert}>
+                                <Text style={styleText.titleOne}>Cambio realizado</Text>
+                                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalVisible(!modalVisible)}>
+                                    <Text style={styleText.confirmEdit}>Ok</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={styleText.titleOne}>Descripción</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                        <TouchableOpacity onPress={() => handleChangeDescription(descriptionTask)}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -153,7 +232,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
                     />
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={styleText.titleOne}>Estado</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                        <TouchableOpacity onPress={() => handleChangeStatus(statusTask)}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -171,9 +250,10 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
                             }}
                         />
                     </View>
+                    <Text style={{ marginTop: 15, fontSize: 15 }}>Nota : Al actualizar equipo debes seleccionar un nuevo miembro del equipo</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={styleText.titleOne}>Equipo</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                        <TouchableOpacity onPress={() => handleTeamAndUser(idTeamTask, emailUserTask)}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -210,7 +290,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                        <TouchableOpacity onPress={() => handleChangeStartDate(startDate)}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -218,54 +298,54 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
                     <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalStartDateVisible(true)}>
                         <Text style={styleText.input}>{dayjs(startDate).format('DD/MM/YYYY')}</Text>
                     </TouchableOpacity>
-                    
+
                     <Modal
                         animationType="slide"
                         visible={modalStartDateVisible}
-                        transparent = {true}
-                        >
-                        <View style= {{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
-                            <TouchableOpacity style={{height:'35%', width: '100%'}} onPress={ () => setModalStartDateVisible(false)}></TouchableOpacity>
-                            <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+                        transparent={true}
+                    >
+                        <View style={{ height: '50%', justifyContent: 'flex-end', flex: 1, padding: 20 }}>
+                            <TouchableOpacity style={{ height: '35%', width: '100%' }} onPress={() => setModalStartDateVisible(false)}></TouchableOpacity>
+                            <View style={{ backgroundColor: 'white', height: '65%', width: '100%', justifyContent: 'center', alignItems: 'center', padding: 20, borderRadius: 10, elevation: 5 }}>
                                 <DateTimePicker
                                     minimumDate={dayjs().startOf('day')}
-                                    value = {startDate}
-                                    mode = 'date'
-                                    onValueChange ={(date: DateType) => setStarttDate(date ? date.toString() : '')}
+                                    value={startDate}
+                                    mode='date'
+                                    onValueChange={(date: DateType) => setStarttDate(date ? date.toString() : '')}
                                 />
-                                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalStartDateVisible(!modalStartDateVisible) }>
-                                    <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalStartDateVisible(!modalStartDateVisible)}>
+                                    <Text style={styleText.confirmEdit}>Seleccionar Fecha</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>
                     </Modal>
-                    
+
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
                         <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha Termino</Text>
-                        <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
+                        <TouchableOpacity onPress={() => handleChangeEndDate(endDate)}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalEndDateVisible(true)}>
                         <Text style={styleText.input}>{dayjs(endDate).format('DD/MM/YYYY')}</Text>
                     </TouchableOpacity>
-                    
-                    <Modal 
-                        animationType="slide" 
-                        visible={modalEndDateVisible} 
-                        transparent = {true}
-                        >
-                        <View style={{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
-                            <TouchableOpacity style={{height:'30%', width: '100%'}} onPress={ () => setModalEndDateVisible(false)}></TouchableOpacity>
-                            <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+
+                    <Modal
+                        animationType="slide"
+                        visible={modalEndDateVisible}
+                        transparent={true}
+                    >
+                        <View style={{ height: '50%', justifyContent: 'flex-end', flex: 1, padding: 20 }}>
+                            <TouchableOpacity style={{ height: '30%', width: '100%' }} onPress={() => setModalEndDateVisible(false)}></TouchableOpacity>
+                            <View style={{ backgroundColor: 'white', height: '65%', width: '100%', justifyContent: 'center', alignItems: 'center', padding: 20, borderRadius: 10, elevation: 5 }}>
                                 <DateTimePicker
                                     minimumDate={dayjs().startOf('day')}
-                                    value = {endDate}
-                                    mode = 'date'
-                                    onValueChange ={(date: DateType) => setEndDate(date ? date.toString() : '')}
+                                    value={endDate}
+                                    mode='date'
+                                    onValueChange={(date: DateType) => setEndDate(date ? date.toString() : '')}
                                 />
-                                <TouchableOpacity style={[styleBox.botonConfirm, {paddingHorizontal:40}]} onPress={() => setModalEndDateVisible(!modalEndDateVisible) }>
-                                    <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalEndDateVisible(!modalEndDateVisible)}>
+                                    <Text style={styleText.confirmEdit}>Seleccionar Fecha</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

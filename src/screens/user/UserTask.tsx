@@ -19,6 +19,7 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
     const [nameTask, setNameTask] = useState([]);
     const [startDateTask, setStartDateTask] = useState([]);
     const [statusTask, setStatusTask] = useState([]);
+    const [nameTeam, setNameTeam] = useState([]);
 
     const fecthTaskUser = async () => {
         try {
@@ -33,6 +34,7 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
             setNameTask(response.data.taskName);
             setStartDateTask(response.data.taskStartDate);
             setStatusTask(response.data.taskStatus);
+            setNameTeam(response.data.taskTeamName);
         } catch (error) {
             console.log(error);
         }
@@ -88,7 +90,7 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="group" size={24} color="black" />
-                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>nombre equipo</Text>
+                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{nameTeam[index]}</Text>
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="date-range" size={24} color="black" />
@@ -131,7 +133,7 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="group" size={24} color="black" />
-                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>nombre equipo</Text>
+                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{nameTeam[index]}</Text>
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="date-range" size={24} color="black" />
@@ -174,7 +176,7 @@ const UserTask: React.FC<UsertaskProps> = ({ navigation }) => {
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="group" size={24} color="black" />
-                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>nombre equipo</Text>
+                                            <Text style={{ fontSize: 15, justifyContent: 'center', marginLeft: 10 }}>{nameTeam[index]}</Text>
                                         </View>
                                         <View style={[{ flexDirection: 'row', marginBottom: 10 }, styleBox.infoTask]}>
                                             <MaterialIcons name="date-range" size={24} color="black" />

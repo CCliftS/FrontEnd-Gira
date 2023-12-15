@@ -278,6 +278,22 @@ const styleBox = StyleSheet.create({
         padding: 20,
         marginBottom: 10,
     },
+    modalCenter: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalAlert: {
+        margin: 20,
+        width: 300,
+        height: 150,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        elevation: 5,
 
+    },
 });
 export default styleBox;

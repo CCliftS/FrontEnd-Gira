@@ -126,15 +126,15 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
                                                     <Text style={{ fontSize: 25 }}>{item}</Text>
                                                     <View style={[{ flexDirection: 'row', marginBottom: 10, alignItems: 'center' }, styleBox.infoTask]}>
                                                         <Ionicons name="ios-qr-code" size={24} color="black" style={{ marginRight: 5 }} />
-                                                        <Text>{idTeams[index]}</Text>
+                                                        <Text>{idTeamMember[index]}</Text>
                                                     </View>
                                                 </View>
                                                 <View>
                                                     <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 5, width: 40, alignItems: 'center', height: 70, justifyContent: 'center' }} onPress={() => {
                                                         navigation.navigate("DataTeamPage");
                                                         AsyncStorage.setItem('nameTeam', item);
-                                                        AsyncStorage.setItem('idTeam', idTeams[index]);
-                                                        AsyncStorage.setItem('option', 'false');
+                                                        AsyncStorage.setItem('idTeam', idTeamMember[index]);
+                                                        AsyncStorage.setItem('option', 'true');
                                                     }}>
                                                         <AntDesign name="caretright" size={35} color="white" />
                                                     </TouchableOpacity>
