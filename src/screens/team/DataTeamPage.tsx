@@ -6,8 +6,15 @@ import axios from "axios";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import * as Clipboard from 'expo-clipboard';
+
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
+    const [copiedText, setCopiedText] = useState('');
+
+    const copyToClipboard = async (text: string) => {
+        await Clipboard.setStringAsync(text);
+    };
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
     const [modalDeleteTeam, setModalDeleteTeam] = useState(false);
@@ -183,11 +190,16 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.infoBoton}>
                                 <Text style={{ fontSize: 20 }}>{nameTeam}</Text>
                             </View>
-                            <View style={{ marginTop: 10 }}>
+                            <View style={{ marginTop: 10, }}>
                                 <Text style={styleText.titleOne}>Codigo del equipo</Text>
+
                             </View>
-                            <View style={styleBox.infoBoton}>
+
+                            <View style={[styleBox.infoBoton, { justifyContent: 'space-around', flexDirection: 'row' }]}>
                                 <Text style={{ fontSize: 20 }}>{idTeam}</Text>
+                                <TouchableOpacity onPress={() => copyToClipboard(idTeam)}>
+                                    <FontAwesome5 name="copy" size={24} color="black" />
+                                </TouchableOpacity>
                             </View>
                             <View style={[styleBox.dataTitle, { marginTop: 15 }]}>
                                 <Text style={styleText.titleOne}>Miembros del equipo</Text>

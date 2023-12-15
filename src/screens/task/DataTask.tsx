@@ -34,6 +34,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
     const handleDeleteTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
+            console.log(id);
             const response = await axios.delete(`http://10.0.2.2:3002/Tasks/removeTask/${id}`);
             navigation.navigate("DataTask");
         } catch (error) {
@@ -310,7 +311,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { setModalDelete(true); AsyncStorage.setItem('idTask', idTask[index]); console.log(idTask[index]) }}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask"); AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>
@@ -356,7 +357,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { setModalDelete(true); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask");; AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>
@@ -402,7 +403,7 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
                                                         <TouchableOpacity style={{ backgroundColor: '#ffc107', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("EditTask"); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <MaterialIcons name="edit" size={24} color="white" />
                                                         </TouchableOpacity>
-                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => setModalDelete(true)}>
+                                                        <TouchableOpacity style={{ backgroundColor: '#da1a29', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { setModalDelete(true); AsyncStorage.setItem('idTask', idTask[index]) }}>
                                                             <FontAwesome5 name="trash" size={24} color="white" />
                                                         </TouchableOpacity>
                                                         <TouchableOpacity style={{ backgroundColor: '#0c04b6', borderRadius: 10, width: 80, alignItems: 'center', height: 40, justifyContent: 'center' }} onPress={() => { navigation.navigate("CommentTask");; AsyncStorage.setItem('idTask', idTask[index]); AsyncStorage.setItem('nav', "DataTask") }}>
