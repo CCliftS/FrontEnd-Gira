@@ -5,17 +5,39 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useState } from "react";
 import { ca } from "date-fns/locale";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+import { useAsyncStorage } from "../../utils/localStorage";
 
 const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
+    const email = useAsyncStorage('email');
     const [modalVisible, setModalVisible] = useState(false);
     const [error, setError] = useState('');
-
+    const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {
+        try {
+            const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
+                email,
+                role,
+                idTeam,
+                nameTeam
+            })
+            navigation.navigate("MyTeamsPage");
+        } catch (error) {
+            console.log(error, "No se creo el miembro");
+        }
+    }
     const handleCreateTeam = async (nameTeam: string) => {
         try {
+            const response = await axios.post(`http://10.0.2.2:3001/Teams/createTeam`, {
+                nameTeam,
+            })
 
+            const idTeam = response.data?._id;
+            const role: string = "administrador";;
+
+            hanleCreateFirtsMember(email, role, idTeam, nameTeam);
         } catch (error) {
-            setError("No se creo el equipo");
-            setModalVisible(true);
+            console.log(error, "No se creo el equipo");
         }
     }
     const [nameTeam, setNameTeam] = useState('');
