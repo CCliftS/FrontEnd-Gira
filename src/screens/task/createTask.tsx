@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Modal } from "react-native";
 import { CreateTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons } from '@expo/vector-icons';
@@ -35,12 +35,13 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
     const [selectIdTeam, setSelectIdTeam] = useState("");
     const [selectStatus, setSelectStatus] = useState("");
     const [selectMember, setSelectMember] = useState("");
+    const [modalStartDateVisible, setModalStartDateVisible] = useState(false);
+    const [modalEndDateVisible, setModalEndDateVisible] = useState(false);
 
     const fetchCreateTask = async (name: string, status: string, description: string, id_team: string, email_user: string, start_date: Date, finish_date: Date) => {
-        console.log(start_date, finish_date);
         try {
             const id_project = await AsyncStorage.getItem('idProject');
-            const response = await axios.post(`http://10.0.2.2:3002/Task/createTask`, {
+            const response = await axios.post(`http://10.0.2.2:3002/Tasks/createTask`, {
                 name,
                 status,
                 description,
@@ -128,14 +129,14 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         selectedTextStyle={styleText.input}
                         data={status}
                         labelField="label"
-                        valueField="value"
+                        valueField="label"
                         placeholder="Selecciona un estado "
                         value={selectStatus}
                         onChange={item => {
                             setSelectStatus(item.value);
                         }}
                     />
-                </View>
+                </View> 
                 <Text style={[styleText.titleOne, { marginTop: 10 }]}>Equipo del proyecto</Text>
                 <View style={styleBox.infoDropdown}>
                     <Dropdown
@@ -149,7 +150,6 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         onChange={item => {
                             setSelectIdTeam(item.value_id);
                             loadMembersTeam(item.value_id);
-                            console.log(item.value_id);
                         }}
                     />
                 </View>
@@ -160,11 +160,10 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                         selectedTextStyle={styleText.input}
                         data={transformMember(membersTeam)}
                         labelField="label"
-                        valueField="value"
+                        valueField="label"
                         placeholder="Selecciona un miembro"
                         value={selectMember}
                         onChange={item => {
-
                             setSelectMember(item.value);
                         }}
                     />
@@ -175,19 +174,63 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
                     value={descriptionTask}
                     onChangeText={(text: string) => setDescriptionTask(text)}
                 />
+                
                 <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
-                <DateTimePicker
-                    value = {startDate}
-                    onValueChange ={(date: DateType) => setStarttDate(date ? date.toString() : '')}
-                />
+                <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalStartDateVisible(true)}>
+                    <Text style={styleText.input}>{dayjs(startDate).format('DD/MM/YYYY')}</Text>
+                </TouchableOpacity>
+                
+                <Modal
+                    animationType="slide"
+                    visible={modalStartDateVisible}
+                    transparent = {true}
+                    >
+                    <View style= {{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
+                        <TouchableOpacity style={{height:'35%', width: '100%'}} onPress={ () => setModalStartDateVisible(false)}></TouchableOpacity>
+                        <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+                            <DateTimePicker
+                                minimumDate={dayjs().startOf('day')}
+                                value = {startDate}
+                                mode = 'date'
+                                onValueChange ={(date: DateType) => setStarttDate(date ? date.toString() : '')}
+                            />
+                            <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalStartDateVisible(!modalStartDateVisible) }>
+                                <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+                
                 <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha termino</Text>
-                <DateTimePicker
-                    value = {endDate}
-                    onValueChange ={(date: DateType | undefined) => setEndDate(date ? date.toString() : '')}
-                />
+                <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalEndDateVisible(true)}>
+                    <Text style={styleText.input}>{dayjs(endDate).format('DD/MM/YYYY')}</Text>
+                </TouchableOpacity>
+                
+                <Modal 
+                    animationType="slide" 
+                    visible={modalEndDateVisible} 
+                    transparent = {true}
+                    >
+                    <View style={{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
+                        <TouchableOpacity style={{height:'30%', width: '100%'}} onPress={ () => setModalEndDateVisible(false)}></TouchableOpacity>
+                        <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+                            <DateTimePicker
+                                minimumDate={dayjs().startOf('day')}
+                                value = {endDate}
+                                mode = 'date'
+                                onValueChange ={(date: DateType) => setEndDate(date ? date.toString() : '')}
+                            />
+                            <TouchableOpacity style={[styleBox.botonConfirm, {paddingHorizontal:40}]} onPress={() => setModalEndDateVisible(!modalEndDateVisible) }>
+                                <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
+
                 <TouchableOpacity style={styleBox.botonEdit} onPress={() => fetchCreateTask(nameTask, selectStatus, descriptionTask, selectIdTeam, selectMember, new Date(startDate), new Date(endDate))}>
                     <Text style={styleText.titleOne}> Crear Tarea</Text>
                 </TouchableOpacity>
+                
                 <View style={{ marginTop: 50 }}></View>
             </ScrollView>
         </View>
