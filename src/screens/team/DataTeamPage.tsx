@@ -25,7 +25,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const handleDeleteTeam = async () => {
         try {
             const id = await AsyncStorage.getItem('idTeam');
-            const response = await axios.delete(`http://10.0.2.2:3001/Teams/removeTeam/${id}`);
+            const response = await axios.delete(`http://10.0.2.2:3001/Member/deleteTeam/${id}`);
             navigation.navigate("MyTeamsPage");
         } catch (error) {
             setError("No se pudo eliminar el equipo");
