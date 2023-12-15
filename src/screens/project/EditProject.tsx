@@ -18,9 +18,8 @@ const EditProject: React.FC<EditEmailPageProps> = ({ navigation }) => {
     const hanleChangeProject = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idProject');
-            const response = await axios.post(`http://10.0.2.2:3001/Project/updateProject`, {
+            const response = await axios.put(`http://10.0.2.2:3001/Project/updateProject/${id}`, {
                 newName,
-                id,
                 newDescription,
             });
             navigation.navigate("DataProject");
