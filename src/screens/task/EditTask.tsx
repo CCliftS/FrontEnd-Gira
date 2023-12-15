@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ScrollView, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput, Modal } from "react-native";
 import { EditTaskProps } from "../../../types/types";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { Dropdown } from "react-native-element-dropdown";
+import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
+import dayjs from 'dayjs';
 
 interface TeamData {
     nameProject: string;
@@ -32,8 +34,8 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setNameTask(response.data.name);
             setDescriptionTask(response.data.description);
             setEmailUserTask(response.data.email_user);
-            setFinishDateTask(response.data.finish_date);
-            setStartDateTask(response.data.start_date);
+            setEndDate(response.data.finish_date);
+            setStarttDate(response.data.start_date);
             setIdTeamTask(response.data.id_team);
             setStatusTask(response.data.status);
 
@@ -87,11 +89,13 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     };
     const [descriptionTask, setDescriptionTask] = useState("");
     const [emailUserTask, setEmailUserTask] = useState("");
-    const [finishDateTask, setFinishDateTask] = useState("");
     const [idTeamTask, setIdTeamTask] = useState("");
     const [nameTask, setNameTask] = useState("");
-    const [startDateTask, setStartDateTask] = useState("");
+    const [startDate, setStarttDate] = useState(dayjs().format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
     const [statusTask, setStatusTask] = useState("");
+    const [modalStartDateVisible, setModalStartDateVisible] = useState(false);
+    const [modalEndDateVisible, setModalEndDateVisible] = useState(false);
 
     const handleChangeName = async (nameTask: string) => {
         try {
@@ -203,30 +207,69 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
                             }}
                         />
                     </View>
+
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                        <Text style={styleText.titleOne}>Fecha inicio</Text>
+                        <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha inicio</Text>
                         <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
-                    <TextInput
-                        style={[styleBox.infoBoton, styleText.input]}
-                        value={startDateTask}
-                        placeholder={startDateTask}
-                        onChangeText={(text: string) => setStartDateTask(text)}
-                    />
+
+                    <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalStartDateVisible(true)}>
+                        <Text style={styleText.input}>{dayjs(startDate).format('DD/MM/YYYY')}</Text>
+                    </TouchableOpacity>
+                    
+                    <Modal
+                        animationType="slide"
+                        visible={modalStartDateVisible}
+                        transparent = {true}
+                        >
+                        <View style= {{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
+                            <TouchableOpacity style={{height:'35%', width: '100%'}} onPress={ () => setModalStartDateVisible(false)}></TouchableOpacity>
+                            <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+                                <DateTimePicker
+                                    minimumDate={dayjs().startOf('day')}
+                                    value = {startDate}
+                                    mode = 'date'
+                                    onValueChange ={(date: DateType) => setStarttDate(date ? date.toString() : '')}
+                                />
+                                <TouchableOpacity style={styleBox.botonConfirm} onPress={() => setModalStartDateVisible(!modalStartDateVisible) }>
+                                    <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
+                    
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 }}>
-                        <Text style={styleText.titleOne}>Fecha inicio</Text>
+                        <Text style={[styleText.titleOne, { marginTop: 10 }]}>Fecha Termino</Text>
                         <TouchableOpacity onPress={() => navigation.navigate("EditProject")}>
                             <MaterialIcons name="edit" size={30} color="black" />
                         </TouchableOpacity>
                     </View>
-                    <TextInput
-                        style={[styleBox.infoBoton, styleText.input]}
-                        value={finishDateTask}
-                        placeholder={finishDateTask}
-                        onChangeText={(text: string) => setFinishDateTask(text)}
-                    />
+                    <TouchableOpacity style={styleBox.infoBoton} onPress={() => setModalEndDateVisible(true)}>
+                        <Text style={styleText.input}>{dayjs(endDate).format('DD/MM/YYYY')}</Text>
+                    </TouchableOpacity>
+                    
+                    <Modal 
+                        animationType="slide" 
+                        visible={modalEndDateVisible} 
+                        transparent = {true}
+                        >
+                        <View style={{height: '50%', justifyContent:'flex-end', flex: 1, padding:20}}>
+                            <TouchableOpacity style={{height:'30%', width: '100%'}} onPress={ () => setModalEndDateVisible(false)}></TouchableOpacity>
+                            <View style= {{backgroundColor: 'white', height:'65%', width: '100%', justifyContent:'center', alignItems:'center'}}>
+                                <DateTimePicker
+                                    minimumDate={dayjs().startOf('day')}
+                                    value = {endDate}
+                                    mode = 'date'
+                                    onValueChange ={(date: DateType) => setEndDate(date ? date.toString() : '')}
+                                />
+                                <TouchableOpacity style={[styleBox.botonConfirm, {paddingHorizontal:40}]} onPress={() => setModalEndDateVisible(!modalEndDateVisible) }>
+                                    <Text style={styleText.confirmEdit}> Seleccionar Fecha</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 </ScrollView>
             </View>
 
