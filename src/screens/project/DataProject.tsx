@@ -6,35 +6,36 @@ import axios from "axios";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 
 const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
-    const [option, setOption] = useState("");
-    const [idProject, setIdProject] = useState("");
+    const [option, setOption] = useState<string>("");
+    const [idProject, setIdProject] = useState<string>("");
 
-    const [nameProject, setNameProject] = useState("");
-    const [teamProjects, setTeamProjects] = useState([]);
-    const [idTeams, setIdTeams] = useState([]);
+    const [nameProject, setNameProject] = useState<string>("");
+    const [teamProjects, setTeamProjects] = useState<string[]>([]);
+    const [idTeams, setIdTeams] = useState<string[]>([]);
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [modalDeleteTeam, setModalDeleteTeam] = useState(false);
-    const [idDelete, setIdDelete] = useState('');
+    const [modalDeleteTeam, setModalDeleteTeam] = useState<boolean>(false);
+    const [idDelete, setIdDelete] = useState<string>('');
 
-    const [modalDeleteProject, setModalDeleteProject] = useState(false);
+    const [modalDeleteProject, setModalDeleteProject] = useState<boolean>(false);
 
     const loadDataProject = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findOneProject/${idProject}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Project/findOneProject/${idProject}`);
             setNameProject(response.data.nameProject);
             setTeamProjects(response.data.teamsNames);
             setIdTeams(response.data.teamProjects);
 
         } catch (error) {
-            // setError("No se cargaron los datos del proyecto");
-            // setModalVisible(true);
+            setError("No se cargaron los datos del proyecto");
+            setModalVisible(true);
 
         }
     }
@@ -42,7 +43,7 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
             console.log(idTeam, idProject);
-            const response = await axios.delete(`http://10.0.2.2:3001/Project/removeTeam/${idProject}/${idTeam}`);
+            const response = await axios.delete(`${ENDPOINT_MS_TEMAMS}/Project/removeTeam/${idProject}/${idTeam}`);
             navigation.navigate("ProjectUser");
         } catch (error) {
             setError("No se elimino el equipo");
@@ -54,7 +55,7 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
         try {
             const id = await AsyncStorage.getItem('idProject');
             console.log(id);
-            const response = await axios.delete(`http://10.0.2.2:3001/Project/removeProject/${id}`);
+            const response = await axios.delete(`${ENDPOINT_MS_TEMAMS}/Project/removeProject/${id}`);
             AsyncStorage.removeItem('idProject');
             navigation.navigate("ProjectUser");
         } catch (error) {
@@ -223,61 +224,3 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
 
 }
 export default DataProject;
-
-{/**
-    <View style={styleGeneral.container}>
-            <View style={styleProjectUser.boxHeader}>
-                <Text style={styleGeneral.titleHeader}>Proyecto " {nameProject} "</Text>
-                <TouchableOpacity style={styleGeneral.icon} onPress={() => navigation.navigate("EditProject")}>
-                    <Image
-                        source={require('../../public/icons/cuadrado-de-la-pluma.png')}
-                        style={styleGeneral.icon}
-                        resizeMode="contain"
-                    />
-                </TouchableOpacity>
-            </View>
-            <ScrollView style={styleProjectUser.boxContainer2}>
-                <Text style={styleProjectUser.textTitle2}>Equipos</Text>
-                <View style={styleProjectUser.boxList}>
-                    <ScrollView>
-                        {teamProjects.map((item, index) => (
-                            <View key={index}>
-                                <View style={styleGeneral.boxItemList}>
-                                    <Text style={styleGeneral.textSecundary}>{item}</Text>
-                                    <TouchableOpacity
-                                        style={styleGeneral.icon}
-                                        onPress={() => handleDeleteTeam(idTeams[index])}
-                                    >
-                                        <Image
-                                            source={require('../../public/icons/circulo-cruzado.png')}
-                                            style={styleGeneral.icon}
-                                        />
-                                    </TouchableOpacity>
-                                </View>
-                            </View>
-                        ))}
-
-
-                    </ScrollView>
-
-                </View>
-                <TouchableOpacity style={styleProjectUser.boxBottom} onPress={() => navigation.navigate("AddTeamProject")}>
-                    <Text style={styleGeneral.texBottom}>Agregar equipo</Text>
-                </TouchableOpacity>
-
-                <Text style={styleProjectUser.textTitle}>Tareas</Text>
-                <View style={styleProjectUser.boxList}>
-                    <ScrollView>
-
-                    </ScrollView>
-
-                </View>
-                <TouchableOpacity style={styleProjectUser.boxBottom} onPress={() => navigation.navigate("HomePage")}>
-                    <Text style={styleGeneral.texBottom}>Agregar Tareas</Text>
-                </TouchableOpacity>
-
-                <View style={styleProjectUser.boxBottom}></View>
-
-            </ScrollView>
-        </View>
-*/}

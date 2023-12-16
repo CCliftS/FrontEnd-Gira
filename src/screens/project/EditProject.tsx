@@ -7,18 +7,19 @@ import styleBox from "../../public/styles/styleBox";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { set } from "date-fns";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 const EditProject: React.FC<EditEmailPageProps> = ({ navigation }) => {
-    const [newName, setNewName] = useState('');
-    const [newDescription, setNewDescription] = useState('');
+    const [newName, setNewName] = useState<string>('');
+    const [newDescription, setNewDescription] = useState<string>('');
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const hanleChangeProject = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idProject');
-            const response = await axios.put(`http://10.0.2.2:3001/Project/updateProject/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TEMAMS}/Project/updateProject/${id}`, {
                 newName,
                 newDescription,
             });

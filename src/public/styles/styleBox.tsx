@@ -344,5 +344,13 @@ const styleBox = StyleSheet.create({
         height: 400,
         //backgroundColor: 'green'
     },
+    footer: {
+        width: '100%',
+        height: 60,
+        backgroundColor: '#0c04b6',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+    }
 });
 export default styleBox;

@@ -4,19 +4,18 @@ import styleBox from "../../public/styles/styleBox";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
 import { useState } from "react";
-import { ca } from "date-fns/locale";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
-    const email = useAsyncStorage('email');
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const email: string = useAsyncStorage('email');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
     const hanleCreateFirtsMember = async (email: string, role: string, idTeam: string, nameTeam: string) => {
         try {
             console.log(email, role, idTeam, nameTeam);
-            const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Member/addMemberTeam`, {
                 email,
                 role,
                 idTeam,
@@ -30,7 +29,7 @@ const CreateTeam: React.FC<CreateTeamProps> = ({ navigation }) => {
     }
     const handleCreateTeam = async (nameTeam: string) => {
         try {
-            const response = await axios.post(`http://10.0.2.2:3001/Teams/createTeam`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Teams/createTeam`, {
                 nameTeam,
             })
 

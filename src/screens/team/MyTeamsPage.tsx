@@ -1,29 +1,29 @@
 import { View, Text, TouchableOpacity, Image, FlatList, ScrollView, Modal } from "react-native";
 import { MyTeamsPageProps } from "../../../types/types";
-import styleGeneral from "../../public/styles/StyleGeneral";
-import NavigationBar from "../common/navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import styleMyTeamsPage from "../../public/styles/StyleMyTeamsPage";
 import React from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [option, setOption] = useState(false);
+    const [option, setOption] = useState<boolean>(false);
 
-    const [nameTeams, setNameTeams] = useState([]);
-    const [idTeams, setIdTeams] = useState([]);
+    const [nameTeams, setNameTeams] = useState<string[]>([]);
+    const [idTeams, setIdTeams] = useState<string[]>([]);
+    const [nameTeamMember, setNameTeamMember] = useState<string[]>([]);
+    const [idTeamMember, setIdTeamMember] = useState<string[]>([]);
 
     const fetchOwnerTeam = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Member/getTeamIfAdmin/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Member/getTeamIfAdmin/${email}`);
             setNameTeams(response.data.teams);
             setIdTeams(response.data.teamsId);
 
@@ -32,14 +32,10 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
-
-    const [nameTeamMember, setNameTeamMember] = useState([]);
-    const [idTeamMember, setIdTeamMember] = useState([]);
-
     const fetchTeamMember = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Member/getTeamIfMember/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Member/getTeamIfMember/${email}`);
             setNameTeamMember(response.data.teams);
             setIdTeamMember(response.data.teamsId);
 
@@ -48,7 +44,6 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
-
     useEffect(() => {
         fetchOwnerTeam();
         fetchTeamMember();
@@ -191,32 +186,3 @@ const MyTeamsPage: React.FC<MyTeamsPageProps> = ({ navigation }) => {
 }
 
 export default MyTeamsPage;
-{/**
-    <View style={styleGeneral.container}>
-            <View style={styleGeneral.boxHeader}>
-                <Text style={styleGeneral.titleHeader}> Equipos </Text>
-            </View>
-            <View style={styleMyTeamsPage.boxContainer}>
-                <ScrollView>
-                    {idTeams.map((item, index) => (
-                        <View style={styleMyTeamsPage.boxItem} key={index}>
-                            <Text style={styleMyTeamsPage.textData}>{nameTeams[index]}</Text>
-                            <TouchableOpacity
-                                style={styleGeneral.icon}
-                                onPress={() => { navigation.navigate("DataTeamPage"), AsyncStorage.setItem('idTeam', item), AsyncStorage.setItem('nameTeam', nameTeams[index]) }}
-                            >
-                                <Image
-                                    source={require('../../public/icons/angulo-circulo-derecha.png')}
-                                    style={styleMyTeamsPage.icon}
-
-                                />
-                            </TouchableOpacity>
-                        </View>
-                    ))}
-                </ScrollView>
-            </View >
-            <View style={styleGeneral.footer}>
-                <NavigationBar navigation={navigation} />
-            </View>
-        </View >
-*/}

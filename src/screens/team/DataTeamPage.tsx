@@ -7,32 +7,34 @@ import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 import * as Clipboard from 'expo-clipboard';
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState<string>('');
+
+
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [modalDeleteTeam, setModalDeleteTeam] = useState<boolean>(false);
+    const [modalDeleteMember, setModalDeleteMember] = useState<boolean>(false);
+    const [idMember, setIdMember] = useState<string>('');
+
+    const [membersTeam, setMembersTeam] = useState<string[]>([]);
+    const [membersTeamId, setMembersTeamId] = useState<string[]>([]);
+    const [membersTeamRole, setMembersTeamRole] = useState<string[]>([]);
+
+    const [nameTeam, setNameTeam] = useState<string>('');
+    const [idTeam, setIdTeam] = useState<string>('');
+    const [option, setOption] = useState<string>('');
 
     const copyToClipboard = async (text: string) => {
         await Clipboard.setStringAsync(text);
     };
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
-    const [modalDeleteTeam, setModalDeleteTeam] = useState(false);
-    const [modalDeleteMember, setModalDeleteMember] = useState(false);
-    const [idMember, setIdMember] = useState('');
-
-    const [membersTeam, setMembersTeam] = useState([]);
-    const [membersTeamId, setMembersTeamId] = useState([]);
-    const [membersTeamRole, setMembersTeamRole] = useState([]);
-
-    const [nameTeam, setNameTeam] = useState('');
-    const [idTeam, setIdTeam] = useState('');
-    const [option, setOption] = useState('');
-
     const handleDeleteTeam = async () => {
         try {
             const id = await AsyncStorage.getItem('idTeam');
-            const response = await axios.delete(`http://10.0.2.2:3001/Member/deleteTeam/${id}`);
+            const response = await axios.delete(`${ENDPOINT_MS_TEMAMS}/Member/deleteTeam/${id}`);
             navigation.navigate("MyTeamsPage");
         } catch (error) {
             setError("No se pudo eliminar el equipo");
@@ -42,18 +44,18 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
     const handleDeleteMember = async (id: string) => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
-            const response = await axios.delete(`http://10.0.2.2:3001/Member/removeMember/${id}/${idTeam}`);
+            const response = await axios.delete(`${ENDPOINT_MS_TEMAMS}/Member/removeMember/${id}/${idTeam}`);
             navigation.navigate("DataTeamPage");
         } catch (error) {
             setError("No se pudo eliminar el miembro");
             setModalVisible(true);
         }
     }
-    
+
     const loadMembersTeam = async () => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
-            const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/getMemberTeam/${idTeam}`);
             setMembersTeam(response.data.TeamsEmails);
             setMembersTeamId(response.data.nameId);
             setMembersTeamRole(response.data.memberRole);
@@ -70,7 +72,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
         setIdTeam(await AsyncStorage.getItem('idTeam') ?? '');
         setEmail(await AsyncStorage.getItem('email') ?? '');
     };
-    
+
     //este carga el primer componente
     useEffect(() => {
         loadMembersTeam();

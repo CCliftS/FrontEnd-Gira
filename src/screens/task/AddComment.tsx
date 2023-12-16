@@ -6,16 +6,18 @@ import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { ENDPOINT_MS_TASK } from "react-native-dotenv";
 
 const AddComment: React.FC<AddCommentProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [newComment, setNewComment] = useState<string>('');
 
     const handleNewComment = async (comment: string) => {
         try {
             const id_task = await AsyncStorage.getItem('idTask');
             const email_user = await AsyncStorage.getItem('email');
-            const response = await axios.post(`http://10.0.2.2:3002/Comments/createComment`, {
+            const response = await axios.post(`${ENDPOINT_MS_TASK}/Comments/createComment`, {
                 id_task,
                 email_user,
                 comment,
@@ -27,8 +29,6 @@ const AddComment: React.FC<AddCommentProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     }
-    const [newComment, setNewComment] = useState('');
-
     return (
         <View style={styleBox.containerPage}>
             <Modal

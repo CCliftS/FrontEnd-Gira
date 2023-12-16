@@ -6,17 +6,18 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 const AddTeamProject: React.FC<AddTeamProjectProps> = ({ navigation }) => {
-    const [idTeam, setIdTeam] = useState('');
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [idTeam, setIdTeam] = useState<string>('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const handleAddTeam = async (idTeam: string) => {
         try {
 
             const id = await AsyncStorage.getItem('idProject');
-            const response = await axios.post(`http://10.0.2.2:3001/Project/addTeam`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Project/addTeam`, {
                 id,
                 idTeam
             });

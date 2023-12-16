@@ -6,16 +6,22 @@ import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { ENDPOINT_MS_TASK } from "react-native-dotenv";
 
 
 const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [option, setOption] = useState("");
-    const [nav, setNav] = useState("");
-    const [nameTask, setNameTask] = useState("");
+    const [option, setOption] = useState<string>("");
+    const [nav, setNav] = useState<string>("");
+    const [nameTask, setNameTask] = useState<string>("");
+
+    const [comments, setComments] = useState<string[]>([]);
+    const [emailUser, setEmailUser] = useState<string[]>([]);
+    const [idTask, setIdTask] = useState<string[]>([]);
+
     const loadData = async () => {
         setOption(await AsyncStorage.getItem('option') ?? '');
         setNav(await AsyncStorage.getItem('nav') ?? '');
@@ -23,7 +29,7 @@ const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
     const fecthDataTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.get(`http://10.0.2.2:3002/Tasks/findTaskById/${id}`);
+            const response = await axios.get(`${ENDPOINT_MS_TASK}/Tasks/findTaskById/${id}`);
             setNameTask(response.data.name);
 
         } catch (error) {
@@ -31,13 +37,11 @@ const CommentTask: React.FC<CommentTaskProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
-    const [comments, setComments] = useState([]);
-    const [emailUser, setEmailUser] = useState([]);
-    const [idTask, setIdTask] = useState([]);
+
     const fechtDataComment = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.get(`http://10.0.2.2:3002/Comments/getCommentsByTask/${id}`);
+            const response = await axios.get(`${ENDPOINT_MS_TASK}/Comments/getCommentsByTask/${id}`);
             setComments(response.data.commentComment);
             setEmailUser(response.data.commentEmailUser);
             setIdTask(response.data.commentIdTask);

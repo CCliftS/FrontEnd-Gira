@@ -6,21 +6,22 @@ import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo
 import axios from "axios";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 const CreateProject: React.FC<CreateProjectProps> = ({ navigation }) => {
-    const [nameProject, setNameProject] = useState('');
+    const [nameProject, setNameProject] = useState<string>('');
     const [teams, setTeams] = useState<string[]>([]);
-    const [teamCode, setTeamCode] = useState('');
-    const [description, setDescription] = useState('');
+    const [teamCode, setTeamCode] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     const hanleCreateProyect = async (nameProject: string, teamCode: string) => {
         try {
             const idOwner = await AsyncStorage.getItem('email');
             setTeams([...teams, teamCode]);
-            const response = await axios.post(`http://10.0.2.2:3001/Project/createProject`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Project/createProject`, {
                 nameProject,
                 idOwner,
                 description,

@@ -7,14 +7,19 @@ import { Dropdown } from "react-native-element-dropdown";
 import { useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
+interface Role {
+    label: string;
+    value: string;
+}
 
 const EditRoles: React.FC<EditRolesProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [role, setRole] = useState('');
-    const roles = [
+    const [role, setRole] = useState<string>('');
+    const roles: Role[] = [
         { label: "Scrum Master", value: '1' },
         { label: "Frontend", value: '2' },
         { label: "Backend", value: '3' },
@@ -26,7 +31,7 @@ const EditRoles: React.FC<EditRolesProps> = ({ navigation }) => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
             const email = await AsyncStorage.getItem('emailUser');
-            const response = await axios.put(`http://10.0.2.2:3001/Member/updateRole/${email}/${idTeam}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TEMAMS}/Member/updateRole/${email}/${idTeam}`, {
                 role,
             });
             navigation.navigate("DataTeamPage");

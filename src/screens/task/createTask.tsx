@@ -9,6 +9,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
+import { ENDPOINT_MS_TASK, ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 
 interface TeamData {
@@ -27,25 +28,34 @@ interface DropdownMember {
     label: string;
     value: string;
 }
+interface DropdownStatus {
+    label: string;
+    value: string;
+
+}
 
 const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [nameTask, setNameTask] = useState('');
-    const [descriptionTask, setDescriptionTask] = useState('');
-    const [startDate, setStarttDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [selectIdTeam, setSelectIdTeam] = useState("");
-    const [selectStatus, setSelectStatus] = useState("");
-    const [selectMember, setSelectMember] = useState("");
-    const [modalStartDateVisible, setModalStartDateVisible] = useState(false);
-    const [modalEndDateVisible, setModalEndDateVisible] = useState(false);
+    const [nameTask, setNameTask] = useState<string>('');
+    const [descriptionTask, setDescriptionTask] = useState<string>('');
+    const [startDate, setStarttDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+    const [selectIdTeam, setSelectIdTeam] = useState<string>("");
+    const [selectStatus, setSelectStatus] = useState<string>("");
+    const [selectMember, setSelectMember] = useState<string>("");
+    const [modalStartDateVisible, setModalStartDateVisible] = useState<boolean>(false);
+    const [modalEndDateVisible, setModalEndDateVisible] = useState<boolean>(false);
+
+    const [teamData, setTeamData] = useState<TeamData | null>(null);
+
+    const [membersTeam, setMembersTeam] = useState<string[]>([]);
 
     const fetchCreateTask = async (name: string, status: string, description: string, id_team: string, email_user: string, start_date: Date, finish_date: Date) => {
         try {
             const id_project = await AsyncStorage.getItem('idProject');
-            const response = await axios.post(`http://10.0.2.2:3002/Tasks/createTask`, {
+            const response = await axios.post(`${ENDPOINT_MS_TASK}/Tasks/createTask`, {
                 name,
                 status,
                 description,
@@ -70,13 +80,10 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
             value_name: data.teamProjects[index],
         }));
     };
-
-    const [teamData, setTeamData] = useState<TeamData | null>(null);
-
     const loadDataProject = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findOneProject/${idProject}`);
+            const response = await axios.get(`{${ENDPOINT_MS_TEMAMS}/Project/findOneProject/${idProject}`);
             setTeamData(response.data);
 
         } catch (error) {
@@ -84,8 +91,6 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     }
-    const [membersTeam, setMembersTeam] = useState([]);
-
     const transformMember = (values: string[]): DropdownMember[] => {
         return values.map((value, index) => ({
             value: `${index + 1}`,
@@ -94,7 +99,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
     };
     const loadMembersTeam = async (idTeam: string) => {
         try {
-            const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Member/getMemberTeam/${idTeam}`);
             setMembersTeam(response.data.TeamsEmails);
 
         } catch (error) {
@@ -103,7 +108,7 @@ const CreateTask: React.FC<CreateTaskProps> = ({ navigation }) => {
         }
     };
 
-    const status = [
+    const status: DropdownStatus[] = [
         { label: "Pendiente", value: '1' },
         { label: "Proceso", value: '2' },
         { label: "Terminado", value: '3' },

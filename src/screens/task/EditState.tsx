@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { EditStateProps } from "../../../types/types";
-import styleAddPage from "../../public/styles/StyleAddPage";
 import styleBox from "../../public/styles/styleBox";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import styleText from "../../public/styles/styleText";
@@ -9,22 +8,27 @@ import { useState } from "react";
 import { ca } from "date-fns/locale";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ENDPOINT_MS_TASK } from "react-native-dotenv";
 
+interface Status {
+    label: string;
+    value: string;
+
+}
 const EditState: React.FC<EditStateProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
+    const [newStatus, setNewStatus] = useState<string>('');
 
-    const status = [
+    const status: Status[] = [
         { label: "Pendiente", value: '1' },
         { label: "Proceso", value: '2' },
         { label: "Terminado", value: '3' },
     ];
-    const [newStatus, setNewStatus] = useState('');
-
     const handleChangeStatus = async (newStatus: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStatus/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateStatus/${id}`, {
                 newStatus,
             });
             navigation.navigate("UserTask");
@@ -33,7 +37,6 @@ const EditState: React.FC<EditStateProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     }
-
     return (
         <View style={styleBox.container}>
             <Modal

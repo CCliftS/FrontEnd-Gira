@@ -7,16 +7,20 @@ import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 import { Dropdown } from "react-native-element-dropdown";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
-
+interface Role {
+    label: string;
+    value: string;
+}
 
 const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [emailMember, setEmailMember] = useState('');
-    const [role, setRole] = useState('');
-    const roles = [
+    const [emailMember, setEmailMember] = useState<string>('');
+    const [role, setRole] = useState<string>('');
+    const roles: Role[] = [
         { label: "Scrum Master", value: '1' },
         { label: "Frontend", value: '2' },
         { label: "Backend", value: '3' },
@@ -29,7 +33,7 @@ const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
 
             const idTeam = await AsyncStorage.getItem('idTeam');
             const nameTeam = await AsyncStorage.getItem('nameTeam');
-            const response = await axios.post(`http://10.0.2.2:3001/Member/addMemberTeam`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Member/addMemberTeam`, {
                 email,
                 role,
                 idTeam,
@@ -94,36 +98,3 @@ const AddMemberTeam: React.FC<AddMemberTeamProps> = ({ navigation }) => {
     );
 }
 export default AddMemberTeam;
-
-{/*
-*
-    <View style={styleGeneral.container}>
-            <View style={styleGeneral.boxHeader}>
-                <Text style={styleGeneral.titleHeader}>Creación de proyecto</Text>
-            </View>
-            <View style={styleGeneral.boxContainer}>
-                <View style={styleTeamPage.boxDataItem}>
-                    <Text style={styleTeamPage.textBox1}>Nombre del integrante</Text>
-                    <TextInput
-                        style={[styleTeamPage.boxDataItem2, styleGeneral.textSecundary]}
-                        value={emailMember}
-                        onChangeText={(text: string) => setEmailMember(text)}
-                    />
-                </View>
-                <View style={styleTeamPage.boxDataItem}>
-                    <Text style={styleTeamPage.textBox1}>Rol del integrante</Text>
-                    <TextInput
-                        style={[styleTeamPage.boxDataItem2, styleGeneral.textSecundary]}
-                        value={role}
-                        onChangeText={(text: string) => setRole(text)}
-                    />
-                </View>
-                <TouchableOpacity style={styleGeneral.boxBottom1} onPress={() => hanleAddMember(emailMember, role)}>
-                    <Text style={styleGeneral.texBottom}>Agregar miembro al equipo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleGeneral.boxBottom2} onPress={() => navigation.navigate("DataTeamPage")}>
-                    <Text style={styleGeneral.texBottom}>Volver</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-*/}

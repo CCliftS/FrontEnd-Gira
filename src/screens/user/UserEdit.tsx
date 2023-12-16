@@ -6,21 +6,22 @@ import { useAsyncStorage } from "../../utils/localStorage";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, FontAwesome5, MaterialIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_USER } from "react-native-dotenv";
 
 
 const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const email = useAsyncStorage('email');
-    const [name, setName] = useState('');
-    const [lastName, setLastname] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const email: string = useAsyncStorage('email');
+    const [name, setName] = useState<string>('');
+    const [lastName, setLastname] = useState<string>('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
     const handleChangeDates = async (email: string, name: string, lastName: string) => {
         setIsButtonDisabled(true);
         try {
-            const response = await axios.put(`http://10.0.2.2:3000/user/changeData`, {
+            const response = await axios.put(`${ENDPOINT_MS_USER}/user/changeData`, {
                 email,
                 name,
                 lastName
@@ -81,46 +82,3 @@ const UserEdit: React.FC<UserPageProps> = ({ navigation }) => {
     );
 }
 export default UserEdit;
-
-{/**
-
-<View style={styleUserPage.container}>
-            <View style={styleUserPage.boxHeader}>
-                <View style={styleUserPage.boxTextHeader}>
-                    <Text style={styleUserPage.titleHeader}>Edición de datos</Text>
-                </View>
-            </View>
-            <View style={styleUserPage.boxData}>
-                <View style={styleUserPage.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Nombre</Text>
-                    <TextInput
-                        style={[styleUserPage.boxDataItem2, styleUserPage.textSecundary]}
-                        value={name}
-                        onChangeText={(text: string) => setName(text)}
-                    />
-                </View>
-                <View style={styleUserPage.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Apellido</Text>
-                    <TextInput
-                        style={[styleUserPage.boxDataItem2, styleUserPage.textSecundary]}
-                        value={lastName}
-                        onChangeText={(text: string) => setLastname(text)}
-                    />
-                </View>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditEmailPage")}>
-                    <Text style={styleUserPage.textBottom}>Cambiar correo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styleUserPage.boxEditPassword} onPress={() => navigation.navigate("EditPassPage")}>
-                    <Text style={styleUserPage.textBottom}>Cambiar contraseña</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    disabled={isButtonDisabled}
-                    style={styleUserPage.boxDelete}
-                    onPress={() => handleChangeDates(email, name, lastName)}
-                >
-                    <Text style={styleUserPage.textBottom}>Confirmar Cambios</Text>
-                </TouchableOpacity>
-            </View>
-        </View>
-
-*/}

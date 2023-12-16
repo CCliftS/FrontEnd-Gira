@@ -1,27 +1,27 @@
 import { View, Text, TouchableOpacity, TextInput, Modal } from "react-native";
 import { EditPassPageProps } from "../../../types/types";
-import styleEditPage from "../../public/styles/StyleEditPage";
 import { useState } from "react";
 import axios from "axios";
 import { useAsyncStorage } from "../../utils/localStorage";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_USER } from "react-native-dotenv";
 
 const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const email = useAsyncStorage('email');
-    const [password, setPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [repeatPassword, setRepeatPassword] = useState('');
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+    const email: string = useAsyncStorage('email');
+    const [password, setPassword] = useState<string>('');
+    const [newPassword, setNewPassword] = useState<string>('');
+    const [repeatPassword, setRepeatPassword] = useState<string>('');
+    const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
 
     const handlerChangePassword = async (email: string, password: string, newPassword: string, repeatPassword: string) => {
         setIsButtonDisabled(true);
         try {
-            const response = await axios.put(`http://10.0.2.2:3000/user/changePassword`, {
+            const response = await axios.put(`${ENDPOINT_MS_USER}/user/changePassword`, {
                 email,
                 password,
                 newPassword,
@@ -94,48 +94,3 @@ const EditEmailPage: React.FC<EditPassPageProps> = ({ navigation, }) => {
     );
 }
 export default EditEmailPage;
-/*
-return (
-    <View style={styleEditPage.container}>
-        <View style={styleEditPage.boxData}>
-            <Text style={styleEditPage.textPrimary}>Cambio de Contraseña</Text>
-            <View style={styleEditPage.boxDataItemPass}>
-                <Text style={styleEditPage.textSecundary}>Ingrese su contraseña antigua</Text>
-                <TextInput
-                    style={[styleEditPage.boxDataItem2Pass, styleEditPage.textSecundaryPass]}
-                    value={password}
-                    onChangeText={(text: string) => setPassword(text)}
-                    secureTextEntry
-                />
-            </View>
-            <View style={styleEditPage.boxDataItemPass}>
-                <Text style={styleEditPage.textSecundary}>Ingrese su nueva contraseña</Text>
-                <TextInput
-                    style={[styleEditPage.boxDataItem2Pass, styleEditPage.textSecundaryPass]}
-                    value={newPassword}
-                    onChangeText={(text: string) => setNewPassword(text)}
-                    secureTextEntry
-                />
-            </View>
-            <View style={styleEditPage.boxDataItemPass}>
-                <Text style={styleEditPage.textSecundary}>Reingrese la contraseña nueva</Text>
-                <TextInput
-                    style={[styleEditPage.boxDataItem2Pass, styleEditPage.textSecundaryPass]}
-                    value={repeatPassword}
-                    onChangeText={(text: string) => setRepeatPassword(text)}
-                    secureTextEntry
-                />
-            </View>
-            <TouchableOpacity
-                disabled={isButtonDisabled}
-                style={styleEditPage.boxBottomPass}
-                onPress={() => handlerChangePassword(email, password, newPassword, repeatPassword)}
-            >
-                <Text style={styleEditPage.textSecundary}>Actualizar contraseña</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styleEditPage.boxBottomPass2} onPress={() => navigation.navigate("UserEdit")}>
-                <Text style={styleEditPage.textSecundary}>Volver</Text>
-            </TouchableOpacity>
-        </View>
-    </View>
-)*/

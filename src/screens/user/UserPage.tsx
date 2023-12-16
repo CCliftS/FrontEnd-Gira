@@ -1,29 +1,27 @@
 import { UserPageProps } from "../../../types/types";
-import { View, Text, Image, TouchableOpacity, Touchable, TouchableHighlightComponent, ScrollView, TouchableOpacityBase, TouchableHighlight, Modal } from "react-native";
-import styleUserPage from "../../public/styles/StyleUserPage";
-import NavigationBar from "../common/navbar";
+import { View, Text, Image, TouchableOpacity, Modal } from "react-native";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAsyncStorage } from "../../utils/localStorage";
 import { useFocusEffect } from "@react-navigation/native";
 import styleBox from "../../public/styles/styleBox";
 import { Feather, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ENDPOINT_MS_USER } from "react-native-dotenv";
 
 const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [email, setEmail] = useState('');
-    const [name, setName] = useState('');
-    const [lastName, setLastName] = useState('');
+    const [email, setEmail] = useState<string>('');
+    const [name, setName] = useState<string>('');
+    const [lastName, setLastName] = useState<string>('');
 
-    const [modalDelete, setModalDelete] = useState(false);
+    const [modalDelete, setModalDelete] = useState<boolean>(false);
     const handleDeleteUser = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.delete(`http://10.0.2.2:3000/user/deleteUser/${email}`);
+            const response = await axios.delete(`${ENDPOINT_MS_USER}/user/deleteUser/${email}`);
             navigation.navigate("Login");
         } catch (error) {
             setError("No se pudo eliminar el usuario");
@@ -33,7 +31,7 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
     const dataUser = async () => {
         try {
             const emailUser = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3000/user/data/${emailUser}`);
+            const response = await axios.get(`${ENDPOINT_MS_USER}user/data/${emailUser}`);
             const { name: fetchedName, lastName: fetchedLastName } = response.data;
             setName(fetchedName);
             setLastName(fetchedLastName);
@@ -127,44 +125,3 @@ const UserPage: React.FC<UserPageProps> = ({ navigation }) => {
     );
 }
 export default UserPage;
-
-{/*
-    <View style={styleUserPage.container}>
-            <View style={styleUserPage.boxHeader}>
-                <View style={styleUserPage.boxTextHeader}>
-                    <Text style={styleUserPage.titleHeader}>Datos usuario</Text>
-                </View>
-                <TouchableOpacity style={styleUserPage.boxIconHeader} onPress={() => navigation.navigate("UserEdit")}>
-                    <Image
-                        source={require('../../public/icons/cuadrado-de-la-pluma.png')}
-                        style={styleUserPage.icon}
-                        resizeMode="contain"
-                    />
-                </TouchableOpacity>
-            </View>
-            <View style={styleUserPage.boxData}>
-                <View style={styleUserPage.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Email</Text>
-                    <View style={styleUserPage.boxDataItem2}>
-                        <Text style={styleUserPage.textSecundary}>{email}</Text>
-                    </View>
-                </View>
-                <View style={styleUserPage.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Nombre</Text>
-                    <View style={styleUserPage.boxDataItem2}>
-                        <Text style={styleUserPage.textSecundary}>{name}</Text>
-                    </View>
-                </View>
-                <View style={styleUserPage.boxDataItem}>
-                    <Text style={styleUserPage.textPrimary}>Apellido</Text>
-                    <View style={styleUserPage.boxDataItem2}>
-                        <Text style={styleUserPage.textSecundary}>{lastName}</Text>
-                    </View>
-                </View>
-                <TouchableOpacity style={styleUserPage.boxDelete} onPress={() => navigation.navigate("HomePage")}>
-                    <Text style={styleUserPage.textBottom}>Eliminar Usuario</Text>
-                </TouchableOpacity>
-            </View>
-
-        </View>
-*/}

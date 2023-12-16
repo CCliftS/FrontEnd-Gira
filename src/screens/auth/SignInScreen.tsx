@@ -3,20 +3,19 @@ import { View, StyleSheet, TextInput, Image, Text, TouchableOpacity, Alert, Moda
 import axios from 'axios';
 import { SignInScreenProps } from '../../../types/types';
 import { ENDPOINT_MS_USER } from 'react-native-dotenv';
-import styleGeneral from '../../public/styles/StyleGeneral';
 import styleBox from '../../public/styles/styleBox';
 import { Feather, Fontisto } from '@expo/vector-icons';
 import styleText from '../../public/styles/styleText';
 
 const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [lastname, setLastname] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [lastname, setLastname] = useState<string>('');
 
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [error, setError] = useState('');
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(false);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [error, setError] = useState<string>('');
 
   const handleRegister = async (
     email: string,
@@ -27,7 +26,7 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
     setIsButtonDisabled(true);
 
     try {
-      const response = await axios.post(`http://10.0.2.2:3000/auth/singIn`, {
+      const response = await axios.post(`${ENDPOINT_MS_USER}/auth/singIn`, {
         email,
         password,
         name,
@@ -106,60 +105,4 @@ const SignInScreen: React.FC<SignInScreenProps> = ({ navigation }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#44749d',
-  },
-  container2: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#ebe8e8',
-    paddingHorizontal: 15,
-    paddingBottom: 10,
-    borderRadius: 5,
-  },
-  title: {
-    fontSize: 30,
-    padding: 16,
-    color: 'gray',
-    fontWeight: 'bold',
-  },
-  input: {
-    width: 240,
-    marginBottom: 20,
-    padding: 5,
-    borderWidth: 1,
-    borderColor: 'transparent',
-    backgroundColor: '#F3f3f3',
-    borderRadius: 2,
-  },
-  link: {
-    marginTop: 16,
-    color: 'blue',
-    marginBottom: 16,
-  },
-  button: {
-    backgroundColor: '#d9bf56',
-    borderRadius: 15,
-    alignItems: 'center',
-    height: 40,
-    width: 150,
-  },
-  buttonText: {
-    color: 'white',
-    textAlign: 'center',
-    marginTop: 5,
-    fontSize: 20,
-  },
-  logo: {
-    width: 150, // Ajusta el tamaño de la imagen según tus necesidades
-    height: 150, // Ajusta el tamaño de la imagen según tus necesidades
-    marginBottom: 16,
-  },
-});
-
 export default SignInScreen;

@@ -2,29 +2,45 @@ import { View, Text, Image, TouchableOpacity, ScrollView, Modal } from "react-na
 import React, { useEffect, useState } from "react";
 import { StyleSheet } from "react-native";
 import { HomePageScreenProps } from "../../../types/types";
-import styleHomePage from "../../public/styles/StyleHomePage";
 import NavigationBar from "../common/navbar";
-import styleGeneral from "../../public/styles/StyleGeneral";
 import styleBox from "../../public/styles/styleBox";
 import styleText from "../../public/styles/styleText";
 import { Ionicons, AntDesign, MaterialIcons, Feather, FontAwesome5, Fontisto, Zocial } from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import { id } from "date-fns/locale";
+import { ENDPOINT_MS_TASK, ENDPOINT_MS_TEMAMS, ENDPOINT_MS_USER } from "react-native-dotenv";
 
 
 const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
     {/* Datos del usuario */ }
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [userName, setUserName] = useState('');
-    const [userLastName, setUserLastName] = useState('');
+    const [userName, setUserName] = useState<string>('');
+    const [userLastName, setUserLastName] = useState<string>('');
+
+    {/* Proyectos del usuario Owner */ }
+    const [nameProject, setNameProject] = useState<string[]>([]);
+    const [idProject, setIdProject] = useState<string[]>([]);
+
+    {/* Equipos del usuario */ }
+    const [nameTeam, setNameTeam] = useState<string[]>([]);
+    const [idTeam, setIdTeam] = useState<string[]>([]);
+
+    const [idTask, setIdTask] = useState<string[]>([]);
+    const [descriptionTask, setDescriptionTask] = useState<string[]>([]);
+    const [finishDateTask, setFinishDateTask] = useState<string[]>([]);
+    const [idTeamTask, setIdTeamTask] = useState<string[]>([]);
+    const [nameTask, setNameTask] = useState<string[]>([]);
+    const [startDateTask, setStartDateTask] = useState<string[]>([]);
+    const [statusTask, setStatusTask] = useState<string[]>([]);
+    const [nameTeamTask, setNameTeamTask] = useState<string[]>([]);
+    const [emailUserTask, setEmailUserTask] = useState<string[]>([]);
 
     const fetchDataUser = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3000/user/getUser/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_USER}/user/getUser/${email}`);
 
             setUserName(response.data.name);
             setUserLastName(response.data.lastName);
@@ -33,14 +49,10 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
-    {/* Proyectos del usuario Owner */ }
-    const [nameProject, setNameProject] = useState([]);
-    const [idProject, setIdProject] = useState([]);
-
     const fetchOwnerProjectsUser = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findProjectOwner/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Project/findProjectOwner/${email}`);
 
             setNameProject(response.data.nameProjects);
             setIdProject(response.data.idProjects);
@@ -49,14 +61,10 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     }
-    {/* Equipos del usuario */ }
-    const [nameTeam, setNameTeam] = useState([]);
-    const [idTeam, setIdTeam] = useState([]);
-
     const fechtTeamUser = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.post(`http://10.0.2.2:3001/Member/memberData`, {
+            const response = await axios.post(`${ENDPOINT_MS_TEMAMS}/Member/memberData`, {
                 email
             });
             setNameTeam(response.data.teamsName);
@@ -66,20 +74,11 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     };
-    const [idTask, setIdTask] = useState([]);
-    const [descriptionTask, setDescriptionTask] = useState([]);
-    const [finishDateTask, setFinishDateTask] = useState([]);
-    const [idTeamTask, setIdTeamTask] = useState([]);
-    const [nameTask, setNameTask] = useState([]);
-    const [startDateTask, setStartDateTask] = useState([]);
-    const [statusTask, setStatusTask] = useState([]);
-    const [nameTeamTask, setNameTeamTask] = useState([]);
-    const [emailUserTask, setEmailUserTask] = useState([]);
 
     const fecthTaskUser = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3002/Tasks/findTaskByUser/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TASK}/Tasks/findTaskByUser/${email}`);
             setIdTask(response.data.taskId);
             setDescriptionTask(response.data.taskDescription);
             setFinishDateTask(response.data.taskFinishDate);
@@ -90,8 +89,8 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeamTask(response.data.taskTeamName);
         } catch (error) {
-            //setError("No se pudo cargar las tareas");
-            //setModalVisible(true);
+            setError("No se pudo cargar las tareas");
+            setModalVisible(true);
         }
     };
     useEffect(() => {
@@ -318,7 +317,7 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
                 </View>
                 <View style={{ height: 100 }}></View>
             </ScrollView >
-            <View style={styleGeneral.footer}>
+            <View style={styleBox.footer}>
                 <NavigationBar navigation={navigation} />
             </View>
         </View >
@@ -328,47 +327,3 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
 
 
 export default HomePage;
-
-/*
-    <View style={styleGeneral.container}>
-        <View style={styleHomePage.boxHeader}>
-            <Text style={styleHomePage.titleHeader}>Bienvenido 👋</Text>
-            <Image
-                source={require('../../public//icons/gira_logo.png')}
-                style={styleHomePage.logo} />
-        </View>
-        <View style={styleGeneral.boxContainer}>
-            <Text style={styleGeneral.textSecundary}>MIS EQUIPOS</Text>
-            <View style={styleHomePage.boxTeam}>
-                <TouchableOpacity onPress={() => navigation.navigate("MyTeamsPage")}>
-                    <Image
-                        source={require('../../public/icons/equipo-de-usuarios.png')}
-                        resizeMode="contain"
-                        style={styleHomePage.icon} />
-                </TouchableOpacity>
-            </View>
-            <Text style={styleGeneral.textSecundary}>MIS PROYECTOS</Text>
-            <View style={styleHomePage.boxProyect}>
-                <TouchableOpacity onPress={() => navigation.navigate("ProjectUser")}>
-                    <Image
-                        source={require('../../public/icons/proyecto-de-diagrama.png')}
-                        resizeMode="contain"
-                        style={styleHomePage.icon} />
-                </TouchableOpacity>
-            </View>
-            <Text style={styleGeneral.textSecundary}>MIS TAREAS</Text>
-            <View style={styleHomePage.boxTask}>
-                <TouchableOpacity onPress={() => navigation.navigate("HomePage")}>
-                    <Image
-                        source={require('../../public/icons/comprobacion-de-lista.png')}
-                        resizeMode="contain"
-                        style={styleHomePage.icon} />
-                </TouchableOpacity>
-            </View>
-
-        </View>
-        <View style={styleGeneral.footer}>
-            <NavigationBar navigation={navigation} />
-        </View>
-    </View>
-    */

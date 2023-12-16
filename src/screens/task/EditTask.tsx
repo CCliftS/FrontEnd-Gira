@@ -9,7 +9,8 @@ import axios from "axios";
 import { Dropdown } from "react-native-element-dropdown";
 import DateTimePicker, { DateType } from 'react-native-ui-datepicker';
 import dayjs from 'dayjs';
-import { set } from "date-fns";
+import { ENDPOINT_MS_TASK, ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
+
 
 
 interface TeamData {
@@ -21,23 +22,46 @@ interface DropdownTeam {
     label: string;
     value: string;
     value_name: string;
-    value_id: string; // Nuevo campo value_id
+    value_id: string;
 
 }
 interface DropdownMember {
     label: string;
     value: string;
 }
+interface Status {
+    label: string;
+    value: string;
+}
 const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-    const [modalVisibleOne, setModalVisibleOne] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisibleOne, setModalVisibleOne] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
+    const [membersTeam, setMembersTeam] = useState<string[]>([]);
+
+    const [descriptionTask, setDescriptionTask] = useState<string>("");
+    const [emailUserTask, setEmailUserTask] = useState<string>("");
+    const [idTeamTask, setIdTeamTask] = useState<string>("");
+    const [nameTask, setNameTask] = useState<string>("");
+    const [startDate, setStarttDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+    const [endDate, setEndDate] = useState<string>(dayjs().format('YYYY-MM-DD'));
+    const [statusTask, setStatusTask] = useState<string>("");
+    const [modalStartDateVisible, setModalStartDateVisible] = useState<boolean>(false);
+    const [modalEndDateVisible, setModalEndDateVisible] = useState<boolean>(false);
+
+    const status: Status[] = [
+        { label: "Pendiente", value: '1' },
+        { label: "Proceso", value: '2' },
+        { label: "Terminado", value: '3' },
+    ];
+
+    const [teamData, setTeamData] = useState<TeamData | null>(null);
     const fecthDataTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.get(`http://10.0.2.2:3002/Tasks/findTaskById/${id}`);
+            const response = await axios.get(`${ENDPOINT_MS_TASK}/Tasks/findTaskById/${id}`);
             setNameTask(response.data.name);
             setDescriptionTask(response.data.description);
             setEmailUserTask(response.data.email_user);
@@ -51,11 +75,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setModalVisibleOne(true);
         }
     };
-    const status = [
-        { label: "Pendiente", value: '1' },
-        { label: "Proceso", value: '2' },
-        { label: "Terminado", value: '3' },
-    ];
+
     const transformTeam = (data: TeamData): DropdownTeam[] => {
         return data.teamsNames.map((name: string, index: number) => ({
             label: name,
@@ -65,13 +85,10 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
 
         }));
     };
-
-    const [teamData, setTeamData] = useState<TeamData | null>(null);
-
     const loadDataProject = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findOneProject/${idProject}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Project/findOneProject/${idProject}`);
             setTeamData(response.data);
 
         } catch (error) {
@@ -79,8 +96,6 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setModalVisibleOne(true);
         }
     }
-    const [membersTeam, setMembersTeam] = useState([]);
-
     const transformMember = (values: string[]): DropdownMember[] => {
         return values.map((value, index) => ({
             value: `${index + 1}`,
@@ -89,7 +104,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     };
     const loadMembersTeam = async (idTeam: string) => {
         try {
-            const response = await axios.get(`http://10.0.2.2:3001/Member/getMemberTeam/${idTeam}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Member/getMemberTeam/${idTeam}`);
             setMembersTeam(response.data.TeamsEmails);
 
         } catch (error) {
@@ -97,20 +112,11 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
             setModalVisibleOne(true);
         }
     };
-    const [descriptionTask, setDescriptionTask] = useState("");
-    const [emailUserTask, setEmailUserTask] = useState("");
-    const [idTeamTask, setIdTeamTask] = useState("");
-    const [nameTask, setNameTask] = useState("");
-    const [startDate, setStarttDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DD'));
-    const [statusTask, setStatusTask] = useState("");
-    const [modalStartDateVisible, setModalStartDateVisible] = useState(false);
-    const [modalEndDateVisible, setModalEndDateVisible] = useState(false);
 
     const handleChangeName = async (newName: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateName/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateName/${id}`, {
                 newName,
             });
             fecthDataTask();
@@ -123,7 +129,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     const handleChangeDescription = async (newDescription: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateDescription/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateDescription/${id}`, {
                 newDescription,
             });
             fecthDataTask();
@@ -136,7 +142,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     const handleChangeStatus = async (newStatus: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStatus/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateStatus/${id}`, {
                 newStatus,
             });
             fecthDataTask();
@@ -149,7 +155,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
     const handleTeamAndUser = async (id_team: string, email_user: string) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateTeamAndEmailUser/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateTeamAndEmailUser/${id}`, {
                 id_team,
                 email_user,
             });
@@ -164,7 +170,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
             console.log(id);
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateStartDate/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateStartDate/${id}`, {
                 newDate,
             });
             fecthDataTask();
@@ -178,7 +184,7 @@ const EditTask: React.FC<EditTaskProps> = ({ navigation }) => {
         try {
             const id = await AsyncStorage.getItem('idTask');
             console.log(id);
-            const response = await axios.put(`http://10.0.2.2:3002/Tasks/updateFinishDate/${id}`, {
+            const response = await axios.put(`${ENDPOINT_MS_TASK}/Tasks/updateFinishDate/${id}`, {
                 newDate,
             });
             fecthDataTask();

@@ -6,28 +6,29 @@ import { useEffect, useState } from "react";
 import styleBox from "../../public/styles/styleBox";
 import { Ionicons, AntDesign, MaterialCommunityIcons, Feather } from '@expo/vector-icons';
 import styleText from "../../public/styles/styleText";
+import { ENDPOINT_MS_TEMAMS } from "react-native-dotenv";
 
 
 
 const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
-    const [option, setOption] = useState(false);
+    const [option, setOption] = useState<boolean>(false);
 
-    const [nameProjects, setNameProjects] = useState([]);
-    const [idProjects, setIdProjects] = useState([]);
+    const [nameProjects, setNameProjects] = useState<string[]>([]);
+    const [idProjects, setIdProjects] = useState<string[]>([]);
 
 
-    const [participedProjects, setParticipedProjects] = useState([]);
-    const [idParticipedProjects, setIdParticipedProjects] = useState([]);
+    const [participedProjects, setParticipedProjects] = useState<string[]>([]);
+    const [idParticipedProjects, setIdParticipedProjects] = useState<string[]>([]);
 
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
     /* Aqui pido los projects del Owner*/
 
     const loadMyProjects = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findProjectOwner/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Project/findProjectOwner/${email}`);
 
             setNameProjects(response.data.nameProjects);
             setIdProjects(response.data.idProjects);
@@ -41,7 +42,7 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
     const loadParticipatesProjects = async () => {
         try {
             const email = await AsyncStorage.getItem('email');
-            const response = await axios.get(`http://10.0.2.2:3001/Project/findAllParticipatedProjects/${email}`);
+            const response = await axios.get(`${ENDPOINT_MS_TEMAMS}/Project/findAllParticipatedProjects/${email}`);
 
             setParticipedProjects(response.data.participedProjects);
             setIdParticipedProjects(response.data.idParticipedProjects);
@@ -187,61 +188,3 @@ const ProjectUser: React.FC<ProjectUserProps> = ({ navigation }) => {
     );
 }
 export default ProjectUser;
-
-/*
-*
- 
-<View style={styleGeneral.container}>
-            <View style={styleProjectUser.boxContainer}>
-                <ScrollView>
-                    <Text style={styleProjectUser.textTitle}>Mis proyectos</Text>
-                    <View style={styleProjectUser.boxList}>
-                        <ScrollView>
-                            {idProjects.map((item, index) => (
-                                <View key={index}>
-                                    <View style={styleGeneral.boxItemList}>
-                                        <Text style={styleGeneral.textSecundary}>{nameProjects[index]}</Text>
-                                        <TouchableOpacity
-                                            style={styleGeneral.icon}
-                                            onPress={() => { navigation.navigate("DataProject"), AsyncStorage.setItem('idProject', idProjects[index]), console.log(idProjects[index]) }}
-                                        >
-                                            <Image
-                                                source={require('../../public/icons/angulo-circulo-derecha.png')}
-                                                style={styleGeneral.icon}
-
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-
-                                </View>
-                            ))}
-                        </ScrollView>
-                    </View>
-                    <Text style={styleProjectUser.textTitle}>Proyectos participes</Text>
-                    <View style={styleProjectUser.boxList}>
-                        <ScrollView>
-                            {idParticipesProjects.map((item, index) => (
-                                <View key={index}>
-                                    <View style={styleGeneral.boxItemList}>
-                                        <Text style={styleGeneral.textSecundary}>{participesProjects[index]}</Text>
-                                        <TouchableOpacity
-                                            style={styleGeneral.icon}
-                                        //onPress={() => navigation.navigate("DataProject")}
-                                        >
-                                            <Image
-                                                source={require('../../public/icons/angulo-circulo-derecha.png')}
-                                                style={styleGeneral.icon}
-
-                                            />
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            ))}
-                        </ScrollView>
-                    </View>
-                </ScrollView>
-            </View>
-        </View>
-  
-  
- */

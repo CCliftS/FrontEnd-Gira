@@ -6,46 +6,48 @@ import styleText from "../../public/styles/styleText";
 import { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import { ENDPOINT_MS_TASK } from "react-native-dotenv";
 
 
 const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(false);
-    const [error, setError] = useState('');
+    const [modalVisible, setModalVisible] = useState<boolean>(false);
+    const [error, setError] = useState<string>('');
 
-    const [modalDelete, setModalDelete] = useState(false);
+    const [modalDelete, setModalDelete] = useState<boolean>(false);
 
-    const [estado, setEstado] = useState("Pendiente");
-    const [option, setOption] = useState("");
+    const [estado, setEstado] = useState<string>("Pendiente");
+    const [option, setOption] = useState<string>("");
 
-    const loadData = async () => {
-        setOption(await AsyncStorage.getItem('option') ?? '');
 
-    };
-    const [idTask, setIdTask] = useState([]);
-    const [descriptionTask, setDescriptionTask] = useState([]);
-    const [emailUserTask, setEmailUserTask] = useState([]);
-    const [finishDateTask, setFinishDateTask] = useState([]);
-    const [idProjectTask, setIdProjectTask] = useState([]);
-    const [idTeamTask, setIdTeamTask] = useState([]);
-    const [nameTask, setNameTask] = useState([]);
-    const [startDateTask, setStartDateTask] = useState([]);
-    const [statusTask, setStatusTask] = useState([]);
-    const [nameTeam, setNameTeam] = useState([]);
+    const [idTask, setIdTask] = useState<string[]>([]);
+    const [descriptionTask, setDescriptionTask] = useState<string[]>([]);
+    const [emailUserTask, setEmailUserTask] = useState<string[]>([]);
+    const [finishDateTask, setFinishDateTask] = useState<string[]>([]);
+    const [idProjectTask, setIdProjectTask] = useState<string[]>([]);
+    const [idTeamTask, setIdTeamTask] = useState<string[]>([]);
+    const [nameTask, setNameTask] = useState<string[]>([]);
+    const [startDateTask, setStartDateTask] = useState<string[]>([]);
+    const [statusTask, setStatusTask] = useState<string[]>([]);
+    const [nameTeam, setNameTeam] = useState<string[]>([]);
     const handleDeleteTask = async () => {
         try {
             const id = await AsyncStorage.getItem('idTask');
             console.log(id);
-            const response = await axios.delete(`http://10.0.2.2:3002/Tasks/removeTask/${id}`);
+            const response = await axios.delete(`${ENDPOINT_MS_TASK}/Tasks/removeTask/${id}`);
             navigation.navigate("DataTask");
         } catch (error) {
             setError("No se pudo eliminar la tarea");
             setModalVisible(true);
         }
     };
+    const loadData = async () => {
+        setOption(await AsyncStorage.getItem('option') ?? '');
+
+    };
     const fecthTaskStatus = async () => {
         try {
             const idProject = await AsyncStorage.getItem('idProject');
-            const response = await axios.get(`http://10.0.2.2:3002/Tasks/getProjectTasks/${idProject}`);
+            const response = await axios.get(`${ENDPOINT_MS_TASK}/Tasks/getProjectTasks/${idProject}`);
             setIdTask(response.data.taskId);
             setDescriptionTask(response.data.taskDescription);
             setEmailUserTask(response.data.taskEmailUser);
@@ -57,8 +59,8 @@ const DataTask: React.FC<DataTaskProps> = ({ navigation }) => {
             setStatusTask(response.data.taskStatus);
             setNameTeam(response.data.taskTeamName);
         } catch (error) {
-            //setError("No se pudo cargar las tareas");
-            //setModalVisible(true);
+            setError("No se pudo cargar las tareas");
+            setModalVisible(true);
         }
     };
     useEffect(() => {
