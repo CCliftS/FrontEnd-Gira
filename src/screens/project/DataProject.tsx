@@ -33,8 +33,8 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
             setIdTeams(response.data.teamProjects);
 
         } catch (error) {
-            setError("No se cargaron los datos del proyecto");
-            setModalVisible(true);
+            // setError("No se cargaron los datos del proyecto");
+            // setModalVisible(true);
 
         }
     }
@@ -43,7 +43,7 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
             const idProject = await AsyncStorage.getItem('idProject');
             console.log(idTeam, idProject);
             const response = await axios.delete(`http://10.0.2.2:3001/Project/removeTeam/${idProject}/${idTeam}`);
-            navigation.navigate("DataProject");
+            navigation.navigate("ProjectUser");
         } catch (error) {
             setError("No se elimino el equipo");
             setModalVisible(true);
@@ -53,8 +53,10 @@ const DataProject: React.FC<DataProjectProps> = ({ navigation }) => {
     const handleDeleteProject = async () => {
         try {
             const id = await AsyncStorage.getItem('idProject');
+            console.log(id);
             const response = await axios.delete(`http://10.0.2.2:3001/Project/removeProject/${id}`);
-            navigation.navigate("DataProject");
+            AsyncStorage.removeItem('idProject');
+            navigation.navigate("ProjectUser");
         } catch (error) {
             setError("No se elimino el proyecto");
             setModalVisible(true);

@@ -10,7 +10,7 @@ import * as Clipboard from 'expo-clipboard';
 
 
 const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
-    const [copiedText, setCopiedText] = useState('');
+    const [email, setEmail] = useState('');
 
     const copyToClipboard = async (text: string) => {
         await Clipboard.setStringAsync(text);
@@ -49,6 +49,7 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
             setModalVisible(true);
         }
     }
+    
     const loadMembersTeam = async () => {
         try {
             const idTeam = await AsyncStorage.getItem('idTeam');
@@ -67,8 +68,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
         setOption(await AsyncStorage.getItem('option') ?? '');
         setNameTeam(await AsyncStorage.getItem('nameTeam') ?? '');
         setIdTeam(await AsyncStorage.getItem('idTeam') ?? '');
+        setEmail(await AsyncStorage.getItem('email') ?? '');
     };
-
+    
     //este carga el primer componente
     useEffect(() => {
         loadMembersTeam();
@@ -177,9 +179,9 @@ const DataTeamPage: React.FC<DataTeamPageProps> = ({ navigation }) => {
                             <View style={styleBox.botonEdit}>
                                 <Text style={styleText.titleOne}>Tareas del equipo</Text>
                             </View>
-                            <View style={styleBox.botonDelete}>
+                            <TouchableOpacity style={styleBox.botonDelete} onPress={() => { setIdMember(email); setModalDeleteMember(true) }}>
                                 <Text style={styleText.titleOne}>Salir del equipo</Text>
-                            </View>
+                            </TouchableOpacity>
 
                         </View>
                     ) : (
