@@ -111,7 +111,7 @@ const HomePage: React.FC<HomePageScreenProps> = ({ navigation }) => {
     }, [nameTeam]);
     useEffect(() => {
         fecthTaskUser();
-    }, [idTask]);
+    }, [nameTask]);
 
     return (
         <View style={styleBox.container}>
